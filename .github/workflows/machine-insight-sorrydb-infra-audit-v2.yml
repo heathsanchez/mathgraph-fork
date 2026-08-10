@@ -1,0 +1,168 @@
+name: Machine Insight SorryDB Frozen Infrastructure Audit v2
+
+on:
+  push:
+    branches: [machine-insight-sorrydb-ci]
+    paths: ['.github/workflows/machine-insight-sorrydb-infra-audit-v2.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: machine-insight-sorrydb-ci
+      - id: m
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import hashlib,json
+          d=json.load(open('machine_insight_sorrydb/data/frozen_tasks.json'))
+          t=json.load(open('machine_insight_sorrydb/data/transfer_tasks.json'))
+          g={}
+          for split,xs in [('development',d),('transfer',t)]:
+            for x in xs:
+              r=x['repo']; k=(r['remote'],r['commit'],r.get('branch') or '',r['lean_version'])
+              if k not in g:
+                g[k]={'remote':k[0],'commit':k[1],'branch':k[2],'lean_version_recorded':k[3],
+                      'group_id':hashlib.sha256(('|'.join(k)).encode()).hexdigest()[:16],
+                      'development_task_ids':[],'transfer_task_ids':[]}
+              g[k][split+'_task_ids'].append(x['id'])
+          arr=sorted(g.values(),key=lambda x:x['group_id'])
+          assert len(arr)==40,len(arr)
+          print('matrix='+json.dumps({'include':arr},separators=(',',':')))
+          PY
+
+  build:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --no-modify-path
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Audit pinned project
+        shell: bash
+        env:
+          REMOTE: ${{ matrix.remote }}
+          COMMIT: ${{ matrix.commit }}
+          BRANCH_RECORDED: ${{ matrix.branch }}
+          LEAN_RECORDED: ${{ matrix.lean_version_recorded }}
+          GROUP_ID: ${{ matrix.group_id }}
+          DEV_IDS: ${{ toJSON(matrix.development_task_ids) }}
+          TRANSFER_IDS: ${{ toJSON(matrix.transfer_task_ids) }}
+        run: |
+          set +e
+          mkdir -p infra_results
+          LOG="$GITHUB_WORKSPACE/infra_results/${GROUP_ID}.log"
+          exec > >(tee "$LOG") 2>&1
+          START=$(date +%s)
+          REPO=/tmp/project
+          CLONE_RC=999; CHECKOUT_RC=999; CACHE_RC=999; BUILD_RC=999
+          HEAD=''; TOOLCHAIN=''; LEAN_ACTUAL=''; LAKE_ACTUAL=''
+          git clone --no-tags "$REMOTE" "$REPO"; CLONE_RC=$?
+          if [ "$CLONE_RC" -eq 0 ]; then
+            cd "$REPO"
+            git checkout --detach "$COMMIT"; CHECKOUT_RC=$?
+          fi
+          if [ "$CHECKOUT_RC" -eq 0 ]; then
+            HEAD=$(git rev-parse HEAD 2>/dev/null)
+            TOOLCHAIN=$(cat lean-toolchain 2>/dev/null || true)
+            LEAN_ACTUAL=$(lean --version 2>&1 | head -1)
+            LAKE_ACTUAL=$(lake --version 2>&1 | head -1)
+            lake exe cache get; CACHE_RC=$?
+            lake build; BUILD_RC=$?
+          fi
+          END=$(date +%s)
+          cd "$GITHUB_WORKSPACE"
+          export CLONE_RC CHECKOUT_RC CACHE_RC BUILD_RC HEAD TOOLCHAIN LEAN_ACTUAL LAKE_ACTUAL START END
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          repo=Path('/tmp/project'); deps=[]; manifest_sha=None
+          mf=repo/'lake-manifest.json'
+          if mf.exists():
+            b=mf.read_bytes();manifest_sha=hashlib.sha256(b).hexdigest()
+            try:
+              m=json.loads(b)
+              for p in m.get('packages',[]):
+                deps.append({k:p.get(k) for k in ('name','url','rev','version') if p.get(k) is not None})
+            except Exception as e: deps=[{'manifest_parse_error':str(e)}]
+          rc={k:int(os.environ[k]) for k in ('CLONE_RC','CHECKOUT_RC','CACHE_RC','BUILD_RC')}
+          status='VERIFIED_ENV' if rc['BUILD_RC']==0 and os.environ['HEAD']==os.environ['COMMIT'] else 'INFRA_ERROR'
+          r={'audit_version':'2.0.0','group_id':os.environ['GROUP_ID'],'remote':os.environ['REMOTE'],
+             'branch_recorded':os.environ['BRANCH_RECORDED'],'commit_recorded':os.environ['COMMIT'],
+             'lean_version_recorded':os.environ['LEAN_RECORDED'],'checked_out_head':os.environ['HEAD'],
+             'lean_toolchain_file':os.environ['TOOLCHAIN'],'lean_version_actual':os.environ['LEAN_ACTUAL'],
+             'lake_version_actual':os.environ['LAKE_ACTUAL'],'lake_manifest_sha256':manifest_sha,'dependencies':deps,
+             'development_task_ids':json.loads(os.environ['DEV_IDS']),'transfer_task_ids':json.loads(os.environ['TRANSFER_IDS']),
+             'clone_exit_code':rc['CLONE_RC'],'checkout_exit_code':rc['CHECKOUT_RC'],'cache_exit_code':rc['CACHE_RC'],
+             'build_exit_code':rc['BUILD_RC'],'status':status,'elapsed_seconds':int(os.environ['END'])-int(os.environ['START'])}
+          Path('infra_results/'+os.environ['GROUP_ID']+'.json').write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
+          print('AUDIT_RESULT',status,os.environ['REMOTE'],os.environ['COMMIT'],rc)
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-v2-${{ matrix.group_id }}
+          path: infra_results/
+          if-no-files-found: error
+
+  aggregate:
+    if: always()
+    needs: [prepare,build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: machine-insight-sorrydb-ci
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: infra-v2-*
+          path: /tmp/infra
+          merge-multiple: true
+      - name: Aggregate and commit v2 audit
+        run: |
+          mkdir -p machine_insight_sorrydb/environment
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          rs=[json.loads(p.read_text()) for p in sorted(Path('/tmp/infra').glob('*.json'))]
+          s={'audit_version':'2.0.0','supersedes_workflow_run':31345918152,
+             'repo_commit_groups_expected':40,'repo_commit_groups_observed':len(rs),
+             'verified_env_groups':sum(r['status']=='VERIFIED_ENV' for r in rs),
+             'infra_error_groups':sum(r['status']=='INFRA_ERROR' for r in rs),
+             'development_tasks_in_verified_envs':sum(len(r['development_task_ids']) for r in rs if r['status']=='VERIFIED_ENV'),
+             'development_tasks_in_infra_error_envs':sum(len(r['development_task_ids']) for r in rs if r['status']=='INFRA_ERROR'),
+             'transfer_tasks_in_verified_envs':sum(len(r['transfer_task_ids']) for r in rs if r['status']=='VERIFIED_ENV'),
+             'transfer_tasks_in_infra_error_envs':sum(len(r['transfer_task_ids']) for r in rs if r['status']=='INFRA_ERROR'),
+             'policy':'Frozen task IDs are never replaced. INFRA_ERROR is reported separately and excluded from proof-failure denominators.',
+             'groups':rs}
+          assert len(rs)==40,len(rs)
+          out=Path('machine_insight_sorrydb/environment/FROZEN_INFRA_AUDIT_V2.json')
+          text=json.dumps(s,indent=2,sort_keys=True)+'\n';out.write_text(text)
+          Path(str(out)+'.sha256').write_text(hashlib.sha256(text.encode()).hexdigest()+'  '+out.name+'\n')
+          print(json.dumps({k:v for k,v in s.items() if k!='groups'},indent=2,sort_keys=True))
+          PY
+          git config user.name machine-insight-bot
+          git config user.email machine-insight-bot@users.noreply.github.com
+          git pull --rebase origin machine-insight-sorrydb-ci
+          git add machine_insight_sorrydb/environment/FROZEN_INFRA_AUDIT_V2.json*
+          git commit -m 'Record corrected frozen SorryDB infrastructure audit v2'
+          git push origin HEAD:machine-insight-sorrydb-ci
