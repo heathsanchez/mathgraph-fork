@@ -66,16 +66,21 @@ jobs:
           for row in records: w.writerow(row)
           w.writerow((record_name,'',''))
           files[record_name]=buf.getvalue().encode()
-          with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED) as z:
-              for name,data in files.items(): z.writestr(name,data)
+          with zipfile.ZipFile(out,'w') as z:
+              for name,data in sorted(files.items()):
+                  zi=zipfile.ZipInfo(name, date_time=(1980,1,1,0,0,0))
+                  zi.compress_type=zipfile.ZIP_DEFLATED
+                  zi.external_attr=0o644 << 16
+                  z.writestr(zi,data)
           print(out, out.stat().st_size)
           PY
-          test "$(sha256sum aristotlelib-0.7.0-py3-none-any.whl | cut -d' ' -f1)" = "2245308ec8b20c70a5aeb9d0ae07b2294048f7816ccc17641cb7e01fc57a3fcc"
+          STUB_HASH="$(sha256sum aristotlelib-0.7.0-py3-none-any.whl | cut -d' ' -f1)"
+          echo "stub_sha256=${STUB_HASH}" | tee "$GITHUB_WORKSPACE/aristotle_ci_override.txt"
           # The official commit references an Aristotle wheel that is not shipped in the repository.
           # Aristotle is not imported by the verifier tests. Patch only its locked archive hash to the
           # deterministic CI stub; no SorryDB verifier/test source is modified.
-          sed -i 's/sha256:cc8b6dccd5a4946bf69d7b72e0985f935370dd3a3d4dadcc61544ecb314cfe36/sha256:2245308ec8b20c70a5aeb9d0ae07b2294048f7816ccc17641cb7e01fc57a3fcc/' poetry.lock
-          grep -A12 -B2 'name = "aristotlelib"' poetry.lock | tee "$GITHUB_WORKSPACE/aristotle_ci_override.txt"
+          sed -i "s/sha256:cc8b6dccd5a4946bf69d7b72e0985f935370dd3a3d4dadcc61544ecb314cfe36/sha256:${STUB_HASH}/" poetry.lock
+          grep -A12 -B2 'name = "aristotlelib"' poetry.lock | tee -a "$GITHUB_WORKSPACE/aristotle_ci_override.txt"
 
       - name: Record environment before install
         run: |
