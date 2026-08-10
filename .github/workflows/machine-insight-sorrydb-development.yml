@@ -1,0 +1,135 @@
+name: Machine Insight SorryDB Frozen Development Experiment
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  FROZEN_TASK_SHA256: da4d6e3bdf0a19b8abd8d8d9f6e04ecdd292f6144e4b9fd88271a64e0de1813c
+  SORRYDB_COMMIT: 83bd1976b2c0891dfd6dc997cd61956df7005a7f
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify frozen inputs and construct repo matrix
+        id: matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd machine_insight_sorrydb/data
+          test "$(sha256sum frozen_tasks.json | cut -d' ' -f1)" = "$FROZEN_TASK_SHA256"
+          cd ../..
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          t=json.loads(Path('machine_insight_sorrydb/data/frozen_tasks.json').read_text())
+          g=sorted({(x['repo']['remote'],x['repo']['commit'],x['repo']['branch'],x['repo']['lean_version']) for x in t})
+          print('matrix='+json.dumps({'group_index':list(range(len(g)))},separators=(',',':')))
+          print('groups',len(g))
+          PY
+
+  run-group:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Poetry and elan
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet poetry
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --no-modify-path
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Clone pinned official SorryDB
+        run: |
+          set -euo pipefail
+          git clone --quiet https://github.com/SorryDB/SorryDB.git /tmp/SorryDB
+          cd /tmp/SorryDB
+          git checkout --quiet "$SORRYDB_COMMIT"
+          test "$(git rev-parse HEAD)" = "$SORRYDB_COMMIT"
+      - name: Deterministically reconstruct unshipped optional Aristotle wheel
+        working-directory: /tmp/SorryDB
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64,csv,hashlib,io,zipfile
+          from pathlib import Path
+          out=Path('aristotlelib-0.7.0-py3-none-any.whl')
+          files={'aristotlelib/__init__.py':b'__version__ = "0.7.0"\n','aristotlelib-0.7.0.dist-info/METADATA':b'Metadata-Version: 2.1\nName: aristotlelib\nVersion: 0.7.0\nSummary: CI stub for unused optional SorryDB verifier dependency\n','aristotlelib-0.7.0.dist-info/WHEEL':b'Wheel-Version: 1.0\nGenerator: machine-insight-development\nRoot-Is-Purelib: true\nTag: py3-none-any\n'}
+          rows=[]
+          for n,d in files.items(): rows.append((n,'sha256='+base64.urlsafe_b64encode(hashlib.sha256(d).digest()).rstrip(b'=').decode(),str(len(d))))
+          rec='aristotlelib-0.7.0.dist-info/RECORD'; buf=io.StringIO(newline=''); w=csv.writer(buf,lineterminator='\n'); [w.writerow(x) for x in rows]; w.writerow((rec,'','')); files[rec]=buf.getvalue().encode()
+          with zipfile.ZipFile(out,'w') as z:
+            for n,d in sorted(files.items()):
+              zi=zipfile.ZipInfo(n,date_time=(1980,1,1,0,0,0)); zi.compress_type=zipfile.ZIP_DEFLATED; zi.external_attr=0o644<<16; z.writestr(zi,d)
+          PY
+          H="$(sha256sum aristotlelib-0.7.0-py3-none-any.whl | cut -d' ' -f1)"
+          sed -i "s/sha256:cc8b6dccd5a4946bf69d7b72e0985f935370dd3a3d4dadcc61544ecb314cfe36/sha256:${H}/" poetry.lock
+      - name: Install pinned SorryDB dependencies
+        working-directory: /tmp/SorryDB
+        run: poetry install --no-interaction
+      - name: Run frozen group experiment
+        working-directory: /tmp/SorryDB
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: |
+          set -o pipefail
+          poetry run python "$GITHUB_WORKSPACE/machine_insight_sorrydb/src/run_group.py" \
+            --manifest "$GITHUB_WORKSPACE/machine_insight_sorrydb/data/frozen_tasks.json" \
+            --group-index "${{ matrix.group_index }}" \
+            --out-dir "$GITHUB_WORKSPACE/dev_group_results" \
+            2>&1 | tee "$GITHUB_WORKSPACE/dev_group_${{ matrix.group_index }}.log"
+      - name: Upload complete group trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mi-dev-group-${{ matrix.group_index }}
+          path: |
+            dev_group_results/
+            dev_group_${{ matrix.group_index }}.log
+          if-no-files-found: warn
+
+  aggregate:
+    if: always()
+    needs: [prepare, run-group]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download all development group artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: mi-dev-group-*
+          path: downloaded
+          merge-multiple: true
+      - name: Aggregate paired outcomes and freeze transfer policy
+        run: |
+          python machine_insight_sorrydb/src/aggregate_development.py \
+            --input-dir downloaded/dev_group_results \
+            --manifest machine_insight_sorrydb/data/frozen_tasks.json \
+            --out-dir development_aggregate
+      - name: Hash aggregate
+        run: |
+          find development_aggregate -type f -print0 | sort -z | xargs -0 sha256sum > development_aggregate/MANIFEST.sha256
+      - name: Upload development aggregate
+        uses: actions/upload-artifact@v4
+        with:
+          name: machine-insight-development-aggregate
+          path: development_aggregate/
