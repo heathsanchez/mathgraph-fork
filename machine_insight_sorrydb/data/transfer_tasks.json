@@ -1,0 +1,3122 @@
+[
+  {
+    "debug_info": {
+      "goal": "F : Type\ninst✝¹ : Field F\ninst✝ : DecidableEq F\n⊢ ∀ (cl : Circuit F F) (cr : Circuit F (ℕ × F)) (G : List (Entry F (ℕ × F))),\n    wf G cl cr → List.Forall (fun entry => entry.l = (Exp.c entry.r.2).eval) G → cl ≈ Clap.Dedup.dedup F inst✝ F cr",
+      "url": "https://github.com/Clap-lang/clap-lean/blob/025e765b56422a3da558fce043d95cc0cbf45038/Clap/Dedup.lean#L79"
+    },
+    "id": "91800842227bc99f1e74501ca190d447e77c3782f2395309bf1d1b086a0967fb",
+    "location": {
+      "end_column": 30,
+      "end_line": 79,
+      "path": "Clap/Dedup.lean",
+      "start_column": 25,
+      "start_line": 79
+    },
+    "pretreatment_features": {
+      "goal_chars": 241,
+      "goal_lines": 5,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 4
+    },
+    "repo": {
+      "branch": "parser",
+      "commit": "025e765b56422a3da558fce043d95cc0cbf45038",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/Clap-lang/clap-lean"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case left\np : ℕ\nh : Fact (Nat.Prime p)\n⊢ ∃ m, p = 4 * m + 1 → {s | s ^ 2 = -1}.card = 2",
+      "url": "https://github.com/mo271/FormalBook/blob/865934361ca7005e0a874efb39f5809117052e85/FormalBook/Chapter_04.lean#L48"
+    },
+    "id": "6efe22035b6d2b8a940d3b739225fa4daf690e311ada66793f66edd825e9054f",
+    "location": {
+      "end_column": 9,
+      "end_line": 48,
+      "path": "FormalBook/Chapter_04.lean",
+      "start_column": 4,
+      "start_line": 48
+    },
+    "pretreatment_features": {
+      "goal_chars": 87,
+      "goal_lines": 4,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 3
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "865934361ca7005e0a874efb39f5809117052e85",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/mo271/FormalBook"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "T₀ S₀ : ℝ\nh : (T₀, S₀) ∈ FKS.table_1\n⊢ (riemannZeta.zeroes_sum Set.univ (Set.Ioo 0 T₀) fun ρ => 1 / ρ.im) < S₀",
+      "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/ddcb6542f2b62883c8642d3db4ecc115afcce33e/PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean#L44"
+    },
+    "id": "7956fe8e4946a9ddf7098ee84c69669db5bc902715dad6e7cdf0db121aa5bfce",
+    "location": {
+      "end_column": 142,
+      "end_line": 44,
+      "path": "PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean",
+      "start_column": 137,
+      "start_line": 44
+    },
+    "pretreatment_features": {
+      "goal_chars": 110,
+      "goal_lines": 3,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "More-FKS",
+      "commit": "ddcb6542f2b62883c8642d3db4ecc115afcce33e",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ sorry ↔ ∃ f, 2 ≤ f.degree ∧ ∃ A, ∀ (z : ℤ), ∃! ab, ab ∈ A ×ˢ ((fun a => eval a f) '' {n | 0 < n}) ∧ z = ab.1 + ab.2",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/40df92c5af58a2a2592dfe7b2dd967cb5942db42/FormalConjectures/ErdosProblems/477.lean#L40"
+    },
+    "id": "936de33eda0f60dc61ed629ae037d92b9d25a897e1deb89c50be7a6f8e64a5a8",
+    "location": {
+      "end_column": 7,
+      "end_line": 40,
+      "path": "FormalConjectures/ErdosProblems/477.lean",
+      "start_column": 2,
+      "start_line": 40
+    },
+    "pretreatment_features": {
+      "goal_chars": 117,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "test",
+      "commit": "40df92c5af58a2a2592dfe7b2dd967cb5942db42",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ 2 ≤ definitely_at_least_two",
+      "url": "https://github.com/GasStationManager/SafeVerify/blob/e072239e31072e71ae894ffb4d4bed9978465bbc/SafeVerifyTest/ImpBy/Target.lean#L7"
+    },
+    "id": "e94e0170800c4a4a9fc6627365576862c352de8e24d0a9abd0a35d8a2ae68837",
+    "location": {
+      "end_column": 7,
+      "end_line": 7,
+      "path": "SafeVerifyTest/ImpBy/Target.lean",
+      "start_column": 2,
+      "start_line": 7
+    },
+    "pretreatment_features": {
+      "goal_chars": 29,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "v4.21",
+      "commit": "e072239e31072e71ae894ffb4d4bed9978465bbc",
+      "lean_version": "v4.21.0",
+      "remote": "https://github.com/GasStationManager/SafeVerify"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "q ε : ℝ\nE : StaticElectricField 1\n⊢ E.GaussLaw ε Electromagnetism.OneDimVacuum.chargeDistribution ↔ ∃ m, E = constD 1 m",
+      "url": "https://github.com/HEPLean/PhysLean/blob/5b6f67c60f278269fa6188670bf2b5675c1a99f0/PhysLean/Electromagnetism/Electrostatics/OneDimension/Vacuum.lean#L34"
+    },
+    "id": "4b3df44cdfa04ab9bd93ec85c5f84e5334552ec23748164cc5bb79c6eaf53299",
+    "location": {
+      "end_column": 7,
+      "end_line": 34,
+      "path": "PhysLean/Electromagnetism/Electrostatics/OneDimension/Vacuum.lean",
+      "start_column": 2,
+      "start_line": 34
+    },
+    "pretreatment_features": {
+      "goal_chars": 119,
+      "goal_lines": 3,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "bareBones",
+      "commit": "5b6f67c60f278269fa6188670bf2b5675c1a99f0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/HEPLean/PhysLean"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\ninst✝ : MeasurableSpace α\nμ : ComplexMeasure α\n⊢ @MeasureTheory.ComplexMeasure.ang α inst✝ (-μ) = -@MeasureTheory.ComplexMeasure.ang α inst✝ μ",
+      "url": "https://github.com/oliver-butterley/SpectralThm/blob/02099b8e7d2e117fc62cc41d81b5cbda35eb9808/SpectralThm/ComplexMeasure/Integral.lean#L76"
+    },
+    "id": "73943f1a33199f13d3c6003d3beadfe8929d41d8d9a2d0a3bb76e0b0d4bf88e5",
+    "location": {
+      "end_column": 7,
+      "end_line": 76,
+      "path": "SpectralThm/ComplexMeasure/Integral.lean",
+      "start_column": 2,
+      "start_line": 76
+    },
+    "pretreatment_features": {
+      "goal_chars": 155,
+      "goal_lines": 4,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 3
+    },
+    "repo": {
+      "branch": "yoh-IsInnerPart",
+      "commit": "02099b8e7d2e117fc62cc41d81b5cbda35eb9808",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/oliver-butterley/SpectralThm"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nn : ℕ\nv : Vector α n\nidx : Fin n\nelt : α\n⊢ (v.set (↑idx) elt ⋯).toList = v.toList.set (↑idx) elt",
+      "url": "https://github.com/VCA-EPFL/graphiti/blob/3285ca701a33477bbd2a3ac954584439d80db747/Graphiti/Projects/Noc/Utils.lean#L194"
+    },
+    "id": "df0f4fd87c3d52fc3b3dc06c1bba87010b4d7064f274341f47e0f7ceb4d91024",
+    "location": {
+      "end_column": 11,
+      "end_line": 194,
+      "path": "Graphiti/Projects/Noc/Utils.lean",
+      "start_column": 6,
+      "start_line": 194
+    },
+    "pretreatment_features": {
+      "goal_chars": 109,
+      "goal_lines": 6,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "type-inference",
+      "commit": "3285ca701a33477bbd2a3ac954584439d80db747",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/VCA-EPFL/graphiti"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "a b : ℝ\n⊢ ∫ (x : ℝ) in a..b, sin (x / 2 + 3) = 2 * cos (a / 2 + 3) - 2 * cos (b / 2 + 3)",
+      "url": "https://github.com/fpvandoorn/LeanCourse25/blob/cd0f32f5b07311e08a9e89733a1375f54eb790c0/LeanCourse25/Assignments/Assignment9.lean#L21"
+    },
+    "id": "e1419a00fc96ee19a18f76afaee18fded986eaa7bfc9fe77430187199e0d0d0a",
+    "location": {
+      "end_column": 7,
+      "end_line": 21,
+      "path": "LeanCourse25/Assignments/Assignment9.lean",
+      "start_column": 2,
+      "start_line": 21
+    },
+    "pretreatment_features": {
+      "goal_chars": 88,
+      "goal_lines": 2,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "cd0f32f5b07311e08a9e89733a1375f54eb790c0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/fpvandoorn/LeanCourse25"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "ε : ℝ\nhε : ε > 0\n⊢ failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)",
+      "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/713c442c94e38fe5fdf96320af2718e635b37d08/PrimeNumberTheoremAnd/Erdos392.lean#L703"
+    },
+    "id": "d3ade327c855a183a13b105cb70b427a171060bd604543d8c3e34f7ea0e77a4e",
+    "location": {
+      "end_column": 7,
+      "end_line": 703,
+      "path": "PrimeNumberTheoremAnd/Erdos392.lean",
+      "start_column": 2,
+      "start_line": 703
+    },
+    "pretreatment_features": {
+      "goal_chars": 113,
+      "goal_lines": 3,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "pitmonticone/feat-Erdos392_balance_large_prime_ge",
+      "commit": "713c442c94e38fe5fdf96320af2718e635b37d08",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "a : Real\n⊢ dist a a = zero",
+      "url": "https://github.com/leanprover-community/duper/blob/93e949f61679a9546d543a604f3f88b2a5eef262/Duper/Tests/test_continuity.lean#L18"
+    },
+    "id": "badce909445fc56edb66d3c658ca5e1e8ee6a6f9d4dd95632da16f3004aaa005",
+    "location": {
+      "end_column": 55,
+      "end_line": 18,
+      "path": "Duper/Tests/test_continuity.lean",
+      "start_column": 50,
+      "start_line": 18
+    },
+    "pretreatment_features": {
+      "goal_chars": 26,
+      "goal_lines": 2,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "93e949f61679a9546d543a604f3f88b2a5eef262",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/leanprover-community/duper"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "a : Type\nxs : List a\nx✝ : List a × List a\nys zs : List a\n⊢ (ys, zs) ∈ Chapter12.splits a xs",
+      "url": "https://github.com/arademaker/fad/blob/ac40e4faf3b1252bc943676314449c22b5af3c9d/Fad/Chapter12.lean#L55"
+    },
+    "id": "b1b51d810ea9ebb19713ef16a6f464a68c2ffa9385f1eaae898c7d35178e4711",
+    "location": {
+      "end_column": 13,
+      "end_line": 55,
+      "path": "Fad/Chapter12.lean",
+      "start_column": 8,
+      "start_line": 55
+    },
+    "pretreatment_features": {
+      "goal_chars": 91,
+      "goal_lines": 5,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 4
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "ac40e4faf3b1252bc943676314449c22b5af3c9d",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/arademaker/fad"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case h.refine_1.refine_2.«0»\n⊢ lex.toSyn (lex.degree (X 3)) + lex.toSyn (lex.degree (X 3 ^ 4)) ≤\n    lex.toSyn (lex.degree (X 0 ^ 2 + X 1 ^ 3 + X 2 ^ 4 + X 3 ^ 5))",
+      "url": "https://github.com/WuProver/groebner_proj/blob/756981b2cf96a2f968a6b9ef21d5f154e6fb38b5/Groebner/ForComputation.lean#L61"
+    },
+    "id": "c5dd8dba051c8e9b5097b5a4237a22da8b740726ced8f43e87f4af51a30856cb",
+    "location": {
+      "end_column": 15,
+      "end_line": 61,
+      "path": "Groebner/ForComputation.lean",
+      "start_column": 10,
+      "start_line": 61
+    },
+    "pretreatment_features": {
+      "goal_chars": 163,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "756981b2cf96a2f968a6b9ef21d5f154e6fb38b5",
+      "lean_version": "v4.24.0-rc1",
+      "remote": "https://github.com/WuProver/groebner_proj"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "K : Type u_1\ninst✝⁴ : Field K\ninst✝³ : NumberField K\nB : Type u_2\ninst✝² : Ring B\ninst✝¹ : Algebra K B\ninst✝ : FiniteDimensional K B\nv : IsDedekindDomain.HeightOneSpectrum (RingOfIntegers K)\n⊢ LocallyCompactSpace (IsDedekindDomain.HeightOneSpectrum.adicCompletion K v)",
+      "url": "https://github.com/ImperialCollegeLondon/FLT/blob/f17c712d62509f9043b2596eb7b8f9eae41a016c/FLT/HaarMeasure/HaarChar/FiniteAdeleRing.lean#L36"
+    },
+    "id": "0341dcb7b570b477084798577d7aabaa2995cd647da0b2223e791ad4398e6a69",
+    "location": {
+      "end_column": 53,
+      "end_line": 36,
+      "path": "FLT/HaarMeasure/HaarChar/FiniteAdeleRing.lean",
+      "start_column": 48,
+      "start_line": 36
+    },
+    "pretreatment_features": {
+      "goal_chars": 268,
+      "goal_lines": 9,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 8
+    },
+    "repo": {
+      "branch": "kbuzzard-left_mul_eq_right_mul-finiteadeles2",
+      "commit": "f17c712d62509f9043b2596eb7b8f9eae41a016c",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/ImperialCollegeLondon/FLT"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "V : Type u_3\ninst✝² : AddCommGroup V\ninst✝¹ : Module ℚ V\ninst✝ : FiniteDimensional ℚ V\nv : IsDedekindDomain.HeightOneSpectrum (RingOfIntegers ℚ)\n⊢ IsCompact\n    ↑((↑(@Aux.c_v_alg V inst✝² inst✝¹ v)).toAddMonoidHom.comp\n          (LinearMap.lTensor (IntegralLattice ℤ ℚ V)\n              (IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers ℚ\n                      v).subtype.toAddMonoidHom.toIntLinearMap).toAddMonoidHom).range",
+      "url": "https://github.com/ImperialCollegeLondon/FLT/blob/5150d6da6af292a826f46b22f4ba962252394b56/FLT/HaarMeasure/HaarChar/AdeleRing.lean#L337"
+    },
+    "id": "5189d6faf3cb651f67a14bc4e8bfb842e8c11c92a4bb5a7d4e07e45dcc4c3499",
+    "location": {
+      "end_column": 7,
+      "end_line": 337,
+      "path": "FLT/HaarMeasure/HaarChar/AdeleRing.lean",
+      "start_column": 2,
+      "start_line": 337
+    },
+    "pretreatment_features": {
+      "goal_chars": 432,
+      "goal_lines": 10,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 9
+    },
+    "repo": {
+      "branch": "kbuzzard-more-addHaarScalarFactor_tensor_adeles_rat_eq_one",
+      "commit": "5150d6da6af292a826f46b22f4ba962252394b56",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/ImperialCollegeLondon/FLT"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case h₂.hpq\nL : Logic ℕ\ninst✝ : L.IsNormal\nm : LO.Modal.Modality\n⊢ L ⊢ ∼□atom 0 ➝ ∼∼◇(∼atom 0)",
+      "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/Modal/Modality/Basic.lean#L520"
+    },
+    "id": "e2b7f3155da720cc910c29b2b918514f6891de6cd5b3670097303be2d789fb58",
+    "location": {
+      "end_column": 11,
+      "end_line": 520,
+      "path": "Foundation/Modal/Modality/Basic.lean",
+      "start_column": 6,
+      "start_line": 520
+    },
+    "pretreatment_features": {
+      "goal_chars": 94,
+      "goal_lines": 5,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 4
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "7c74089c2442ee211abfa1e2dd5a75091800f57b",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/FormalizedFormalLogic/Foundation"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case h.h.h.h\n⊢ 2 ≤ 0",
+      "url": "https://github.com/siddhartha-gadgil/LeanLion/blob/56951aea7f2dbbb5c6826b81b329dae4586f4244/LeanLion/DraftTacticIntro.lean#L55"
+    },
+    "id": "a35d678393aace4c5063e3b6bcb6abc542f9f5fcbfbcda4825edf906599c2030",
+    "location": {
+      "end_column": 7,
+      "end_line": 55,
+      "path": "LeanLion/DraftTacticIntro.lean",
+      "start_column": 2,
+      "start_line": 55
+    },
+    "pretreatment_features": {
+      "goal_chars": 20,
+      "goal_lines": 2,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "56951aea7f2dbbb5c6826b81b329dae4586f4244",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/siddhartha-gadgil/LeanLion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "aa : Nat\n⊢ aa = 0 → t aa = 0",
+      "url": "https://github.com/leanprover-community/batteries/blob/fce4da76bae6a8daa1503009abb00587253c4177/BatteriesTest/lint_unreachableTactic.lean#L32"
+    },
+    "id": "30a1edecb76471344b9c5bc4c3a50770da28efe322ff0bd87afd0027a59eb19f",
+    "location": {
+      "end_column": 38,
+      "end_line": 32,
+      "path": "BatteriesTest/lint_unreachableTactic.lean",
+      "start_column": 33,
+      "start_line": 32
+    },
+    "pretreatment_features": {
+      "goal_chars": 28,
+      "goal_lines": 2,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "weak.backward.privateInPublic",
+      "commit": "fce4da76bae6a8daa1503009abb00587253c4177",
+      "lean_version": "v4.25.0-rc2",
+      "remote": "https://github.com/leanprover-community/batteries"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "V : Type u\ninst✝ : DecidableEq V\nG : SimpleGraph V\nu v : V\np : @SimpleGraph.LoopWalk V G u v\n⊢ Finset.card (@SimpleGraph.LoopWalk.supportSet V G u v inst✝ p) ≤\n    Finset.card (@SimpleGraph.LoopWalk.edgeSet V G u v inst✝ p) + 1",
+      "url": "https://github.com/FredRaj3/SemicircleLaw/blob/f0dc6edb5e66398f0084bfc328ed6d24f3e1e1f3/SemicircleLaw/Moments/LoopWalk.lean#L285"
+    },
+    "id": "c59a78322dde942514e73eb7a81a70cd85c2d55509bb2fdbbd22f32b38defeb1",
+    "location": {
+      "end_column": 7,
+      "end_line": 285,
+      "path": "SemicircleLaw/Moments/LoopWalk.lean",
+      "start_column": 2,
+      "start_line": 285
+    },
+    "pretreatment_features": {
+      "goal_chars": 227,
+      "goal_lines": 7,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "feat/version_update",
+      "commit": "f0dc6edb5e66398f0084bfc328ed6d24f3e1e1f3",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/FredRaj3/SemicircleLaw"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "E : Type u_1\ninst✝⁵ : NormedAddCommGroup E\ninst✝⁴ : NormedSpace ℝ E\nΩ : Opens E\ninst✝³ : MeasurableSpace E\ninst✝² : OpensMeasurableSpace E\nF : Type u_4\ninst✝¹ : NormedAddCommGroup F\ninst✝ : NormedSpace ℝ F\nf : E → F\nμ : Measure E\nφ : TestFunction Ω ℝ ⊤\nhf : LocallyIntegrableOn f (↑Ω) μ\n⊢ Integrable (fun x => φ x • f x) μ",
+      "url": "https://github.com/leanprover-community/mathlib4/blob/3553b46195d3457be68d016ea3b14b2aab5e53ad/Mathlib/Analysis/Distribution/Distribution.lean#L272"
+    },
+    "id": "4479b0802f47768e7fb6ac8dc9a8176e4a5a402aa59a7f5611fc661df65cba29",
+    "location": {
+      "end_column": 7,
+      "end_line": 272,
+      "path": "Mathlib/Analysis/Distribution/Distribution.lean",
+      "start_column": 2,
+      "start_line": 272
+    },
+    "pretreatment_features": {
+      "goal_chars": 322,
+      "goal_lines": 14,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 13
+    },
+    "repo": {
+      "branch": "MR_fae_WeakDeriv",
+      "commit": "3553b46195d3457be68d016ea3b14b2aab5e53ad",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover-community/mathlib4"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "R✝¹ : Type ?u.194539\ninst✝² : CommRing R✝¹\nR✝ : Type\ninst✝¹ : CommRing R✝\nR : Type\ninst✝ : CommRing R\n⊢ HasLimitsOfSize.{0, 0, 1, 1} LightCondensed.Solid",
+      "url": "https://github.com/dagurtomas/LeanCondensed/blob/de8a2f66d0863c0d1b4355aa6743fd228462d7df/LeanCondensed/Projects/LightSolid.lean#L112"
+    },
+    "id": "e3a09e8b888d50a4f2a88866a97bd68bfa4edc10a9e5590e9f794789e8517576",
+    "location": {
+      "end_column": 48,
+      "end_line": 112,
+      "path": "LeanCondensed/Projects/LightSolid.lean",
+      "start_column": 43,
+      "start_line": 112
+    },
+    "pretreatment_features": {
+      "goal_chars": 153,
+      "goal_lines": 7,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "de8a2f66d0863c0d1b4355aa6743fd228462d7df",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/dagurtomas/LeanCondensed"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "f g : ℝ → ℝ\nh₀ : ∀ (x y : ℝ), f (x + y) + f (x - y) = 2 * f x * g y\nh₁ : ¬∀ (x : ℝ), f x = 0\nh₂ : ∀ (x : ℝ), |f x| ≤ 1\n⊢ ∀ (x : ℝ), |g x| ≤ 1",
+      "url": "https://github.com/google-deepmind/formal-imo/blob/d3f9410760a5566c773a9136023a08d9be86684e/Imo/1972/P5.lean#L27"
+    },
+    "id": "2af113f6fa0ee576ff0d0c02e1cd8c93815c0a20ee625a76bf9914b777d12206",
+    "location": {
+      "end_column": 7,
+      "end_line": 27,
+      "path": "Imo/1972/P5.lean",
+      "start_column": 2,
+      "start_line": 27
+    },
+    "pretreatment_features": {
+      "goal_chars": 141,
+      "goal_lines": 5,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 4
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "d3f9410760a5566c773a9136023a08d9be86684e",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-imo"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "C : Type\ninst✝¹ : Category.{0, 0} C\nK : Type\ninst✝ : DivisionRing K\nM : CategoryTheory.Functor C (ModuleCat K)\nD : @Dual.DirectSumDecomposition C inst✝¹ K inst✝ M\nhmax : IsMin D\nx y : PersistenceSubmodule M\nhxy : Disjoint x y\nhN : x ⊔ y ∈ D\nhx : ¬x = ⊥\nhy : ¬y = ⊥\nB : (N : PersistenceSubmodule M) → N ∈ D → Set (PersistenceSubmodule M) := ⋯\n⊢ ∀ (N : PersistenceSubmodule M) (hN : N ∈ D), ⊥ ∉ B N hN",
+      "url": "https://github.com/Paul-Lez/PersistentDecomp/blob/c36471055817ef5332e27b4f99654257f45c68d1/PersistentDecomp/DirectSumDecompositionDual.lean#L333"
+    },
+    "id": "6dddca7fd368d85056848259adb7130176e3e80142788019c479e92710b34dda",
+    "location": {
+      "end_column": 23,
+      "end_line": 333,
+      "path": "PersistentDecomp/DirectSumDecompositionDual.lean",
+      "start_column": 18,
+      "start_line": 333
+    },
+    "pretreatment_features": {
+      "goal_chars": 399,
+      "goal_lines": 14,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 13
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "c36471055817ef5332e27b4f99654257f45c68d1",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/Paul-Lez/PersistentDecomp"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "ι : Type u_1\nΩ : Type u_2\nE : Type u_3\nmΩ : MeasurableSpace Ω\nP : Measure Ω\ninst✝⁷ : LinearOrder ι\ninst✝⁶ : OrderBot ι\n𝓕 : Filtration ι mΩ\nX : ι → Ω → E\ninst✝⁵ : TopologicalSpace ι\ninst✝⁴ : OrderTopology ι\ninst✝³ : NormedAddCommGroup E\ninst✝² : 𝓕.HasUsualConditions P\ninst✝¹ : NormedSpace ℝ E\ninst✝ : CompleteSpace E\nhX :\n  @ProbabilityTheory.Locally ι Ω E mΩ inst✝⁷ inst✝⁶ inst✝⁵ inst✝⁴\n    SubtractionMonoid.toSubNegZeroMonoid.toNegZeroClass.toZero\n    (fun X => ∀ (ω : Ω), Function.RightContinuous fun x => X x ω) 𝓕 X P\n⊢ ∀ᵐ (ω : Ω) ∂P, Function.RightContinuous fun x => X x ω",
+      "url": "https://github.com/RemyDegenne/brownian-motion/blob/b0b7e11d4d90cc07aa198d440acf05e21ec9bde1/BrownianMotion/StochasticIntegral/Locally.lean#L442"
+    },
+    "id": "1fbdc3ba8083b1ff7524abdf9529e50954d1d2a0a2028ff9cdfdfb3ec9253f47",
+    "location": {
+      "end_column": 7,
+      "end_line": 442,
+      "path": "BrownianMotion/StochasticIntegral/Locally.lean",
+      "start_column": 2,
+      "start_line": 442
+    },
+    "pretreatment_features": {
+      "goal_chars": 579,
+      "goal_lines": 20,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 19
+    },
+    "repo": {
+      "branch": "blueprint",
+      "commit": "b0b7e11d4d90cc07aa198d440acf05e21ec9bde1",
+      "lean_version": "v4.25.0",
+      "remote": "https://github.com/RemyDegenne/brownian-motion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case cographic\nα : Type u_1\ninst✝ : DecidableEq α\nM M✝ : Matroid α\nhM : M✝.IsCographic\n⊢ M✝.IsRegular",
+      "url": "https://github.com/Ivan-Sergeyev/seymour/blob/cd8eea36e3ea843d9bc2b773d63e8c8bbfbd2b4c/Seymour/Results/EasyDirection.lean#L25"
+    },
+    "id": "d6f78bbb13c86da2537206adae03cc5ebb02b8d06f726f81adea6a55709876fb",
+    "location": {
+      "end_column": 25,
+      "end_line": 25,
+      "path": "Seymour/Results/EasyDirection.lean",
+      "start_column": 20,
+      "start_line": 25
+    },
+    "pretreatment_features": {
+      "goal_chars": 101,
+      "goal_lines": 6,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "thesis",
+      "commit": "cd8eea36e3ea843d9bc2b773d63e8c8bbfbd2b4c",
+      "lean_version": "v4.18.0",
+      "remote": "https://github.com/Ivan-Sergeyev/seymour"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ EnchantedForest.Introduction.response EnchantedForest.IdentityBird.I EnchantedForest.IdentityBird.I =\n    EnchantedForest.IdentityBird.I",
+      "url": "https://github.com/siddhartha-gadgil/LeanLangur/blob/b5426068c74cf7d09a5826cd38cf4fe99e44ec39/LeanLangur/Exercises/Combinatornithology.lean#L94"
+    },
+    "id": "17d93ee17b358baa27a937e2f9f69890912aabf53449adf2b2894650f828d775",
+    "location": {
+      "end_column": 11,
+      "end_line": 94,
+      "path": "LeanLangur/Exercises/Combinatornithology.lean",
+      "start_column": 6,
+      "start_line": 94
+    },
+    "pretreatment_features": {
+      "goal_chars": 138,
+      "goal_lines": 2,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "b5426068c74cf7d09a5826cd38cf4fe99e44ec39",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/siddhartha-gadgil/LeanLangur"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case refine_2.refine_2\nα : Type u_1\nR : Type u_2\nmα : MeasurableSpace α\nmR : MeasurableSpace R\ninst✝⁶ : Nonempty α\ninst✝⁵ : StandardBorelSpace α\ninst✝⁴ : DecidableEq α\ninst✝³ : Countable α\ninst✝² : StandardBorelSpace R\ninst✝¹ : Nonempty R\nalg : Algorithm α R\nν : Kernel α R\ninst✝ : IsMarkovKernel ν\nn : ℕ\n⊢ Measure.map\n      (fun x =>\n        ((@Bandits.ArrayModel.hist α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg x n,\n            @Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) x),\n          x.2\n            (pullCount (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg)\n              (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) x) (n + 1) x)\n            (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) x)))\n      (@Bandits.ArrayModel.arrayMeasure α R mα mR ν) =\n    (Measure.map\n          (fun ω =>\n            (@Bandits.ArrayModel.hist α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg ω n,\n              @Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) ω))\n          (@Bandits.ArrayModel.arrayMeasure α R mα mR ν)).compProd\n      (Kernel.prodMkLeft (↥(Iic n) → α × R) ν)",
+      "url": "https://github.com/RemyDegenne/lean-bandits/blob/d84d16ee6af7e0c75a24fd957d58e843a36d9590/LeanBandits/Bandit/Bandit.lean#L545"
+    },
+    "id": "ef5910a5135e74b07e633ef76dca8cb9dce313e90f96791664c1c937bc4d575d",
+    "location": {
+      "end_column": 7,
+      "end_line": 545,
+      "path": "LeanBandits/Bandit/Bandit.lean",
+      "start_column": 2,
+      "start_line": 545
+    },
+    "pretreatment_features": {
+      "goal_chars": 1155,
+      "goal_lines": 30,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 29
+    },
+    "repo": {
+      "branch": "work",
+      "commit": "d84d16ee6af7e0c75a24fd957d58e843a36d9590",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/RemyDegenne/lean-bandits"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "μ ν : Measure ℝ\ninst✝¹ : IsProbabilityMeasure μ\ninst✝ : IsProbabilityMeasure ν\nn k : ℕ\nhk : Odd k\n⊢ Tendsto (wignerMatrixScaledTracePowerSequence μ ν k) atTop (nhds 0)",
+      "url": "https://github.com/FredRaj3/SemicircleLaw/blob/972ba89adc19bf0775bf37866c60ac0dba4adef8/SemicircleLaw/RandomMatrix/WignerMatrix.lean#L362"
+    },
+    "id": "ba4e4b4eebb23c47f4ca3189d194c9ebee3a2f084f97943de66fb5c4ddf5e030",
+    "location": {
+      "end_column": 7,
+      "end_line": 362,
+      "path": "SemicircleLaw/RandomMatrix/WignerMatrix.lean",
+      "start_column": 2,
+      "start_line": 362
+    },
+    "pretreatment_features": {
+      "goal_chars": 167,
+      "goal_lines": 6,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "972ba89adc19bf0775bf37866c60ac0dba4adef8",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/FredRaj3/SemicircleLaw"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ sorry ↔\n    ∀ (p : ℕ) (G : SimpleGraph (Fin p)),\n      (∀ (S : Finset (Fin p)), 2 ≤ S.card → (induce (↑S) G).edgeSet.ncard ≤ 2 * S.card - 3) →\n        ∃ c > 0,\n          ∀ (n : ℕ) (H : SimpleGraph (Fin n)) [inst : DecidableRel H.Adj],\n            (∀ (v : Fin n), 0 < H.degree v) → ↑(G.sizeRamsey H) ≤ c * ↑H.edgeSet.ncard",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/2d387cc191243cd74dcfdb3d4e281ead4c1ec4a2/FormalConjectures/ErdosProblems/566.lean#L58"
+    },
+    "id": "775c29ab8190040d51d59bc0e81555c4e05fc3a4765b3c7ea45a06d6d5b170bf",
+    "location": {
+      "end_column": 7,
+      "end_line": 58,
+      "path": "FormalConjectures/ErdosProblems/566.lean",
+      "start_column": 2,
+      "start_line": 58
+    },
+    "pretreatment_features": {
+      "goal_chars": 323,
+      "goal_lines": 6,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "2d387cc191243cd74dcfdb3d4e281ead4c1ec4a2",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "f : ℂ → ℂ\nh : Meromorphic f\n⊢ ∃ const, ∀ (r : ℝ), r ≠ 0 → characteristic f ⊤ r = circleAverage (fun x => logCounting f (↑x) r) 0 1 + const",
+      "url": "https://github.com/kebekus/ProjectVD/blob/91a239351a488168b0d0881e5117ecffefb9e6de/VD/Cartan.lean#L26"
+    },
+    "id": "437e80b7e8399585421e9c99223f99d25fcd048aa8bd930b223d5bf0ba1f79f4",
+    "location": {
+      "end_column": 7,
+      "end_line": 26,
+      "path": "VD/Cartan.lean",
+      "start_column": 2,
+      "start_line": 26
+    },
+    "pretreatment_features": {
+      "goal_chars": 138,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "91a239351a488168b0d0881e5117ecffefb9e6de",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/kebekus/ProjectVD"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nβ : Type u_2\nG : Graph α β\nx : α\nh : (x : α) → @Graph.inessential α β G x\nhx : x ∈ G.vertexSet\n⊢ ¬Matroid.IsColoop (@Graph.matchingMatroid α β G) x",
+      "url": "https://github.com/apnelson1/Matroid/blob/3d4d082a70e17cc7ed1db37a316b7525e8f5f437/Matroid/Graph/Matching.lean#L324"
+    },
+    "id": "94e9e597554179744198380e0c5ee04df2f1255f8e52aef527998f5023fc9819",
+    "location": {
+      "end_column": 7,
+      "end_line": 324,
+      "path": "Matroid/Graph/Matching.lean",
+      "start_column": 2,
+      "start_line": 324
+    },
+    "pretreatment_features": {
+      "goal_chars": 160,
+      "goal_lines": 7,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "3d4d082a70e17cc7ed1db37a316b7525e8f5f437",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/apnelson1/Matroid"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "𝕜 : Type u_1\ninst✝¹² : NontriviallyNormedField 𝕜\nE : Type u_2\ninst✝¹¹ : NormedAddCommGroup E\ninst✝¹⁰ : NormedSpace 𝕜 E\nE' : Type u_3\ninst✝⁹ : NormedAddCommGroup E'\ninst✝⁸ : NormedSpace 𝕜 E'\nH : Type u_6\ninst✝⁷ : TopologicalSpace H\nI : ModelWithCorners 𝕜 E H\nH' : Type u_7\ninst✝⁶ : TopologicalSpace H'\nI' : ModelWithCorners 𝕜 E' H'\nM : Type u_10\ninst✝⁵ : TopologicalSpace M\ninst✝⁴ : ChartedSpace H M\nM' : Type u_11\ninst✝³ : TopologicalSpace M'\ninst✝² : ChartedSpace H' M'\nf : M → M'\nm n : ℕ∞\ninst✝¹ : IsManifold I (↑⊤) M\ninst✝ : IsManifold I' (↑⊤) M'\nx₀ : TangentBundle I M\nhf : ContMDiffAt I I' (↑n) f x₀.proj\nhmn : m + 1 ≤ n\ne : Trivialization E TotalSpace.proj := trivializationAt E (TangentSpace I) x₀.proj\ne' : Trivialization E' TotalSpace.proj := trivializationAt E' (TangentSpace I') (f x₀.proj)\n⊢ ContMDiffAt I.tangent (modelWithCornersSelf 𝕜 E') (↑m)\n    (fun x =>\n      (inTangentCoordinates I I' id f (mfderiv I I' f) x₀.proj x.proj)\n        ((Trivialization.continuousLinearMapAt 𝕜 e x.proj) x.snd))\n    x₀",
+      "url": "https://github.com/leanprover-community/sphere-eversion/blob/2c32227b231682fc0964b95660c52dc74667a997/SphereEversion/ToMathlib/Unused/GeometryManifoldMisc.lean#L367"
+    },
+    "id": "943915aae7441f621ed2076415b7ee5a24c22e641439c2b0009d498987cbb7d3",
+    "location": {
+      "end_column": 9,
+      "end_line": 367,
+      "path": "SphereEversion/ToMathlib/Unused/GeometryManifoldMisc.lean",
+      "start_column": 4,
+      "start_line": 367
+    },
+    "pretreatment_features": {
+      "goal_chars": 1017,
+      "goal_lines": 34,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 33
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "2c32227b231682fc0964b95660c52dc74667a997",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover-community/sphere-eversion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "m : Type → Type\ninst✝² : Monad m\ninst✝¹ : MonadQuotation m\ninst✝ : MonadRef m\nh :\n  (fun str => do\n      let s ←\n        do\n          let info ← MonadRef.mkInfoFromRefPos\n          let scp ← getCurrMacroScope\n          let quotCtx ← MonadQuotation.getContext\n          pure\n              {\n                raw :=\n                  Syntax.node2 info `Lean.Parser.Term.app\n                    (Syntax.ident info \"a\".toRawSubstring' (addMacroScope quotCtx `a scp) [])\n                    (Syntax.node3 info `null (Syntax.ident info \"b\".toRawSubstring' (addMacroScope quotCtx `b scp) [])\n                      (Syntax.ident info \"c\".toRawSubstring' (addMacroScope quotCtx `c scp) [])\n                      (Syntax.node3 info `«term#[_,]» (Syntax.atom info \"#[\")\n                        (Syntax.node5 info `null\n                          (Syntax.ident info \"x\".toRawSubstring' (addMacroScope quotCtx `x scp) [])\n                          (Syntax.atom info \",\") (quote `term str).raw (Syntax.atom info \",\")\n                          (Syntax.ident info \"z\".toRawSubstring' (addMacroScope quotCtx `z scp) []))\n                        (Syntax.atom info \"]\"))) }\n      pure s.raw) =\n    fun x => pure Syntax.missing\ng : String → m Syntax :=\n  fun str => do\n    let s ←\n      do\n        let info ← MonadRef.mkInfoFromRefPos\n        let scp ← getCurrMacroScope\n        let quotCtx ← MonadQuotation.getContext\n        pure\n            {\n              raw :=\n                Syntax.node2 info `Lean.Parser.Term.app\n                  (Syntax.ident info \"a\".toRawSubstring' (addMacroScope quotCtx `a scp) [])\n                  (Syntax.node3 info `null (Syntax.ident info \"b\".toRawSubstring' (addMacroScope quotCtx `b scp) [])\n                    (Syntax.ident info \"c\".toRawSubstring' (addMacroScope quotCtx `c scp) [])\n                    (Syntax.node3 info `«term#[_,]» (Syntax.atom info \"#[\")\n                      (Syntax.node5 info `null (Syntax.ident info \"x\".toRawSubstring' (addMacroScope quotCtx `x scp) [])\n                        (Syntax.atom info \",\") (quote `term str).raw (Syntax.atom info \",\")\n                        (Syntax.ident info \"z\".toRawSubstring' (addMacroScope quotCtx `z scp) []))\n                      (Syntax.atom info \"]\"))) }\n    pure s.raw\n⊢ g \"hello\" ≠ pure Syntax.missing",
+      "url": "https://github.com/leanprover/verso/blob/2f95678da15b0705a97645f07b239d01ab8f8598/test-projects/website/DemoSite/Blog/Conditionals.lean#L199"
+    },
+    "id": "e142322965660cb6e17a594a52b8b6f3a7a9055174a89037583386ad764ca520",
+    "location": {
+      "end_column": 52,
+      "end_line": 199,
+      "path": "test-projects/website/DemoSite/Blog/Conditionals.lean",
+      "start_column": 47,
+      "start_line": 199
+    },
+    "pretreatment_features": {
+      "goal_chars": 2289,
+      "goal_lines": 47,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 46
+    },
+    "repo": {
+      "branch": "tutorials",
+      "commit": "2f95678da15b0705a97645f07b239d01ab8f8598",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover/verso"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "ι : Type u_1\ninst✝ : UnitalFreeStateTheory ι\ni : ι\nρ : MState (H i)\nε : Prob\nhε : 0 < ε ∧ ε < 1\nσ : (n : ℕ) → ↑IsFree\nε' : Prob\nhε'₁ : 0 < ε'\nhε'₂ : ε' < ε\nhR1R2 : @SteinsLemma.R1✝ ι inst✝ i ρ ε < @SteinsLemma.R2✝ ι inst✝ i ρ σ\nhR1 : @SteinsLemma.R1✝ ι inst✝ i ρ ε ≠ ⊤\nhR2 : @SteinsLemma.R2✝ ι inst✝ i ρ σ ≠ ⊤\nε₀ : ℝ := (@SteinsLemma.R2✝ ι inst✝ i ρ σ - @SteinsLemma.R1✝ ι inst✝ i ρ ε).toReal * (↑ε - ↑ε') / (1 - ↑ε)\nhε₀ : 0 < ε₀\nhε₀' : ENNReal.toReal (@SteinsLemma.R1✝ ι inst✝ i ρ ε) ≤ ENNReal.toReal (@SteinsLemma.R2✝ ι inst✝ i ρ σ) + ε₀\nm : ℕ\nhm : m ≥ 1 ∧ 𝐃(statePow ρ m‖↑(σ m)) / ↑m < @SteinsLemma.R2✝ ι inst✝ i ρ σ + ↑⟨ε₀, ⋯⟩\nσ₁ : MState (H i)\nhσ₁_pos : σ₁.m.PosDef\nhσ₁_free : IsFree σ₁\n«σ̃» : (n : ℕ) → MState (H (i ^ n)) := fun n => @SteinsLemma.Lemma6_σn ι inst✝ i m σ₁ (↑(σ m)) n\nσ_max_exists : ∀ (n : ℕ), ∃ x ∈ IsFree, IsMaxOn (fun σ => OptimalHypothesisRate (statePow ρ n) ε {σ}) IsFree x\n«σ⋆» : (n : ℕ) → MState (H (i ^ n)) := fun n => Classical.choose ⋯\nσ' : (n : ℕ) → MState (H (i ^ n)) := fun n => ⟨2 / 3, ⋯⟩[⟨1 / 2, ⋯⟩[«σ̃» n↔«σ⋆» n]↔statePow σ₁ n]\nσ'_free : ∀ (n : ℕ), IsFree (σ' n)\nσ'_posdef : ∀ (n : ℕ), (σ' n).m.PosDef\nmineig : ℝ := ⨅ i_1, ⋯.eigenvalues i_1\nh_min_pos : 0 < mineig\nh_min_le_one : mineig ≤ 1\nc : ℕ → ℝ := fun n => Real.log (1 / mineig) + Real.log 3 / ↑(max n 1)\nhc : ∀ (n : ℕ), 0 < c n\nhc_lim : Filter.Tendsto (fun n => c n / ↑n) Filter.atTop (nhds 0)\nf : ℕ → ℝ → ℝ := fun n lam => ↑⌈Real.log lam / c n⌉ * c n\nh_le_f : ∀ (n : ℕ) (lam : ℝ), Real.log lam ≤ f n lam\nh_f_le : ∀ (n : ℕ) (lam : ℝ), f n lam < Real.log lam + c n\nσ''_unnormalized : (n : ℕ) → HermitianMat (H (i ^ n)) ℂ := fun n => (↑(σ' n)).cfc fun e => Real.exp (f n e)\nσ''_unnormalized_PosDef : ∀ (n : ℕ), (↑(σ''_unnormalized n)).PosDef\nh_exp_f : ∀ (n : ℕ) (x : ℝ), 0 < x → x ≤ Real.exp (f n x) ∧ Real.exp (f n x) < Real.exp (c n) * x\nσ''_tr_bounds : ∀ (n : ℕ), 1 ≤ (σ''_unnormalized n).trace ∧ (σ''_unnormalized n).trace < Real.exp (c n)\nσ'' : (n : ℕ) → MState (H (i ^ n)) :=\n  fun n => { M := (σ''_unnormalized n).trace⁻¹ • σ''_unnormalized n, zero_le := ⋯, tr := ⋯ }\nσ''_posdef : ∀ (n : ℕ), (↑↑(σ'' n)).PosDef\nσ'_le_σ'' : ∀ (n : ℕ), Real.exp (-c n) • ↑(σ' n) ≤ ↑(σ'' n)\nσ''_le_σ' : ∀ (n : ℕ), ↑(σ'' n) ≤ Real.exp (c n) • ↑(σ' n)\nℰ : (n : ℕ) → CPTPMap (H (i ^ n)) (H (i ^ n)) ℂ := fun n => pinching_map (σ'' n)\nhσ'n_eq_sum_third : ∀ (n : ℕ), ↑(σ' n) = (1 / 3) • ↑(«σ̃» n) + (1 / 3) • ↑(«σ⋆» n) + (1 / 3) • ↑(statePow σ₁ n)\nhσ₁_le_σ' : ∀ (n : ℕ), (1 / 3) • ↑(statePow σ₁ n) ≤ ↑(σ' n)\nhliminf :\n  Filter.liminf (fun n => 𝐃(statePow ρ n‖σ' n) / ↑n) Filter.atTop =\n    Filter.liminf (fun n => 𝐃((ℰ n) (statePow ρ n)‖σ'' n) / ↑n) Filter.atTop\n«hσ''_ge_σ⋆» : ∀ (n : ℕ), ↑(σ'' n) ≥ (Real.exp (-c n) / 3) • ↑(«σ⋆» n)\n«hσ''_ge_σ̃» : ∀ (n : ℕ), ↑(σ'' n) ≥ (Real.exp (-c n) / 3) • ↑(«σ̃» n)\nhσ''_ge_σ₁ : ∀ (n : ℕ), ↑(σ'' n) ≥ (Real.exp (-c n) / 3) • ↑(statePow σ₁ n)\nhc_littleO : (fun n => c n + Real.log 3) =o[Filter.atTop] fun x => ↑x\nhliminf_le :\n  Filter.liminf (fun n => (OptimalHypothesisRate ((ℰ n) (statePow ρ n)) ε {σ'' n}).negLog / ↑n) Filter.atTop ≤\n    ↑(ENNReal.toNNReal (@SteinsLemma.R1✝ ι inst✝ i ρ ε))\nhlimsup_le :\n  ∀ (ε1 : Prob),\n    0 < ↑ε1 ∧ ↑ε1 < 1 →\n      Filter.limsup (fun n => (OptimalHypothesisRate ((ℰ n) (statePow ρ n)) (1 - ε1) {σ'' n}).negLog / ↑n)\n          Filter.atTop ≤\n        ↑(ENNReal.toNNReal (@SteinsLemma.R2✝ ι inst✝ i ρ σ) + ⟨ε₀, ⋯⟩)\nP1 : ℝ → (n : ℕ) → HermitianMat (H (i ^ n)) ℂ :=\n  fun ε2 n =>\n    (Real.exp (↑n * (ENNReal.toReal (@SteinsLemma.R1✝ ι inst✝ i ρ ε) + ε2)) • ↑(σ'' n)).proj_le ↑((ℰ n) (statePow ρ n))\nP2 : ℝ → (n : ℕ) → HermitianMat (H (i ^ n)) ℂ :=\n  fun ε2 n =>\n    (Real.exp (↑n * (ENNReal.toReal (@SteinsLemma.R2✝ ι inst✝ i ρ σ) + ε₀ + ε2)) • ↑(σ'' n)).proj_le\n      ↑((ℰ n) (statePow ρ n))\nhPcomm : ∀ (ε2 : ℝ) (n : ℕ), Commute ↑(P1 ε2 n) ↑(P2 ε2 n)\nhliminfP1 :\n  ∀ (ε2 : NNReal),\n    0 < ε2 → Filter.liminf (fun n => (P1 (↑ε2) n).inner ↑((fun n => (ℰ n) (statePow ρ n)) n)) Filter.atTop ≤ 1 - ↑ε\nhlimsupP2 :\n  ∀ (ε2 : NNReal),\n    0 < ε2 →\n      ∀ (ε1 : Prob),\n        0 < ↑ε1 ∧ ↑ε1 < 1 →\n          Filter.limsup\n              (fun n =>\n                ((Real.exp (↑n * (↑(ENNReal.toNNReal (@SteinsLemma.R2✝ ι inst✝ i ρ σ) + ⟨ε₀, ⋯⟩) + ↑ε2)) •\n                          ↑(σ'' n)).proj_le\n                      ↑((fun n => (ℰ n) (statePow ρ n)) n)).inner\n                  ↑((fun n => (ℰ n) (statePow ρ n)) n))\n              Filter.atTop ≤\n            1 - ↑(1 - ε1)\nhlimsupP2' : ∀ (ε2 : ℝ), 0 < ε2 → Filter.limsup (fun n => (P2 ε2 n).inner ↑((ℰ n) (statePow ρ n))) Filter.atTop = 0\nE1 : ℝ → (n : ℕ) → HermitianMat (H (i ^ n)) ℂ := 1 - P1\nE2 : ℝ → (n : ℕ) → HermitianMat (H (i ^ n)) ℂ := P1 - P2\nE3 : ℝ → (n : ℕ) → HermitianMat (H (i ^ n)) ℂ := P2\nEsum : E1 + E2 + E3 = 1\nhE1proj :\n  ∀ (ε2 : ℝ) (n : ℕ),\n    E1 ε2 n =\n      (↑((ℰ n) (statePow ρ n))).proj_lt\n        (Real.exp (↑n * (ENNReal.toReal (@SteinsLemma.R1✝ ι inst✝ i ρ ε) + ε2)) • ↑(σ'' n))\nhE2leProj :\n  ∀ (ε2 : ℝ) (n : ℕ),\n    E2 ε2 n ≤\n      (↑((ℰ n) (statePow ρ n))).proj_lt\n        (Real.exp (↑n * (ENNReal.toReal (@SteinsLemma.R2✝ ι inst✝ i ρ σ) + ε₀ + ε2)) • ↑(σ'' n))\nhE1leq :\n  ∀ (ε2 : ℝ) (n : ℕ),\n    0 < ε2 →\n      (↑((ℰ n) (statePow ρ n))).inner\n          (@SteinsLemma.HermitianMat.mul_commute (H (i ^ n)) (FinH (i ^ n)) ((1 / ↑n) • E1 ε2 n)\n            ((↑((pinching_map (σ'' n)) (statePow ρ n))).log - (↑(σ'' n)).log)\n            (@SteinsLemma.commute_aux✝ (H (i ^ n)) (FinH (i ^ n)) (DecEqH (i ^ n)) n\n              (ENNReal.toReal (@SteinsLemma.R1✝ ι inst✝ i ρ ε) + ε2) (E1 ε2 n) ↑((pinching_map (σ'' n)) (statePow ρ n))\n              ↑(σ'' n) ⋯ ⋯)) ≤\n        (↑((ℰ n) (statePow ρ n))).inner ((ENNReal.toReal (@SteinsLemma.R1✝¹ ι inst✝ i ρ ε) + ε2) • E1 ε2 n)\nhE2leq :\n  ∀ (ε2 : ℝ) (n : ℕ),\n    0 < ε2 →\n      (1 / ↑n) • ↑(E2 ε2 n) * (↑(↑((ℰ n) (statePow ρ n))).log - ↑(↑(σ'' n)).log) ≤\n        (ENNReal.toReal (@SteinsLemma.R2✝ ι inst✝ i ρ σ) + ε₀ + ε2) • ↑(E2 ε2 n)\nc' : ℝ → ℕ → ℝ := fun ε2 n => max (c n + c n / ↑n) (ENNReal.toReal (@SteinsLemma.R2✝ ι inst✝ i ρ σ) + ε₀ + ε2)\nhc' : ∀ (ε2 : ℕ → NNReal), (∀ (n : ℕ), ε2 n < 1) → ∃ C, ∀ᶠ (n : ℕ) in Filter.atTop, c' (↑(ε2 n)) n ≤ ↑C\nhσ'' : ∀ (ε2 : ℝ) (n : ℕ), Real.exp (-↑n * c' ε2 n) • 1 ≤ ↑(σ'' n)\nε2✝ : ℝ\nn✝ : ℕ\nε2 : ℝ\nn : ℕ\nhε2 : 0 < ε2\nhlog : 0 ≤ ↑(↑(σ'' n)).log - ↑(Real.exp (-(↑n * c' ε2 n)) • 1).log\n⊢ Commute (↑(E3 ε2 n)) (↑(↑(σ'' n)).log - ↑(Real.exp (-(↑n * c' ε2 n)) • 1).log)",
+      "url": "https://github.com/Timeroot/Lean-QuantumInfo/blob/e1bb3a21818b913a81b1413806304df5e2f77e1e/QuantumInfo/Finite/ResourceTheory/SteinsLemma.lean#L1660"
+    },
+    "id": "87a2b8341356198566d9e621e5de5d251ca6d582c22a5bd3fa186c9877616cfa",
+    "location": {
+      "end_column": 149,
+      "end_line": 1660,
+      "path": "QuantumInfo/Finite/ResourceTheory/SteinsLemma.lean",
+      "start_column": 144,
+      "start_line": 1660
+    },
+    "pretreatment_features": {
+      "goal_chars": 6361,
+      "goal_lines": 128,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 127
+    },
+    "repo": {
+      "branch": "S85-buggy",
+      "commit": "e1bb3a21818b913a81b1413806304df5e2f77e1e",
+      "lean_version": "v4.24.0-rc1",
+      "remote": "https://github.com/Timeroot/Lean-QuantumInfo"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "xs : List ℤ\nh_precond : longestIncreasingSubseqLength_precond xs\n⊢ longestIncreasingSubseqLength_postcond xs (longestIncreasingSubseqLength xs h_precond) h_precond",
+      "url": "https://github.com/sunblaze-ucb/verina/blob/f613b335b9119667647b9cd09b7f78bf08f4d808/datasets/verina/verina_advanced_31/task.lean#L64"
+    },
+    "id": "613eb2f55e8e6b3e4d417e354979f378b3d2849fd5c99e3b102850bc398248c4",
+    "location": {
+      "end_column": 7,
+      "end_line": 64,
+      "path": "datasets/verina/verina_advanced_31/task.lean",
+      "start_column": 2,
+      "start_line": 64
+    },
+    "pretreatment_features": {
+      "goal_chars": 163,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "zhe/coq",
+      "commit": "f613b335b9119667647b9cd09b7f78bf08f4d808",
+      "lean_version": "v4.18.0",
+      "remote": "https://github.com/sunblaze-ucb/verina"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "a✝ : GamePos\nbt : BuildTree a✝\nπ : PreState a✝ bt\n⊢ saturated (List.toFinset (PreState.forms a✝ bt π)) ∧\n    locallyConsistent (List.toFinset (PreState.forms a✝ bt π)) ∧ Sequent.basic (PreState.last a✝ bt π)",
+      "url": "https://github.com/m4lvin/lean4-pdl/blob/6f9009d2561a5d7528f84992efbffb948820719c/Pdl/BuildTree.lean#L504"
+    },
+    "id": "16c2bba1bcb00e4ded9933134ccb7f392d5c0fb7f6594eab0bf668af834cf211",
+    "location": {
+      "end_column": 7,
+      "end_line": 504,
+      "path": "Pdl/BuildTree.lean",
+      "start_column": 2,
+      "start_line": 504
+    },
+    "pretreatment_features": {
+      "goal_chars": 207,
+      "goal_lines": 5,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 4
+    },
+    "repo": {
+      "branch": "simp-suggestion-incomplete",
+      "commit": "6f9009d2561a5d7528f84992efbffb948820719c",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/m4lvin/lean4-pdl"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "q n : ℕ\nlamb : ℂ\na : ℝ := lamb.re\nb : ℝ := lamb.im\nh : lamb ∈ primitiveRoots n ℂ\nh_lamb : lamb ≠ 1\nh_a_lt_one : ‖a‖ < 1\nh_ineq : ‖eval (↑q) (X - C lamb)‖ ^ 2 > (↑q - 1) ^ 2\nthis✝ : 0 ≤ (↑q - 1) ^ 2\ng : ↑q - 1 < √(‖eval (↑q) (X - C lamb)‖ ^ 2)\nthis : √((↑q - 1) ^ 2) = ↑q - 1\n⊢ 0 ≤ ‖eval (↑q) (X - C lamb)‖",
+      "url": "https://github.com/mo271/FormalBook/blob/865934361ca7005e0a874efb39f5809117052e85/FormalBook/Chapter_06.lean#L90"
+    },
+    "id": "d4b4aea0a504a532f3211c605cc8bc1ba852b5b14e610e8af733a17f169bb74a",
+    "location": {
+      "end_column": 9,
+      "end_line": 90,
+      "path": "FormalBook/Chapter_06.lean",
+      "start_column": 4,
+      "start_line": 90
+    },
+    "pretreatment_features": {
+      "goal_chars": 305,
+      "goal_lines": 12,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 11
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "865934361ca7005e0a874efb39f5809117052e85",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/mo271/FormalBook"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "I : FKS.Inputs\nσ U V : ℝ\nhT₀ : failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)\nhσ : σ ≥ 5 / 8\nhσ' : failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)\nhU : failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)\nhV : V > U\n⊢ FKS.s₀ σ U V ≤ FKS.Inputs.B₀ I σ U V",
+      "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/ddcb6542f2b62883c8642d3db4ecc115afcce33e/PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean#L230"
+    },
+    "id": "e0caeb4daaa7184da8623bac760f3d01ce3531e8451e284b7cecf86591ed9c34",
+    "location": {
+      "end_column": 35,
+      "end_line": 230,
+      "path": "PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean",
+      "start_column": 30,
+      "start_line": 230
+    },
+    "pretreatment_features": {
+      "goal_chars": 391,
+      "goal_lines": 8,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 7
+    },
+    "repo": {
+      "branch": "More-FKS",
+      "commit": "ddcb6542f2b62883c8642d3db4ecc115afcce33e",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ sorry ↔\n    ∀ (p : ℕ) (G : SimpleGraph (Fin p)),\n      (∀ (S : Finset (Fin p)), 2 ≤ S.card → (induce (↑S) G).edgeSet.ncard ≤ 2 * S.card - 3) →\n        ∃ c > 0,\n          ∀ (n : ℕ) (H : SimpleGraph (Fin n)) [inst : DecidableRel H.Adj],\n            (∀ (v : Fin n), 0 < H.degree v) →\n              ↑(@Erdos566.sizeRamsey (Fin p) (Fin n) (Fin.fintype p) (Fin.fintype n) G H) ≤ c * ↑H.edgeSet.ncard",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/40df92c5af58a2a2592dfe7b2dd967cb5942db42/FormalConjectures/ErdosProblems/566.lean#L71"
+    },
+    "id": "34c74105cc353c845e8ce54e55b5bc071350e5a17ea0661e8d359fb8fdab3d8d",
+    "location": {
+      "end_column": 7,
+      "end_line": 71,
+      "path": "FormalConjectures/ErdosProblems/566.lean",
+      "start_column": 2,
+      "start_line": 71
+    },
+    "pretreatment_features": {
+      "goal_chars": 395,
+      "goal_lines": 7,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "test",
+      "commit": "40df92c5af58a2a2592dfe7b2dd967cb5942db42",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "r : ℝ\n⊢ Tendsto (fun k => k * Real.sinh (r / k)) atTop (nhds r)",
+      "url": "https://github.com/HEPLean/PhysLean/blob/5b6f67c60f278269fa6188670bf2b5675c1a99f0/PhysLean/Cosmology/FLRW/Basic.lean#L59"
+    },
+    "id": "d9ce83eecf0d67ad5890fb6b27609b3d2c35739280eb3ef7f547fe4dcb34afba",
+    "location": {
+      "end_column": 72,
+      "end_line": 59,
+      "path": "PhysLean/Cosmology/FLRW/Basic.lean",
+      "start_column": 67,
+      "start_line": 59
+    },
+    "pretreatment_features": {
+      "goal_chars": 63,
+      "goal_lines": 2,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "bareBones",
+      "commit": "5b6f67c60f278269fa6188670bf2b5675c1a99f0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/HEPLean/PhysLean"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "H : Type u_1\ninst✝² : NormedAddCommGroup H\ninst✝¹ : InnerProductSpace ℂ H\ninst✝ : CompleteSpace H\na : H →L[ℂ] H\nha : IsSelfAdjoint a\nf : C(↑(spectrum ℂ a), ℂ)\n⊢ ∀ ⦃w₁ w₂ : Set ↑(spectrum ℂ a)⦄,\n    MeasurableSet w₁ →\n      MeasurableSet w₂ →\n        Disjoint w₁ w₂ →\n          continuousLinearMapOfBilin (@toBoundedBilin H inst✝² inst✝¹ inst✝ a ha 1 ((w₁ ∪ w₂).indicator 1)) =\n            continuousLinearMapOfBilin (@toBoundedBilin H inst✝² inst✝¹ inst✝ a ha 1 (w₁.indicator 1)) +\n              continuousLinearMapOfBilin (@toBoundedBilin H inst✝² inst✝¹ inst✝ a ha 1 (w₂.indicator 1))",
+      "url": "https://github.com/oliver-butterley/SpectralThm/blob/02099b8e7d2e117fc62cc41d81b5cbda35eb9808/SpectralThm/SpectralTheorem.lean#L152"
+    },
+    "id": "7da8b99c73a41573ac2ccb32c53efd89374fb4ba94667627095c33c7f446dccd",
+    "location": {
+      "end_column": 19,
+      "end_line": 152,
+      "path": "SpectralThm/SpectralTheorem.lean",
+      "start_column": 14,
+      "start_line": 152
+    },
+    "pretreatment_features": {
+      "goal_chars": 586,
+      "goal_lines": 14,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 13
+    },
+    "repo": {
+      "branch": "yoh-IsInnerPart",
+      "commit": "02099b8e7d2e117fc62cc41d81b5cbda35eb9808",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/oliver-butterley/SpectralThm"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case succ.cons\ne idx' : ℕ\nHR : ∀ {l : List ℕ} (hidx : idx' < l.length), (l.set idx' e).sum = l.sum - l[idx'] + e\nhd : ℕ\ntl : List ℕ\nhidx✝ : idx' + 1 < (hd :: tl).length\nhidx : idx' < tl.length\n⊢ hd + (tl.sum - tl[idx'] + e) = hd + tl.sum - tl[idx'] + e",
+      "url": "https://github.com/VCA-EPFL/graphiti/blob/3285ca701a33477bbd2a3ac954584439d80db747/Graphiti/Projects/Noc/Utils.lean#L224"
+    },
+    "id": "10b9dbdd25729def2805d834e315397fedbbb8742311bde6c543afeae728e01c",
+    "location": {
+      "end_column": 15,
+      "end_line": 224,
+      "path": "Graphiti/Projects/Noc/Utils.lean",
+      "start_column": 10,
+      "start_line": 224
+    },
+    "pretreatment_features": {
+      "goal_chars": 252,
+      "goal_lines": 8,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 7
+    },
+    "repo": {
+      "branch": "type-inference",
+      "commit": "3285ca701a33477bbd2a3ac954584439d80db747",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/VCA-EPFL/graphiti"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "rec :\n  (P Q : Prop) →\n    (motive : Disjunction P Q → Type) →\n      ((hp : P) → motive (Disjunction.left P Q hp)) →\n        ((hq : Q) → motive (Disjunction.right P Q hq)) → (h : Disjunction P Q) → motive h\ncomp_left :\n  ∀ (P Q : Prop) (motive : Disjunction P Q → Type) (h_left : (hp : P) → motive (Disjunction.left P Q hp))\n    (h_right : (hq : Q) → motive (Disjunction.right P Q hq)) (hp : P),\n    rec P Q motive h_left h_right (Disjunction.left P Q hp) = h_left hp\ncomp_right :\n  ∀ (P Q : Prop) (motive : Disjunction P Q → Type) (h_left : (hp : P) → motive (Disjunction.left P Q hp))\n    (h_right : (hq : Q) → motive (Disjunction.right P Q hq)) (hq : Q),\n    rec P Q motive h_left h_right (Disjunction.right P Q hq) = h_right hq\n⊢ False",
+      "url": "https://github.com/fpvandoorn/LeanCourse25/blob/cd0f32f5b07311e08a9e89733a1375f54eb790c0/LeanCourse25/Assignments/Assignment9.lean#L80"
+    },
+    "id": "3a2e8d324a3b7607bd3c886bc3407eb7fac138c8d62e7ad52a90877db28d11e8",
+    "location": {
+      "end_column": 7,
+      "end_line": 80,
+      "path": "LeanCourse25/Assignments/Assignment9.lean",
+      "start_column": 2,
+      "start_line": 80
+    },
+    "pretreatment_features": {
+      "goal_chars": 739,
+      "goal_lines": 14,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 13
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "cd0f32f5b07311e08a9e89733a1375f54eb790c0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/fpvandoorn/LeanCourse25"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "P : Erdos392.Params\np : ℕ\nhp : p ≤ Erdos392.Params.L P\n⊢ ↑(Erdos392.Factorization.balance (Erdos392.Params.n P) (Erdos392.Params.initial P) p) ≥\n    -↑(Erdos392.Params.M P) * Real.log ↑(Erdos392.Params.n P) -\n      ↑(Erdos392.Params.M P) * ↑(Erdos392.Params.L P) ^ 2 * ↑(primeCounting (Erdos392.Params.n P))",
+      "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/713c442c94e38fe5fdf96320af2718e635b37d08/PrimeNumberTheoremAnd/Erdos392.lean#L686"
+    },
+    "id": "8b318d4241f1dd2c7505667cd3607807277b27da0f980898f6b49fcd3518162b",
+    "location": {
+      "end_column": 7,
+      "end_line": 686,
+      "path": "PrimeNumberTheoremAnd/Erdos392.lean",
+      "start_column": 2,
+      "start_line": 686
+    },
+    "pretreatment_features": {
+      "goal_chars": 307,
+      "goal_lines": 6,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "pitmonticone/feat-Erdos392_balance_large_prime_ge",
+      "commit": "713c442c94e38fe5fdf96320af2718e635b37d08",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "a : Type\ninst✝⁷ : Inhabited a\ninst✝⁶ : DecidableRel fun x1 x2 => x1 = x2\ninst✝⁵ : Max a\ninst✝⁴ : Min a\ninst✝³ : LT a\ninst✝² : DecidableRel fun x1 x2 => x1 < x2\ninst✝¹ : LE a\ninst✝ : DecidableRel fun x1 x2 => x1 ≤ x2\nk : ℕ\nxs : List a\nok : k ≤ xs.length\nus vs ws : List a\nm : ℕ := us.length\nn : ℕ := vs.length\nh₁ : ¬k ≤ m\nh₂ : k ≤ m + n\n⊢ k - m - 1 < vs.length",
+      "url": "https://github.com/arademaker/fad/blob/ac40e4faf3b1252bc943676314449c22b5af3c9d/Fad/Chapter6.lean#L158"
+    },
+    "id": "86c78b21de00008e9d2f2b286558a5e6e00fbc75a59757bbf0398e430fb47605",
+    "location": {
+      "end_column": 55,
+      "end_line": 158,
+      "path": "Fad/Chapter6.lean",
+      "start_column": 50,
+      "start_line": 158
+    },
+    "pretreatment_features": {
+      "goal_chars": 359,
+      "goal_lines": 18,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 17
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "ac40e4faf3b1252bc943676314449c22b5af3c9d",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/arademaker/fad"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case h.refine_1.refine_2.«0»\n⊢ lex.toSyn (lex.degree (X 0)) + lex.toSyn (lex.degree (X 0)) ≤\n    lex.toSyn (lex.degree (X 0 ^ 2 + X 1 ^ 3 + X 2 ^ 4 + X 3 ^ 5))",
+      "url": "https://github.com/WuProver/groebner_proj/blob/756981b2cf96a2f968a6b9ef21d5f154e6fb38b5/Groebner/ForComputation.lean#L40"
+    },
+    "id": "d68c3539221db7127516ee4e6edb2e1b22adfc9817906a1dbdaec86901a62a49",
+    "location": {
+      "end_column": 15,
+      "end_line": 40,
+      "path": "Groebner/ForComputation.lean",
+      "start_column": 10,
+      "start_line": 40
+    },
+    "pretreatment_features": {
+      "goal_chars": 159,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "756981b2cf96a2f968a6b9ef21d5f154e6fb38b5",
+      "lean_version": "v4.24.0-rc1",
+      "remote": "https://github.com/WuProver/groebner_proj"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "K : Type u_1\ninst✝¹⁰ : Field K\ninst✝⁹ : NumberField K\nB✝ : Type u_2\ninst✝⁸ : Ring B✝\ninst✝⁷ : Algebra K B✝\ninst✝⁶ : FiniteDimensional K B✝\nk : Type u_3\nA : Type u_4\nB : Type u_5\ninst✝⁵ : Field k\ninst✝⁴ : CommRing A\ninst✝³ : Ring B\ninst✝² : Algebra k A\ninst✝¹ : Algebra k B\ninst✝ : Algebra.IsCentral k B\n⊢ Algebra.IsCentral A (TensorProduct k A B)",
+      "url": "https://github.com/ImperialCollegeLondon/FLT/blob/f17c712d62509f9043b2596eb7b8f9eae41a016c/FLT/HaarMeasure/HaarChar/FiniteAdeleRing.lean#L31"
+    },
+    "id": "1b0a3cc783470777f62ed6e2c7ebf546bbeba44e51a08f8a58e719bbb36f5e79",
+    "location": {
+      "end_column": 43,
+      "end_line": 31,
+      "path": "FLT/HaarMeasure/HaarChar/FiniteAdeleRing.lean",
+      "start_column": 38,
+      "start_line": 31
+    },
+    "pretreatment_features": {
+      "goal_chars": 346,
+      "goal_lines": 17,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 16
+    },
+    "repo": {
+      "branch": "kbuzzard-left_mul_eq_right_mul-finiteadeles2",
+      "commit": "f17c712d62509f9043b2596eb7b8f9eae41a016c",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/ImperialCollegeLondon/FLT"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "K : Type u_1\nL : Type u_2\ninst✝¹⁵ : Field K\ninst✝¹⁴ : Field L\ninst✝¹³ : Algebra K L\ninst✝¹² : NumberField K\ninst✝¹¹ : NumberField L\nV : Type u_3\ninst✝¹⁰ : AddCommGroup V\ninst✝⁹ : Module L V\ninst✝⁸ : Module K V\ninst✝⁷ : IsScalarTower K L V\ninst✝⁶ : FiniteDimensional L V\ninst✝⁵ : FiniteDimensional K V\nB : Type u_4\ninst✝⁴ : Ring B\ninst✝³ : Algebra K B\ninst✝² : FiniteDimensional K B\ninst✝¹ : Module ℚ V\ninst✝ : FiniteDimensional ℚ V\n⊢ failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)",
+      "url": "https://github.com/ImperialCollegeLondon/FLT/blob/5150d6da6af292a826f46b22f4ba962252394b56/FLT/HaarMeasure/HaarChar/AdeleRing.lean#L178"
+    },
+    "id": "f643690538aac1678696f0fc856fff0297a59782b16f8aeed03cc47713b813be",
+    "location": {
+      "end_column": 28,
+      "end_line": 178,
+      "path": "FLT/HaarMeasure/HaarChar/AdeleRing.lean",
+      "start_column": 23,
+      "start_line": 178
+    },
+    "pretreatment_features": {
+      "goal_chars": 528,
+      "goal_lines": 21,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 20
+    },
+    "repo": {
+      "branch": "kbuzzard-more-addHaarScalarFactor_tensor_adeles_rat_eq_one",
+      "commit": "5150d6da6af292a826f46b22f4ba962252394b56",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/ImperialCollegeLondon/FLT"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "L : Logic ℕ\nφ ψ χ ξ : Formula ℕ\nT : LO.Propositional.FTheory L\nhT : χ ➝ ξ ∉ LO.Propositional.FTheory.theory L T\ninst✝ : Entailment.F L\nhφψ : L ⊢ φ ➝ ψ\nhφ : φ ∈ LO.Propositional.FTheory.lindenbaum.construction_omega L χ ξ T hT\nΓ : Finset (Formula ℕ)\nhΓ : ↑Γ ⊆ LO.Propositional.FTheory.lindenbaum.construction L χ ξ T hT (encode ψ)\nhΓ₂ : Γ.conj ⋏ ψ ➝ ξ ∈ LO.Propositional.FTheory.theory L T\n⊢ L ⊢ Γ.conj ⋏ φ ➝ Γ.conj ⋏ ψ",
+      "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/Propositional/Kripke2/FTheory.lean#L222"
+    },
+    "id": "ccf38b87d63749f54c2582f99f04d83e7b5ff09157f5a8019c9c3179025e3ace",
+    "location": {
+      "end_column": 11,
+      "end_line": 222,
+      "path": "Foundation/Propositional/Kripke2/FTheory.lean",
+      "start_column": 6,
+      "start_line": 222
+    },
+    "pretreatment_features": {
+      "goal_chars": 418,
+      "goal_lines": 11,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 9
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "7c74089c2442ee211abfa1e2dd5a75091800f57b",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/FormalizedFormalLogic/Foundation"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "h : 1 = 1\n⊢ True",
+      "url": "https://github.com/leanprover-community/batteries/blob/fce4da76bae6a8daa1503009abb00587253c4177/BatteriesTest/lintunused.lean#L7"
+    },
+    "id": "b4d345ad1d3f7441b59f93f76f7041de9119dbd22ce9f96b637ae36a1ab933b2",
+    "location": {
+      "end_column": 7,
+      "end_line": 7,
+      "path": "BatteriesTest/lintunused.lean",
+      "start_column": 2,
+      "start_line": 7
+    },
+    "pretreatment_features": {
+      "goal_chars": 16,
+      "goal_lines": 2,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "weak.backward.privateInPublic",
+      "commit": "fce4da76bae6a8daa1503009abb00587253c4177",
+      "lean_version": "v4.25.0-rc2",
+      "remote": "https://github.com/leanprover-community/batteries"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "V : Type u\ninst✝ : DecidableEq V\nG : SimpleGraph V\nu v : V\np : @SimpleGraph.LoopWalk V G u v\n⊢ ∑ e, @SimpleGraph.LoopWalk.edgeCount V inst✝ G u v p ↑e = @SimpleGraph.LoopWalk.length V G u v p",
+      "url": "https://github.com/FredRaj3/SemicircleLaw/blob/f0dc6edb5e66398f0084bfc328ed6d24f3e1e1f3/SemicircleLaw/Moments/LoopWalk.lean#L266"
+    },
+    "id": "952c3028b03f96998c67ac76dfaaaf14ef5d121257faaec291bf609e221bc5e5",
+    "location": {
+      "end_column": 7,
+      "end_line": 266,
+      "path": "SemicircleLaw/Moments/LoopWalk.lean",
+      "start_column": 2,
+      "start_line": 266
+    },
+    "pretreatment_features": {
+      "goal_chars": 191,
+      "goal_lines": 6,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "feat/version_update",
+      "commit": "f0dc6edb5e66398f0084bfc328ed6d24f3e1e1f3",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/FredRaj3/SemicircleLaw"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "E : Type u_1\ninst✝⁵ : NormedAddCommGroup E\ninst✝⁴ : NormedSpace ℝ E\nΩ : Opens E\nn : ℕ∞\ninst✝³ : MeasurableSpace E\ninst✝² : OpensMeasurableSpace E\nF : Type u_4\ninst✝¹ : NormedAddCommGroup F\ninst✝ : NormedSpace ℝ F\nf f' : E → F\nμ : Measure E\nh : f =ᶠ[ae (μ.restrict ↑Ω)] f'\n⊢ @Distribution.ofFunWithOrder E inst✝⁵ inst✝⁴ Ω n inst✝³ inst✝² F inst✝¹ inst✝ f μ =\n    @Distribution.ofFunWithOrder E inst✝⁵ inst✝⁴ Ω n inst✝³ inst✝² F inst✝¹ inst✝ f' μ",
+      "url": "https://github.com/leanprover-community/mathlib4/blob/3553b46195d3457be68d016ea3b14b2aab5e53ad/Mathlib/Analysis/Distribution/Distribution.lean#L253"
+    },
+    "id": "d02a1d7b22f1610a29a77907c87e6e63614ee647b5e2a47560678952790ea907",
+    "location": {
+      "end_column": 59,
+      "end_line": 253,
+      "path": "Mathlib/Analysis/Distribution/Distribution.lean",
+      "start_column": 54,
+      "start_line": 253
+    },
+    "pretreatment_features": {
+      "goal_chars": 444,
+      "goal_lines": 15,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 14
+    },
+    "repo": {
+      "branch": "MR_fae_WeakDeriv",
+      "commit": "3553b46195d3457be68d016ea3b14b2aab5e53ad",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover-community/mathlib4"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case hG\nR✝¹ : Type ?u.198554\ninst✝² : CommRing R✝¹\nR✝ : Type\ninst✝¹ : CommRing R✝\nR : Type\ninst✝ : CommRing R\ni : LightCondensed.Solid.solidToCondensed ≅\n  (ShrinkHoms.equivalence LightCondensed.Solid).functor.comp\n    (Functor.comp LightCondensed.Solid.solidToCondensed' (ShrinkHoms.equivalence LightCondAb).inverse) :=\n  failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)\nthis✝¹ : HasLimits (ShrinkHoms.{1} LightCondensed.Solid)\nthis✝ : HasLimits (ShrinkHoms.{1} LightCondAb)\nthis : PreservesLimits LightCondensed.Solid.solidToCondensed'\nA : ShrinkHoms.{1} LightCondAb\n⊢ failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)",
+      "url": "https://github.com/dagurtomas/LeanCondensed/blob/de8a2f66d0863c0d1b4355aa6743fd228462d7df/LeanCondensed/Projects/LightSolid.lean#L155"
+    },
+    "id": "4456f716bd20c6f29de82e869e2ff41cb4a16dc5d1ab4eb80703f6e7754d2872",
+    "location": {
+      "end_column": 9,
+      "end_line": 155,
+      "path": "LeanCondensed/Projects/LightSolid.lean",
+      "start_column": 4,
+      "start_line": 155
+    },
+    "pretreatment_features": {
+      "goal_chars": 711,
+      "goal_lines": 16,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 15
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "de8a2f66d0863c0d1b4355aa6743fd228462d7df",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/dagurtomas/LeanCondensed"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "n : ℕ\nhn✝ : 2 ≤ n\npoints : Fin n → EuclideanSpace ℝ (Fin 2) × EuclideanSpace ℝ (Fin 2)\nhpoints : ∀ (i : Fin n), (points i).1 ≠ (points i).2\ninterAlong : Fin n → Fin (n - 1) ↪o ↑(Set.Ioo 0 1)\ninterBtw : (i : Fin n) → { j // i ≠ j } ≃ Fin (n - 1)\nlineMap_eq_iff :\n  ∀ (i j : Fin n) (hij : i ≠ j) (ri rj : ↑(Set.Ioo 0 1)),\n    (lineMap (points i).1 (points i).2) ↑ri = (lineMap (points j).1 (points j).2) ↑rj ↔\n      ri = (interAlong i) ((interBtw i) ⟨j, hij⟩) ∧ rj = (interAlong j) ((interBtw j) ⟨i, ⋯⟩)\nclap : Bool → Fin (n - 1) → Fin (n - 1)\nclap_def : ∀ (b : Bool), clap b = if b = true then Fin.rev else _root_.id\nhn : Odd n\n⊢ ∃ F,\n    ∀ (f g : Fin n),\n      f ≠ g →\n        (F f).1 ≠ (F g).1 ∧\n          ∀ (t : Fin (n - 1)),\n            (lineMap (points (F f).1).1 (points (F f).1).2) ↑((interAlong (F f).1) (clap (F f).2 t)) ≠\n              (lineMap (points (F g).1).1 (points (F g).1).2) ↑((interAlong (F g).1) (clap (F g).2 t))",
+      "url": "https://github.com/google-deepmind/formal-imo/blob/d3f9410760a5566c773a9136023a08d9be86684e/Imo/2016/P6.lean#L66"
+    },
+    "id": "5c09f75c9242610aa3b23fe6a6118022347c4d4020bb44577ad5988a37ccc918",
+    "location": {
+      "end_column": 7,
+      "end_line": 66,
+      "path": "Imo/2016/P6.lean",
+      "start_column": 2,
+      "start_line": 66
+    },
+    "pretreatment_features": {
+      "goal_chars": 933,
+      "goal_lines": 20,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 19
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "d3f9410760a5566c773a9136023a08d9be86684e",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-imo"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case right\nC : Type\ninst✝¹ : Category.{0, 0} C\nK : Type\ninst✝ : DivisionRing K\nM : CategoryTheory.Functor C (ModuleCat K)\nI : @Dual.DirectSumDecomposition C inst✝¹ K inst✝ M\nc : C\n⊢ ⨆ p, ↑p c = ⊤",
+      "url": "https://github.com/Paul-Lez/PersistentDecomp/blob/c36471055817ef5332e27b4f99654257f45c68d1/PersistentDecomp/DirectSumDecompositionDual.lean#L58"
+    },
+    "id": "c260fb55842186859ff993b7779f42cf8ff5eb4c1828c7c2b7691b4e8b33e97f",
+    "location": {
+      "end_column": 7,
+      "end_line": 58,
+      "path": "PersistentDecomp/DirectSumDecompositionDual.lean",
+      "start_column": 2,
+      "start_line": 58
+    },
+    "pretreatment_features": {
+      "goal_chars": 195,
+      "goal_lines": 9,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 8
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "c36471055817ef5332e27b4f99654257f45c68d1",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/Paul-Lez/PersistentDecomp"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "ι : Type u_1\nΩ : Type u_2\nE : Type u_3\ninst✝⁵ : NormedAddCommGroup E\nmΩ : MeasurableSpace Ω\nP : Measure Ω\nX : ι → Ω → E\ninst✝⁴ : LinearOrder ι\n𝓕 : Filtration ι mΩ\ninst✝³ : OrderBot ι\ninst✝² : TopologicalSpace ι\ninst✝¹ : OrderTopology ι\ninst✝ : MeasurableSpace ι\nhX :\n  Locally\n    (fun x =>\n      @ProbabilityTheory.ClassDL ι Ω E inst✝⁵ mΩ instDistribLatticeOfLinearOrder.toSemilatticeInf.toPreorder ⋯ inst✝ x 𝓕\n        P)\n    𝓕 X P\nh𝓕 : 𝓕.IsRightContinuous\n⊢ Locally\n    (fun x =>\n      @ProbabilityTheory.ClassD ι Ω E inst✝⁵ mΩ instDistribLatticeOfLinearOrder.toSemilatticeInf.toPreorder ⋯ inst✝ x 𝓕\n        P)\n    𝓕 X P",
+      "url": "https://github.com/RemyDegenne/brownian-motion/blob/b0b7e11d4d90cc07aa198d440acf05e21ec9bde1/BrownianMotion/StochasticIntegral/ClassD.lean#L470"
+    },
+    "id": "36a9514a0f967633d59bbb67f7ac1a7f3dd7b097928aab87ad540d0304506913",
+    "location": {
+      "end_column": 7,
+      "end_line": 470,
+      "path": "BrownianMotion/StochasticIntegral/ClassD.lean",
+      "start_column": 2,
+      "start_line": 470
+    },
+    "pretreatment_features": {
+      "goal_chars": 622,
+      "goal_lines": 25,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 24
+    },
+    "repo": {
+      "branch": "blueprint",
+      "commit": "b0b7e11d4d90cc07aa198d440acf05e21ec9bde1",
+      "lean_version": "v4.25.0",
+      "remote": "https://github.com/RemyDegenne/brownian-motion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ ∃ E, EnchantedForest.Introduction.response E E = E",
+      "url": "https://github.com/siddhartha-gadgil/LeanLangur/blob/b5426068c74cf7d09a5826cd38cf4fe99e44ec39/LeanLangur/Exercises/Combinatornithology.lean#L262"
+    },
+    "id": "91103683dcde38edd4c8896c46d853d88ed407a695ef09645049df5562e48e9b",
+    "location": {
+      "end_column": 11,
+      "end_line": 262,
+      "path": "LeanLangur/Exercises/Combinatornithology.lean",
+      "start_column": 6,
+      "start_line": 262
+    },
+    "pretreatment_features": {
+      "goal_chars": 52,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "b5426068c74cf7d09a5826cd38cf4fe99e44ec39",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/siddhartha-gadgil/LeanLangur"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case refine_1\nα : Type u_1\nR : Type u_2\nmα : MeasurableSpace α\nmR : MeasurableSpace R\ninst✝⁶ : Nonempty α\ninst✝⁵ : StandardBorelSpace α\ninst✝⁴ : DecidableEq α\ninst✝³ : Countable α\ninst✝² : StandardBorelSpace R\ninst✝¹ : Nonempty R\nalg : Algorithm α R\nν : Kernel α R\ninst✝ : IsMarkovKernel ν\nn : ℕ\n⊢ AEMeasurable\n    (fun ω =>\n      ω.2\n        (pullCount (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg)\n          (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) ω) (n + 1) ω)\n        (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) ω))\n    (@Bandits.ArrayModel.arrayMeasure α R mα mR ν)",
+      "url": "https://github.com/RemyDegenne/lean-bandits/blob/d84d16ee6af7e0c75a24fd957d58e843a36d9590/LeanBandits/Bandit/Bandit.lean#L542"
+    },
+    "id": "7f4db6b0b807bb2bd1b2fafa7ead7119cdd45d70709c5f66549c702a7bf79478",
+    "location": {
+      "end_column": 9,
+      "end_line": 542,
+      "path": "LeanBandits/Bandit/Bandit.lean",
+      "start_column": 4,
+      "start_line": 542
+    },
+    "pretreatment_features": {
+      "goal_chars": 646,
+      "goal_lines": 22,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 21
+    },
+    "repo": {
+      "branch": "work",
+      "commit": "d84d16ee6af7e0c75a24fd957d58e843a36d9590",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/RemyDegenne/lean-bandits"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "V : Type u\ninst : DecidableEq V\nG : SimpleGraph V\nu v_1 ih w w_1 : V\np_1 : @SimpleGraph.LoopWalk V G w ih\nh_ind :\n  Finset.card (@SimpleGraph.LoopWalk.supportSet V G w ih inst p_1) ≤\n    Finset.card (@SimpleGraph.LoopWalk.edgeSet V G w ih inst p_1) + 1\nh : G.Adj w_1 w\nh_support :\n  @SimpleGraph.LoopWalk.supportSet V G w_1 ih inst (@SimpleGraph.LoopWalk.cons V G w_1 w ih h p_1) =\n    insert w_1 (@SimpleGraph.LoopWalk.supportSet V G w ih inst p_1)\nh_edge :\n  @SimpleGraph.LoopWalk.edgeSet V G w_1 ih inst (@SimpleGraph.LoopWalk.cons V G w_1 w ih h p_1) =\n    @SimpleGraph.LoopWalk.edgeSet V G w ih inst p_1\nhv : w_1 ∉ @SimpleGraph.LoopWalk.supportSet V G w ih inst p_1\nH : s(w_1, w) ∈ @SimpleGraph.LoopWalk.edgeSet V G w ih inst p_1\nleft : (w, w_1) ∈ @SimpleGraph.LoopWalk.darts V G w ih p_1\nright : @SimpleGraph.LoopWalk.dartEdge V (w, w_1) = s(w_1, w)\n⊢ w_1 ∈ @SimpleGraph.LoopWalk.support V G w ih p_1",
+      "url": "https://github.com/FredRaj3/SemicircleLaw/blob/972ba89adc19bf0775bf37866c60ac0dba4adef8/SemicircleLaw/Moments/LoopWalk.lean#L351"
+    },
+    "id": "22a735599d19c29db2737cf4da060673280f5e566dddee90627a5a2dbd3ab064",
+    "location": {
+      "end_column": 19,
+      "end_line": 351,
+      "path": "SemicircleLaw/Moments/LoopWalk.lean",
+      "start_column": 14,
+      "start_line": 351
+    },
+    "pretreatment_features": {
+      "goal_chars": 906,
+      "goal_lines": 20,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 19
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "972ba89adc19bf0775bf37866c60ac0dba4adef8",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/FredRaj3/SemicircleLaw"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ a 7 = 73",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/2d387cc191243cd74dcfdb3d4e281ead4c1ec4a2/FormalConjectures/OEIS/358684.lean#L128"
+    },
+    "id": "c0f6e0578e58c4c04a7873e6522192427e744b9c63277fc7edf6f452a9d09dbc",
+    "location": {
+      "end_column": 7,
+      "end_line": 128,
+      "path": "FormalConjectures/OEIS/358684.lean",
+      "start_column": 2,
+      "start_line": 128
+    },
+    "pretreatment_features": {
+      "goal_chars": 10,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "2d387cc191243cd74dcfdb3d4e281ead4c1ec4a2",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "r : ℝ\nf : ℂ → ℂ\nhr : ¬r = 0\nh : Meromorphic f\nthis :\n  MeasureTheory.AEStronglyMeasurable (fun x => log ‖f (circleMap 0 r x.1) - circleMap 0 1 x.2‖)\n    ((MeasureTheory.volume.restrict (Ioc 0 (2 * Real.pi))).prod (MeasureTheory.volume.restrict (Ioc 0 (2 * Real.pi))))\nτ₁ :\n  MeasureTheory.Integrable (fun y => ∫ (x : ℝ) in Ioc 0 (2 * Real.pi), |log ‖f (circleMap 0 r x) - circleMap 0 1 y‖|)\n      (MeasureTheory.volume.restrict (Ioc 0 (2 * Real.pi))) ↔\n    (∀ᶠ (x : ℝ) in MeasureTheory.ae MeasureTheory.volume ⊓ principal (Ioc 0 (2 * Real.pi)),\n        MeasureTheory.Integrable (fun y => log ‖f (circleMap 0 r x) - circleMap 0 1 y‖)\n          (MeasureTheory.volume.restrict (Ioc 0 (2 * Real.pi)))) ∧\n      MeasureTheory.Integrable\n        (fun x => ∫ (y : ℝ) in Ioc 0 (2 * Real.pi), |log ‖f (circleMap 0 r x) - circleMap 0 1 y‖|)\n        (MeasureTheory.volume.restrict (Ioc 0 (2 * Real.pi)))\na : ℝ\n⊢ MeromorphicOn (fun x => f (circleMap 0 r a) - circleMap 0 1 x) (uIcc 0 (2 * Real.pi))",
+      "url": "https://github.com/kebekus/ProjectVD/blob/91a239351a488168b0d0881e5117ecffefb9e6de/VD/CartanExperimentation.lean#L170"
+    },
+    "id": "3ababdaac5c6570e9121cd5f3ca58567739789acfc3c8cb94d9e367b0dbf3529",
+    "location": {
+      "end_column": 11,
+      "end_line": 170,
+      "path": "VD/CartanExperimentation.lean",
+      "start_column": 6,
+      "start_line": 170
+    },
+    "pretreatment_features": {
+      "goal_chars": 985,
+      "goal_lines": 18,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 17
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "91a239351a488168b0d0881e5117ecffefb9e6de",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/kebekus/ProjectVD"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nβ : Type u_2\nG : Graph α β\nM : Set β\nhM : @Graph.IsMatching α β G M\n⊢ M.encard ≤ @Graph.MatchingNumber α β G",
+      "url": "https://github.com/apnelson1/Matroid/blob/3d4d082a70e17cc7ed1db37a316b7525e8f5f437/Matroid/Graph/Matching.lean#L80"
+    },
+    "id": "981a930cc79931a0cd074916391dfa03031991e9e71dc9fa9b5ef5ec84098ea9",
+    "location": {
+      "end_column": 7,
+      "end_line": 80,
+      "path": "Matroid/Graph/Matching.lean",
+      "start_column": 2,
+      "start_line": 80
+    },
+    "pretreatment_features": {
+      "goal_chars": 121,
+      "goal_lines": 6,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "3d4d082a70e17cc7ed1db37a316b7525e8f5f437",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/apnelson1/Matroid"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "𝕜 : Type u_1\nB : Type u_2\nF : Type u_3\nE : B → Type u_5\ninst✝¹⁶ : NontriviallyNormedField 𝕜\ninst✝¹⁵ : (x : B) → AddCommMonoid (E x)\ninst✝¹⁴ : (x : B) → Module 𝕜 (E x)\ninst✝¹³ : NormedAddCommGroup F\ninst✝¹² : NormedSpace 𝕜 F\ninst✝¹¹ : TopologicalSpace (TotalSpace F E)\ninst✝¹⁰ : (x : B) → TopologicalSpace (E x)\nEB : Type u_6\ninst✝⁹ : NormedAddCommGroup EB\ninst✝⁸ : NormedSpace 𝕜 EB\nHB : Type u_7\ninst✝⁷ : TopologicalSpace HB\nIB : ModelWithCorners 𝕜 EB HB\ninst✝⁶ : TopologicalSpace B\ninst✝⁵ : ChartedSpace HB B\ninst✝⁴ : FiberBundle F E\ninst✝³ : VectorBundle 𝕜 F E\ninst✝² : IsManifold IB (↑⊤) B\ninst✝¹ : ContMDiffVectorBundle (↑⊤) F E IB\ne : Trivialization F TotalSpace.proj\ninst✝ : MemTrivializationAtlas e\nx₀ : TotalSpace F E\nhx₀ : x₀.proj ∈ e.baseSet\ne' : Trivialization F TotalSpace.proj := trivializationAt F E x₀.proj\nc : PartialEquiv EB B := (extChartAt IB x₀.proj).symm\nh0 : ↑(extChartAt IB x₀.proj).symm (↑(extChartAt IB x₀.proj) x₀.proj) = x₀.proj\n⊢ ContMDiffWithinAt (modelWithCornersSelf 𝕜 (EB × F)) (modelWithCornersSelf 𝕜 F) (↑⊤)\n    (fun x => (coordChangeL 𝕜 e' e (↑c x.1)) x.2) (Prod.fst ⁻¹' range ↑IB)\n    (↑(extChartAt IB x₀.proj) x₀.proj, (↑e' x₀).2)",
+      "url": "https://github.com/leanprover-community/sphere-eversion/blob/2c32227b231682fc0964b95660c52dc74667a997/SphereEversion/ToMathlib/Unused/GeometryManifoldMisc.lean#L117"
+    },
+    "id": "d6228c6f0579e89e806d92e10968fd4b1a1d7215665510c3dd385e946190b4de",
+    "location": {
+      "end_column": 9,
+      "end_line": 117,
+      "path": "SphereEversion/ToMathlib/Unused/GeometryManifoldMisc.lean",
+      "start_column": 4,
+      "start_line": 117
+    },
+    "pretreatment_features": {
+      "goal_chars": 1167,
+      "goal_lines": 33,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 32
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "2c32227b231682fc0964b95660c52dc74667a997",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover-community/sphere-eversion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Sort u_1\n⊢ (have f1 :=\n      have f1 :=\n        have f1 := fun x => x;\n        have f2 := fun x => x;\n        f1 f2;\n      have f2 :=\n        have f1 := fun x => x;\n        have f2 :=\n          have f1 := fun x => x;\n          have f2 := fun x => x;\n          f1 f2;\n        f1 f2;\n      f1 f2;\n    have f2 :=\n      have f1 :=\n        have f1 := fun x => x;\n        have f2 :=\n          have f1 := fun x => x;\n          have f2 := fun x => x;\n          f1 f2;\n        f1 f2;\n      have f2 :=\n        have f1 :=\n          have f1 := fun x => x;\n          have f2 := fun x => x;\n          f1 f2;\n        have f2 :=\n          have f1 := fun x => x;\n          have f2 :=\n            have f1 := fun x => x;\n            have f2 := fun x => x;\n            f1 f2;\n          f1 f2;\n        f1 f2;\n      f1 f2;\n    f1 f2) =\n    id",
+      "url": "https://github.com/leanprover/verso/blob/2f95678da15b0705a97645f07b239d01ab8f8598/test-projects/website/DemoSite/Blog/Conditionals.lean#L177"
+    },
+    "id": "e1da1704d99212c58218244206a11df842c8e2f91575a630cb11336ba31f4b87",
+    "location": {
+      "end_column": 17,
+      "end_line": 177,
+      "path": "test-projects/website/DemoSite/Blog/Conditionals.lean",
+      "start_column": 12,
+      "start_line": 177
+    },
+    "pretreatment_features": {
+      "goal_chars": 824,
+      "goal_lines": 38,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 37
+    },
+    "repo": {
+      "branch": "tutorials",
+      "commit": "2f95678da15b0705a97645f07b239d01ab8f8598",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover/verso"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "numbers : List ℤ\nh_precond : longestIncreasingSubsequence_precond numbers\n⊢ longestIncreasingSubsequence_postcond numbers (longestIncreasingSubsequence numbers h_precond) h_precond",
+      "url": "https://github.com/sunblaze-ucb/verina/blob/f613b335b9119667647b9cd09b7f78bf08f4d808/datasets/verina/verina_advanced_32/task.lean#L77"
+    },
+    "id": "5dfe380e64d864e6e3586df095d2e854c1f4d3dcafdb3fecd4a5cc1e1b7a82e5",
+    "location": {
+      "end_column": 7,
+      "end_line": 77,
+      "path": "datasets/verina/verina_advanced_32/task.lean",
+      "start_column": 2,
+      "start_line": 77
+    },
+    "pretreatment_features": {
+      "goal_chars": 180,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "zhe/coq",
+      "commit": "f613b335b9119667647b9cd09b7f78bf08f4d808",
+      "lean_version": "v4.18.0",
+      "remote": "https://github.com/sunblaze-ucb/verina"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "Hist : History\nL✝ :\n  (L : List Formula) ×'\n    (R : List Formula) ×'\n      (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n        (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n          (s : PathIn tab.flip) ×' s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip\na✝⁵ :\n  ∀\n    (y :\n      (Hist : History) ×'\n        (L : List Formula) ×'\n          (R : List Formula) ×'\n            (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n              (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n                (s : PathIn tab.flip) ×'\n                  s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip),\n    InvImage (fun x1 x2 => x1 < x2)\n        (fun x =>\n          PSigma.casesOn x fun Hist L =>\n            PSigma.casesOn L fun L R =>\n              PSigma.casesOn R fun R lr_nlf =>\n                PSigma.casesOn lr_nlf fun lr_nlf tab =>\n                  PSigma.casesOn tab fun tab s => PSigma.casesOn s fun s s_in => s.length)\n        y ⟨Hist, L✝⟩ →\n      ⋯ ▸ y.2.2.2.2.2.1.flip ∈ exitsOf y.1 (y.2.1, y.2.2.1, some y.2.2.2.1) y.2.2.2.2.1\nL : List Formula\nR✝ :\n  (R : List Formula) ×'\n    (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n      (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n        (s : PathIn tab.flip) ×' s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip\na✝⁴ :\n  ∀\n    (y :\n      (Hist : History) ×'\n        (L : List Formula) ×'\n          (R : List Formula) ×'\n            (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n              (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n                (s : PathIn tab.flip) ×'\n                  s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip),\n    InvImage (fun x1 x2 => x1 < x2)\n        (fun x =>\n          PSigma.casesOn x fun Hist L =>\n            PSigma.casesOn L fun L R =>\n              PSigma.casesOn R fun R lr_nlf =>\n                PSigma.casesOn lr_nlf fun lr_nlf tab =>\n                  PSigma.casesOn tab fun tab s => PSigma.casesOn s fun s s_in => s.length)\n        y ⟨Hist, ⟨L, R✝⟩⟩ →\n      ⋯ ▸ y.2.2.2.2.2.1.flip ∈ exitsOf y.1 (y.2.1, y.2.2.1, some y.2.2.2.1) y.2.2.2.2.1\nR : List Formula\nlr_nlf✝ :\n  (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n    (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n      (s : PathIn tab.flip) ×' s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip\na✝³ :\n  ∀\n    (y :\n      (Hist : History) ×'\n        (L : List Formula) ×'\n          (R : List Formula) ×'\n            (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n              (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n                (s : PathIn tab.flip) ×'\n                  s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip),\n    InvImage (fun x1 x2 => x1 < x2)\n        (fun x =>\n          PSigma.casesOn x fun Hist L =>\n            PSigma.casesOn L fun L R =>\n              PSigma.casesOn R fun R lr_nlf =>\n                PSigma.casesOn lr_nlf fun lr_nlf tab =>\n                  PSigma.casesOn tab fun tab s => PSigma.casesOn s fun s s_in => s.length)\n        y ⟨Hist, ⟨L, ⟨R, lr_nlf✝⟩⟩⟩ →\n      ⋯ ▸ y.2.2.2.2.2.1.flip ∈ exitsOf y.1 (y.2.1, y.2.2.1, some y.2.2.2.1) y.2.2.2.2.1\nlr_nlf : NegLoadFormula ⊕ NegLoadFormula\ntab✝ :\n  (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n    (s : PathIn tab.flip) ×' s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip\na✝² :\n  ∀\n    (y :\n      (Hist : History) ×'\n        (L : List Formula) ×'\n          (R : List Formula) ×'\n            (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n              (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n                (s : PathIn tab.flip) ×'\n                  s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip),\n    InvImage (fun x1 x2 => x1 < x2)\n        (fun x =>\n          PSigma.casesOn x fun Hist L =>\n            PSigma.casesOn L fun L R =>\n              PSigma.casesOn R fun R lr_nlf =>\n                PSigma.casesOn lr_nlf fun lr_nlf tab =>\n                  PSigma.casesOn tab fun tab s => PSigma.casesOn s fun s s_in => s.length)\n        y ⟨Hist, ⟨L, ⟨R, ⟨lr_nlf, tab✝⟩⟩⟩⟩ →\n      ⋯ ▸ y.2.2.2.2.2.1.flip ∈ exitsOf y.1 (y.2.1, y.2.2.1, some y.2.2.2.1) y.2.2.2.2.1\ntab : Tableau Hist (L, R, some lr_nlf)\ns✝¹ : (s : PathIn tab.flip) ×' s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip\na✝¹ :\n  ∀\n    (y :\n      (Hist : History) ×'\n        (L : List Formula) ×'\n          (R : List Formula) ×'\n            (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n              (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n                (s : PathIn tab.flip) ×'\n                  s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip),\n    InvImage (fun x1 x2 => x1 < x2)\n        (fun x =>\n          PSigma.casesOn x fun Hist L =>\n            PSigma.casesOn L fun L R =>\n              PSigma.casesOn R fun R lr_nlf =>\n                PSigma.casesOn lr_nlf fun lr_nlf tab =>\n                  PSigma.casesOn tab fun tab s => PSigma.casesOn s fun s s_in => s.length)\n        y ⟨Hist, ⟨L, ⟨R, ⟨lr_nlf, ⟨tab, s✝¹⟩⟩⟩⟩⟩ →\n      ⋯ ▸ y.2.2.2.2.2.1.flip ∈ exitsOf y.1 (y.2.1, y.2.2.1, some y.2.2.2.1) y.2.2.2.2.1\ns✝ : PathIn tab.flip\ns_in✝¹ : s✝ ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip\na✝ :\n  ∀\n    (y :\n      (Hist : History) ×'\n        (L : List Formula) ×'\n          (R : List Formula) ×'\n            (lr_nlf : NegLoadFormula ⊕ NegLoadFormula) ×'\n              (tab : Tableau Hist (L, R, some lr_nlf)) ×'\n                (s : PathIn tab.flip) ×'\n                  s ∈ exitsOf (List.map Sequent.flip Hist) (Sequent.flip (L, R, some lr_nlf)) tab.flip),\n    InvImage (fun x1 x2 => x1 < x2)\n        (fun x =>\n          PSigma.casesOn x fun Hist L =>\n            PSigma.casesOn L fun L R =>\n              PSigma.casesOn R fun R lr_nlf =>\n                PSigma.casesOn lr_nlf fun lr_nlf tab =>\n                  PSigma.casesOn tab fun tab s => PSigma.casesOn s fun s s_in => s.length)\n        y ⟨Hist, ⟨L, ⟨R, ⟨lr_nlf, ⟨tab, ⟨s✝, s_in✝¹⟩⟩⟩⟩⟩⟩ →\n      ⋯ ▸ y.2.2.2.2.2.1.flip ∈ exitsOf y.1 (y.2.1, y.2.2.1, some y.2.2.2.1) y.2.2.2.2.1\nnlf : NegLoadFormula\nnbas✝¹ : ¬Sequent.basic (L, R, some (Sum.inl nlf))\nlt✝ : LocalTableau (L, R, some (Sum.inl nlf))\nnrep✝² : ¬rep Hist (L, R, some (Sum.inl nlf))\nnext✝ : (Y : Sequent) → Y ∈ endNodesOf lt✝ → Tableau ((L, R, some (Sum.inl nlf)) :: Hist) Y\nY : Sequent\nY_in✝³ : Y ∈ endNodesOf lt✝.flip.flip\nYf_in✝⁴ : Y.flip ∈ endNodesOf lt✝.flip\ne✝³ :\n  PathIn\n    (⋯ ▸\n      (next✝\n          (match Y.flip with\n          | (L, R, O) => (R, L, Option.map Sum.swap O))\n          ⋯).flip)\ne_in✝⁴ :\n  e✝³ ∈\n    exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) Y.flip\n      (⋯ ▸\n        (next✝\n            (match Y.flip with\n            | (L, R, O) => (R, L, Option.map Sum.swap O))\n            ⋯).flip)\nLY : List Formula\nsnd✝¹ : List Formula × Olf\nY_in✝² : (LY, snd✝¹) ∈ endNodesOf lt✝.flip.flip\nYf_in✝³ : Sequent.flip (LY, snd✝¹) ∈ endNodesOf lt✝.flip\ne✝² :\n  PathIn\n    (⋯ ▸\n      (next✝\n          (match Sequent.flip (LY, snd✝¹) with\n          | (L, R, O) => (R, L, Option.map Sum.swap O))\n          ⋯).flip)\ne_in✝³ :\n  e✝² ∈\n    exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) (Sequent.flip (LY, snd✝¹))\n      (⋯ ▸\n        (next✝\n            (match Sequent.flip (LY, snd✝¹) with\n            | (L, R, O) => (R, L, Option.map Sum.swap O))\n            ⋯).flip)\nRY : List Formula\nsnd✝ : Olf\nY_in✝¹ : (LY, RY, snd✝) ∈ endNodesOf lt✝.flip.flip\nYf_in✝² : Sequent.flip (LY, RY, snd✝) ∈ endNodesOf lt✝.flip\ne✝¹ :\n  PathIn\n    (⋯ ▸\n      (next✝\n          (match Sequent.flip (LY, RY, snd✝) with\n          | (L, R, O) => (R, L, Option.map Sum.swap O))\n          ⋯).flip)\ne_in✝² :\n  e✝¹ ∈\n    exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) (Sequent.flip (LY, RY, snd✝))\n      (⋯ ▸\n        (next✝\n            (match Sequent.flip (LY, RY, snd✝) with\n            | (L, R, O) => (R, L, Option.map Sum.swap O))\n            ⋯).flip)\nlr_nlf_Y : NegLoadFormula ⊕ NegLoadFormula\nY_in✝ : (LY, RY, some lr_nlf_Y) ∈ endNodesOf lt✝.flip.flip\nYf_in✝¹ : Sequent.flip (LY, RY, some lr_nlf_Y) ∈ endNodesOf lt✝.flip\ne✝ :\n  PathIn\n    (⋯ ▸\n      (next✝\n          (match Sequent.flip (LY, RY, some lr_nlf_Y) with\n          | (L, R, O) => (R, L, Option.map Sum.swap O))\n          ⋯).flip)\ne_in✝¹ :\n  e✝ ∈\n    exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) (Sequent.flip (LY, RY, some lr_nlf_Y))\n      (⋯ ▸\n        (next✝\n            (match Sequent.flip (LY, RY, some lr_nlf_Y) with\n            | (L, R, O) => (R, L, Option.map Sum.swap O))\n            ⋯).flip)\nnlfY : NegLoadFormula\nY_in : (LY, RY, some (Sum.inr nlfY)) ∈ endNodesOf lt✝.flip.flip\nYf_in✝ : Sequent.flip (LY, RY, some (Sum.inr nlfY)) ∈ endNodesOf lt✝.flip\ne :\n  PathIn\n    (⋯ ▸\n      (next✝\n          (match Sequent.flip (LY, RY, some (Sum.inr nlfY)) with\n          | (L, R, O) => (R, L, Option.map Sum.swap O))\n          ⋯).flip)\ne_in✝ :\n  e ∈\n    exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) (Sequent.flip (LY, RY, some (Sum.inr nlfY)))\n      (⋯ ▸\n        (next✝\n            (match Sequent.flip (LY, RY, some (Sum.inr nlfY)) with\n            | (L, R, O) => (R, L, Option.map Sum.swap O))\n            ⋯).flip)\nthis : (Sequent.flip (LY, RY, some (Sum.inr nlfY))).flip ∈ endNodesOf lt✝\nnbas✝ : ¬Sequent.basic (L, R, some (Sum.inl nlf))\nnrep✝¹ nrep✝ : ¬rep Hist (L, R, some (Sum.inl nlf))\nβ : Type\ns : PathIn (Tableau.loc nrep✝² nbas✝¹ lt✝ next✝).flip\ns_in✝ :\n  s ∈\n    if (Sequent.flip (L, R, some (Sum.inl nlf))).isLoaded = true then\n      @exitsOf.match_2 (List.map Sequent.flip Hist) (Sequent.flip (L, R, some (Sum.inl nlf)))\n        (fun tab => List (PathIn tab)) (Tableau.loc nrep✝² nbas✝¹ lt✝ next✝).flip (fun lpr => [])\n        (fun nrep nbas lt next =>\n          List.flatMap\n            (fun x =>\n              @exitsOf.match_1 (Sequent.flip (L, R, some (Sum.inl nlf))) lt\n                (fun x => List (PathIn (Tableau.loc nrep nbas lt next))) x fun Y Y_in =>\n                List.map (PathIn.loc Y_in)\n                  (exitsOf (Sequent.flip (L, R, some (Sum.inl nlf)) :: List.map Sequent.flip Hist) Y (next Y Y_in)))\n            (endNodesOf lt).attach)\n        fun Y nrep bas r next =>\n        List.map PathIn.pdl (exitsOf (Sequent.flip (L, R, some (Sum.inl nlf)) :: List.map Sequent.flip Hist) Y next)\n    else [PathIn.nil]\nYf_in : Y.flip ∈ endNodesOf lt✝.flip\nh✝³ : Y.flip = Y.flip ∧ Y ∈ endNodesOf lt✝.flip.flip\ne_in :\n  e✝³ ∈\n    exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) Y.flip\n      (⋯ ▸\n        (next✝\n            (match Y.flip with\n            | (L, R, O) => (R, L, Option.map Sum.swap O))\n            ⋯).flip)\ns_in :\n  PathIn.loc ⋯ e✝³ ∈\n    if (Sequent.flip (L, R, some (Sum.inl nlf))).isLoaded = true then\n      @exitsOf.match_2 (List.map Sequent.flip Hist) (Sequent.flip (L, R, some (Sum.inl nlf)))\n        (fun tab => List (PathIn tab)) (Tableau.loc nrep✝² nbas✝¹ lt✝ next✝).flip (fun lpr => [])\n        (fun nrep nbas lt next =>\n          List.flatMap\n            (fun x =>\n              @exitsOf.match_1 (Sequent.flip (L, R, some (Sum.inl nlf))) lt\n                (fun x => List (PathIn (Tableau.loc nrep nbas lt next))) x fun Y Y_in =>\n                List.map (PathIn.loc Y_in)\n                  (exitsOf (Sequent.flip (L, R, some (Sum.inl nlf)) :: List.map Sequent.flip Hist) Y (next Y Y_in)))\n            (endNodesOf lt).attach)\n        fun Y nrep bas r next =>\n        List.map PathIn.pdl (exitsOf (Sequent.flip (L, R, some (Sum.inl nlf)) :: List.map Sequent.flip Hist) Y next)\n    else [PathIn.nil]\nh✝² :\n  ∃ (h : Y.flip ∈ endNodesOf lt✝.flip),\n    ∃\n      a ∈\n        exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) Y.flip\n          (⋯ ▸\n            (next✝\n                (match Y.flip with\n                | (L, R, O) => (R, L, Option.map Sum.swap O))\n                ⋯).flip),\n      PathIn.loc ⋯ a = PathIn.loc ⋯ e✝³\nh✝¹ :\n  ∃\n    a ∈\n      exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) Y.flip\n        (⋯ ▸\n          (next✝\n              (match Y.flip with\n              | (L, R, O) => (R, L, Option.map Sum.swap O))\n              ⋯).flip),\n    PathIn.loc ⋯ a = PathIn.loc ⋯ e✝³\nh✝ :\n  e✝³ ∈\n      exitsOf ((R, L, some (Sum.inr nlf)) :: List.map Sequent.flip Hist) Y.flip\n        (⋯ ▸\n          (next✝\n              (match Y.flip with\n              | (L, R, O) => (R, L, Option.map Sum.swap O))\n              ⋯).flip) ∧\n    PathIn.loc ⋯ e✝³ = PathIn.loc ⋯ e✝³\n⊢ e.length < s✝.length",
+      "url": "https://github.com/m4lvin/lean4-pdl/blob/6f9009d2561a5d7528f84992efbffb948820719c/Pdl/PartInterpolation.lean#L760"
+    },
+    "id": "ee10e5bf67a2eb58ce207086ee3755a2d683c8806b3f6e59fd2f1ae6ad0752b5",
+    "location": {
+      "end_column": 9,
+      "end_line": 760,
+      "path": "Pdl/PartInterpolation.lean",
+      "start_column": 4,
+      "start_line": 760
+    },
+    "pretreatment_features": {
+      "goal_chars": 12653,
+      "goal_lines": 315,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 314
+    },
+    "repo": {
+      "branch": "simp-suggestion-incomplete",
+      "commit": "6f9009d2561a5d7528f84992efbffb948820719c",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/m4lvin/lean4-pdl"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "k : ℕ\nhk : Fact (Nat.Prime (4 * k + 1))\n⊢ (fixedPoints (ch04.trivialInvo k)).Nonempty",
+      "url": "https://github.com/mo271/FormalBook/blob/865934361ca7005e0a874efb39f5809117052e85/FormalBook/Chapter_04.lean#L287"
+    },
+    "id": "3f4ef9e3cfcb5ab03b7b0e0387a4f687a6c7f5c0a8570e52e0d8e8b42e24c8c3",
+    "location": {
+      "end_column": 84,
+      "end_line": 287,
+      "path": "FormalBook/Chapter_04.lean",
+      "start_column": 79,
+      "start_line": 287
+    },
+    "pretreatment_features": {
+      "goal_chars": 85,
+      "goal_lines": 3,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "865934361ca7005e0a874efb39f5809117052e85",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/mo271/FormalBook"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ riemannZeta.RH_up_to 3e12",
+      "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/ddcb6542f2b62883c8642d3db4ecc115afcce33e/PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean#L76"
+    },
+    "id": "1effe94672850556980b6543fd82dabc5e0cf2be6b99f8c0bdd2b5df60fbe198",
+    "location": {
+      "end_column": 57,
+      "end_line": 76,
+      "path": "PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean",
+      "start_column": 52,
+      "start_line": 76
+    },
+    "pretreatment_features": {
+      "goal_chars": 27,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "More-FKS",
+      "commit": "ddcb6542f2b62883c8642d3db4ecc115afcce33e",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ sorry ↔\n    ∃ A,\n      (∃ᶠ (n : ℕ) in atTop, ∀ a ∈ A, 0 < a → a < n → Nat.Prime (n - a)) ∧\n        liminf (fun n => Erdos428.primeDensityRatio A n) atTop > 0",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/40df92c5af58a2a2592dfe7b2dd967cb5942db42/FormalConjectures/ErdosProblems/428.lean#L44"
+    },
+    "id": "62633679aaae760601c51f0edbdbf5aa54febd982ae3d58d0ba1167128c0713c",
+    "location": {
+      "end_column": 7,
+      "end_line": 44,
+      "path": "FormalConjectures/ErdosProblems/428.lean",
+      "start_column": 2,
+      "start_line": 44
+    },
+    "pretreatment_features": {
+      "goal_chars": 159,
+      "goal_lines": 4,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 3
+    },
+    "repo": {
+      "branch": "test",
+      "commit": "40df92c5af58a2a2592dfe7b2dd967cb5942db42",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "d : ℕ\nm R : NNReal\nhr : R ≠ 0\n⊢ centerOfMass (RigidBody.solidSphere d.succ m R) = 0",
+      "url": "https://github.com/HEPLean/PhysLean/blob/5b6f67c60f278269fa6188670bf2b5675c1a99f0/PhysLean/ClassicalMechanics/RigidBody/SolidSphere.lean#L65"
+    },
+    "id": "4f964511e50801f26353aa471a853711e8e109957f99ecbfc18905d01c38d78b",
+    "location": {
+      "end_column": 7,
+      "end_line": 65,
+      "path": "PhysLean/ClassicalMechanics/RigidBody/SolidSphere.lean",
+      "start_column": 2,
+      "start_line": 65
+    },
+    "pretreatment_features": {
+      "goal_chars": 83,
+      "goal_lines": 4,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 3
+    },
+    "repo": {
+      "branch": "bareBones",
+      "commit": "5b6f67c60f278269fa6188670bf2b5675c1a99f0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/HEPLean/PhysLean"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "H : Type u_1\ninst✝² : NormedAddCommGroup H\ninst✝¹ : InnerProductSpace ℂ H\ninst✝ : CompleteSpace H\na : H →L[ℂ] H\nha : IsSelfAdjoint a\nf✝ : C(↑(spectrum ℂ a), ℂ)\nC : ℝ\nf : ↑(spectrum ℂ a) → ℂ\nx : H\n⊢ ∀ (x_1 y : H),\n    ComplexMeasure.integral (@cfc_toComplexMeasure H inst✝² inst✝¹ inst✝ a ha x (x_1 + y)) f =\n      ComplexMeasure.integral (@cfc_toComplexMeasure H inst✝² inst✝¹ inst✝ a ha x x_1) f +\n        ComplexMeasure.integral (@cfc_toComplexMeasure H inst✝² inst✝¹ inst✝ a ha x y) f",
+      "url": "https://github.com/oliver-butterley/SpectralThm/blob/02099b8e7d2e117fc62cc41d81b5cbda35eb9808/SpectralThm/SpectralTheorem.lean#L129"
+    },
+    "id": "edaeb4ef49d08ca49be942c5a1cb439fd4ba5bdddeaa13628ea74150b529b66f",
+    "location": {
+      "end_column": 33,
+      "end_line": 129,
+      "path": "SpectralThm/SpectralTheorem.lean",
+      "start_column": 28,
+      "start_line": 129
+    },
+    "pretreatment_features": {
+      "goal_chars": 487,
+      "goal_lines": 14,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 13
+    },
+    "repo": {
+      "branch": "yoh-IsInnerPart",
+      "commit": "02099b8e7d2e117fc62cc41d81b5cbda35eb9808",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/oliver-butterley/SpectralThm"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nl1 l2 : List α\nelt : α\nidx : ℕ\nhidx : idx ≤ l1.length\n⊢ idx = 0",
+      "url": "https://github.com/VCA-EPFL/graphiti/blob/3285ca701a33477bbd2a3ac954584439d80db747/Graphiti/Projects/Noc/Utils.lean#L203"
+    },
+    "id": "b7ac1dde89a847805e5a30b63c4767af618af06a46eb7ac88aed680174ba826b",
+    "location": {
+      "end_column": 34,
+      "end_line": 203,
+      "path": "Graphiti/Projects/Noc/Utils.lean",
+      "start_column": 29,
+      "start_line": 203
+    },
+    "pretreatment_features": {
+      "goal_chars": 76,
+      "goal_lines": 6,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "type-inference",
+      "commit": "3285ca701a33477bbd2a3ac954584439d80db747",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/VCA-EPFL/graphiti"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "f : (n : ℕ) → Fin n\nn : ℕ\nA✝² : Type u\nB✝² : Type v\nA✝¹ : Type u\nB✝¹ : A✝¹ → Type v\nA✝ : Type u\nB✝ : A✝ → Prop\nA : Sort u\nB : A → Sort v\n⊢ True",
+      "url": "https://github.com/fpvandoorn/LeanCourse25/blob/cd0f32f5b07311e08a9e89733a1375f54eb790c0/LeanCourse25/Lectures/Lecture20.lean#L421"
+    },
+    "id": "b5bd9f98d658acbbfbf98ae0c9cf2ac12f8f23e98c31b40f020dc4303477694c",
+    "location": {
+      "end_column": 30,
+      "end_line": 421,
+      "path": "LeanCourse25/Lectures/Lecture20.lean",
+      "start_column": 25,
+      "start_line": 421
+    },
+    "pretreatment_features": {
+      "goal_chars": 143,
+      "goal_lines": 11,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 10
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "cd0f32f5b07311e08a9e89733a1375f54eb790c0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/fpvandoorn/LeanCourse25"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ List.foldr List.append [] (List.map (extendl 1) (extendl 2 [])) = [[[1], [2]], [[1, 2]]]",
+      "url": "https://github.com/arademaker/fad/blob/ac40e4faf3b1252bc943676314449c22b5af3c9d/Fad/Chapter12-Ex.lean#L29"
+    },
+    "id": "a636a48912b41ddff79adddd8051ab943b37bdabbd03e0b675ed0db16f1c7fef",
+    "location": {
+      "end_column": 7,
+      "end_line": 29,
+      "path": "Fad/Chapter12-Ex.lean",
+      "start_column": 2,
+      "start_line": 29
+    },
+    "pretreatment_features": {
+      "goal_chars": 90,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "ac40e4faf3b1252bc943676314449c22b5af3c9d",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/arademaker/fad"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case h.refine_1.refine_2.«3»\n⊢ lex.toSyn (lex.degree (X 3)) + lex.toSyn (lex.degree (X 3 ^ 4)) ≤\n    lex.toSyn (lex.degree (X 0 ^ 2 + X 1 ^ 3 + X 2 ^ 4 + X 3 ^ 5))",
+      "url": "https://github.com/WuProver/groebner_proj/blob/756981b2cf96a2f968a6b9ef21d5f154e6fb38b5/Groebner/ForComputation.lean#L40"
+    },
+    "id": "cdeaa71f59f963867006741f1e5c5b127b66d96f7a4e66c6b10a14f3eb09393f",
+    "location": {
+      "end_column": 15,
+      "end_line": 40,
+      "path": "Groebner/ForComputation.lean",
+      "start_column": 10,
+      "start_line": 40
+    },
+    "pretreatment_features": {
+      "goal_chars": 163,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "756981b2cf96a2f968a6b9ef21d5f154e6fb38b5",
+      "lean_version": "v4.24.0-rc1",
+      "remote": "https://github.com/WuProver/groebner_proj"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "K : Type u_1\nL : Type u_2\ninst✝¹⁵ : Field K\ninst✝¹⁴ : Field L\ninst✝¹³ : Algebra K L\ninst✝¹² : NumberField K\ninst✝¹¹ : NumberField L\nV : Type u_3\ninst✝¹⁰ : AddCommGroup V\ninst✝⁹ : Module L V\ninst✝⁸ : Module K V\ninst✝⁷ : IsScalarTower K L V\ninst✝⁶ : FiniteDimensional L V\ninst✝⁵ : FiniteDimensional K V\nB : Type u_4\ninst✝⁴ : Ring B\ninst✝³ : Algebra K B\ninst✝² : FiniteDimensional K B\ninst✝¹ : Module ℚ V\ninst✝ : FiniteDimensional ℚ V\n⊢ Continuous (↑(@IntegralLattice.tensorAdelesEquivRestrictedProduct V inst✝¹⁰ inst✝¹ inst✝)).toFun",
+      "url": "https://github.com/ImperialCollegeLondon/FLT/blob/5150d6da6af292a826f46b22f4ba962252394b56/FLT/HaarMeasure/HaarChar/AdeleRing.lean#L177"
+    },
+    "id": "99a2655abc1b550016fd111ba89f2dfda0f3f8c3d160d92225222c197d6a609d",
+    "location": {
+      "end_column": 27,
+      "end_line": 177,
+      "path": "FLT/HaarMeasure/HaarChar/AdeleRing.lean",
+      "start_column": 22,
+      "start_line": 177
+    },
+    "pretreatment_features": {
+      "goal_chars": 530,
+      "goal_lines": 21,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 20
+    },
+    "repo": {
+      "branch": "kbuzzard-more-addHaarScalarFactor_tensor_adeles_rat_eq_one",
+      "commit": "5150d6da6af292a826f46b22f4ba962252394b56",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/ImperialCollegeLondon/FLT"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case zero\nL : Logic ℕ\nχ ξ : Formula ℕ\nT : LO.Propositional.FTheory L\nhT : χ ➝ ξ ∉ LO.Propositional.FTheory.theory L T\ninst✝ : Entailment.F L\n⊢ χ ➝ ⊥ ∉ LO.Propositional.FTheory.theory L T",
+      "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/Propositional/Kripke2/FTheory.lean#L275"
+    },
+    "id": "7cde79fa639b02174b2c5d8643f936a3c0fe5a1fb1eb56c07ce131681fe40ba9",
+    "location": {
+      "end_column": 9,
+      "end_line": 275,
+      "path": "Foundation/Propositional/Kripke2/FTheory.lean",
+      "start_column": 4,
+      "start_line": 275
+    },
+    "pretreatment_features": {
+      "goal_chars": 186,
+      "goal_lines": 7,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "7c74089c2442ee211abfa1e2dd5a75091800f57b",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/FormalizedFormalLogic/Foundation"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "P : (Nat → Nat) → Prop\n⊢ P fun n => 0",
+      "url": "https://github.com/leanprover-community/batteries/blob/fce4da76bae6a8daa1503009abb00587253c4177/BatteriesTest/conv_equals.lean#L22"
+    },
+    "id": "8b372447b5ecad6e08e869f0b9e47def5713e978e2b6854470492a06f8a704e9",
+    "location": {
+      "end_column": 7,
+      "end_line": 22,
+      "path": "BatteriesTest/conv_equals.lean",
+      "start_column": 2,
+      "start_line": 22
+    },
+    "pretreatment_features": {
+      "goal_chars": 37,
+      "goal_lines": 2,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "weak.backward.privateInPublic",
+      "commit": "fce4da76bae6a8daa1503009abb00587253c4177",
+      "lean_version": "v4.25.0-rc2",
+      "remote": "https://github.com/leanprover-community/batteries"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "E : Type u_1\ninst✝¹² : NormedAddCommGroup E\ninst✝¹¹ : NormedSpace ℝ E\nΩ : Opens E\nF : Type u_2\ninst✝¹⁰ : AddCommGroup F\ninst✝⁹ : Module ℝ F\ninst✝⁸ : TopologicalSpace F\nF' : Type u_3\ninst✝⁷ : AddCommGroup F'\ninst✝⁶ : Module ℝ F'\ninst✝⁵ : TopologicalSpace F'\nn k : ℕ∞\ninst✝⁴ : IsTopologicalAddGroup F\ninst✝³ : ContinuousSMul ℝ F\ninst✝² : IsTopologicalAddGroup F'\ninst✝¹ : ContinuousSMul ℝ F'\ninst✝ : FiniteDimensional ℝ E\nT : @Distribution E inst✝¹² inst✝¹¹ Ω F inst✝¹⁰ inst✝⁹ inst✝⁸ ⊤\n⊢ Continuous fun f =>\n    {\n      toFun := fun v =>\n        (@DFunLike.coe\n            (@Distribution E inst✝¹² inst✝¹¹ Ω F inst✝¹⁰ inst✝⁹ inst✝⁸ ⊤ →L[ℝ]\n              @Distribution E inst✝¹² inst✝¹¹ Ω F inst✝¹⁰ inst✝⁹ inst✝⁸ ⊤)\n            (@Distribution E inst✝¹² inst✝¹¹ Ω F inst✝¹⁰ inst✝⁹ inst✝⁸ ⊤)\n            (fun x => @Distribution E inst✝¹² inst✝¹¹ Ω F inst✝¹⁰ inst✝⁹ inst✝⁸ ⊤) ContinuousLinearMap.funLike\n            (@Distribution.lineDerivCLM E inst✝¹² inst✝¹¹ Ω F inst✝¹⁰ inst✝⁹ inst✝⁸ inst✝⁴ inst✝³ v) T)\n          f,\n      map_add' := ⋯, map_smul' := ⋯, cont := ⋯ }",
+      "url": "https://github.com/leanprover-community/mathlib4/blob/3553b46195d3457be68d016ea3b14b2aab5e53ad/Mathlib/Analysis/Distribution/Distribution.lean#L359"
+    },
+    "id": "03f101b704e12a56f82402a4d2c1426568621469d4a843c9f4411030f5b2953a",
+    "location": {
+      "end_column": 17,
+      "end_line": 359,
+      "path": "Mathlib/Analysis/Distribution/Distribution.lean",
+      "start_column": 12,
+      "start_line": 359
+    },
+    "pretreatment_features": {
+      "goal_chars": 1063,
+      "goal_lines": 30,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 29
+    },
+    "repo": {
+      "branch": "MR_fae_WeakDeriv",
+      "commit": "3553b46195d3457be68d016ea3b14b2aab5e53ad",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover-community/mathlib4"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "R✝¹ : Type ?u.194605\ninst✝² : CommRing R✝¹\nR✝ : Type\ninst✝¹ : CommRing R✝\nR : Type\ninst✝ : CommRing R\n⊢ PreservesLimitsOfSize.{0, 0, 1, 1, 1, 1} LightCondensed.Solid.solidToCondensed",
+      "url": "https://github.com/dagurtomas/LeanCondensed/blob/de8a2f66d0863c0d1b4355aa6743fd228462d7df/LeanCondensed/Projects/LightSolid.lean#L116"
+    },
+    "id": "63d878cf6360b527b1d8f20a87e5611455d50959981c1cc8a7d8fc50a2e038f3",
+    "location": {
+      "end_column": 65,
+      "end_line": 116,
+      "path": "LeanCondensed/Projects/LightSolid.lean",
+      "start_column": 60,
+      "start_line": 116
+    },
+    "pretreatment_features": {
+      "goal_chars": 182,
+      "goal_lines": 7,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "de8a2f66d0863c0d1b4355aa6743fd228462d7df",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/dagurtomas/LeanCondensed"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "x y z : ℝ\nh₀ : 0 ≤ x ∧ 0 ≤ y ∧ 0 ≤ z\nh₁ : x + y + z = 1\n⊢ 0 ≤ y * z + z * x + x * y - 2 * x * y * z ∧ y * z + z * x + x * y - 2 * x * y * z ≤ 7 / 27",
+      "url": "https://github.com/google-deepmind/formal-imo/blob/d3f9410760a5566c773a9136023a08d9be86684e/Imo/1984/P1.lean#L28"
+    },
+    "id": "52f1d9a96fb6c98abbf2c0d3e4de61011ce9cf3017e3f07c6626756911ca711e",
+    "location": {
+      "end_column": 7,
+      "end_line": 28,
+      "path": "Imo/1984/P1.lean",
+      "start_column": 2,
+      "start_line": 28
+    },
+    "pretreatment_features": {
+      "goal_chars": 148,
+      "goal_lines": 4,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 3
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "d3f9410760a5566c773a9136023a08d9be86684e",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-imo"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case h\nC : Type\ninst✝¹ : Category.{0, 0} C\nK : Type\ninst✝ : DivisionRing K\nM : CategoryTheory.Functor C (ModuleCat K)\nD : @Dual.DirectSumDecomposition C inst✝¹ K inst✝ M\nhmax : IsMin D\nx y : PersistenceSubmodule M\nhxy : Disjoint x y\nhN : x ⊔ y ∈ D\nhx : ¬x = ⊥\nhy : ¬y = ⊥\nB : (N : PersistenceSubmodule M) → N ∈ D → Set (PersistenceSubmodule M) := fun N hN => if N = x ⊔ y then {x, y} else {N}\nnewD : @Dual.DirectSumDecomposition C inst✝¹ K inst✝ M :=\n  @Dual.DirectSumDecomposition.refinement C inst✝¹ K inst✝ M D B ⋯ ⋯ ⋯\nh : {x, y} = {x ⊔ y}\n⊢ False",
+      "url": "https://github.com/Paul-Lez/PersistentDecomp/blob/c36471055817ef5332e27b4f99654257f45c68d1/PersistentDecomp/DirectSumDecompositionDual.lean#L342"
+    },
+    "id": "70e9515a231472c8d6777218b565b10b91c835b98f96a9122da2f0e1e82b9d74",
+    "location": {
+      "end_column": 9,
+      "end_line": 342,
+      "path": "PersistentDecomp/DirectSumDecompositionDual.lean",
+      "start_column": 4,
+      "start_line": 342
+    },
+    "pretreatment_features": {
+      "goal_chars": 550,
+      "goal_lines": 18,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 17
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "c36471055817ef5332e27b4f99654257f45c68d1",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/Paul-Lez/PersistentDecomp"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "ι : Type u_1\nΩ : Type u_2\nE : Type u_3\ninst✝⁴ : LinearOrder ι\ninst✝³ : TopologicalSpace ι\ninst✝² : NormedAddCommGroup E\ninst✝¹ : NormedSpace ℝ E\ninst✝ : CompleteSpace E\nmΩ : MeasurableSpace Ω\nP : Measure Ω\nX Y : ι → Ω → E\n𝓕 : Filtration ι mΩ\nhX : @ProbabilityTheory.IsSquareIntegrable ι Ω E inst✝⁴ inst✝³ inst✝² inst✝¹ inst✝ mΩ X 𝓕 P\nhY : @ProbabilityTheory.IsSquareIntegrable ι Ω E inst✝⁴ inst✝³ inst✝² inst✝¹ inst✝ mΩ Y 𝓕 P\nhX_bound : ⨆ i, eLpNorm (X i) 2 P < ⊤\nhY_bound : ⨆ i, eLpNorm (Y i) 2 P < ⊤\n⊢ ⨆ i, eLpNorm (X i) 2 P + eLpNorm (Y i) 2 P ≤ (⨆ i, eLpNorm (X i) 2 P) + ⨆ i, eLpNorm (Y i) 2 P",
+      "url": "https://github.com/RemyDegenne/brownian-motion/blob/b0b7e11d4d90cc07aa198d440acf05e21ec9bde1/BrownianMotion/StochasticIntegral/SquareIntegrable.lean#L58"
+    },
+    "id": "991af02a12b9521a705d47dd83b7f55d38027f2794ed0a422f97afeaa4bb4ef3",
+    "location": {
+      "end_column": 15,
+      "end_line": 58,
+      "path": "BrownianMotion/StochasticIntegral/SquareIntegrable.lean",
+      "start_column": 10,
+      "start_line": 58
+    },
+    "pretreatment_features": {
+      "goal_chars": 598,
+      "goal_lines": 17,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 16
+    },
+    "repo": {
+      "branch": "blueprint",
+      "commit": "b0b7e11d4d90cc07aa198d440acf05e21ec9bde1",
+      "lean_version": "v4.25.0",
+      "remote": "https://github.com/RemyDegenne/brownian-motion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "x : EnchantedForest.Introduction.Bird\nfond_Kx :\n  EnchantedForest.Introduction.response EnchantedForest.Kestrel.K\n      (EnchantedForest.Introduction.response EnchantedForest.Kestrel.K x) =\n    EnchantedForest.Introduction.response EnchantedForest.Kestrel.K x\n⊢ EnchantedForest.Introduction.response EnchantedForest.Kestrel.K x = x",
+      "url": "https://github.com/siddhartha-gadgil/LeanLangur/blob/b5426068c74cf7d09a5826cd38cf4fe99e44ec39/LeanLangur/Exercises/Combinatornithology.lean#L165"
+    },
+    "id": "c06fe5f7780404a135d2f8dc11f33f968dd5df97c19c0ca5e494b2419775bf10",
+    "location": {
+      "end_column": 11,
+      "end_line": 165,
+      "path": "LeanLangur/Exercises/Combinatornithology.lean",
+      "start_column": 6,
+      "start_line": 165
+    },
+    "pretreatment_features": {
+      "goal_chars": 331,
+      "goal_lines": 6,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "b5426068c74cf7d09a5826cd38cf4fe99e44ec39",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/siddhartha-gadgil/LeanLangur"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nβ : Type u_2\nγ : Type u_3\nδ : Type u_4\nmα : MeasurableSpace α\nμ : Measure α\nmβ : MeasurableSpace β\nmγ : MeasurableSpace γ\nmδ : MeasurableSpace δ\ninst✝⁷ : StandardBorelSpace α\ninst✝⁶ : StandardBorelSpace β\ninst✝⁵ : Nonempty β\ninst✝⁴ : StandardBorelSpace γ\ninst✝³ : Nonempty γ\ninst✝² : StandardBorelSpace δ\ninst✝¹ : Nonempty δ\ninst✝ : IsFiniteMeasure μ\nX : α → β\nY : α → γ\nZ : α → δ\nhX : Measurable X\nhY : Measurable Y\nhZ : Measurable Z\nh : CondIndepFun (MeasurableSpace.comap Z inferInstance) ⋯ X Y μ\n⊢ CondIndepFun (MeasurableSpace.comap Z inferInstance) ⋯ X (fun ω => (Y ω, Z ω)) μ",
+      "url": "https://github.com/RemyDegenne/lean-bandits/blob/d84d16ee6af7e0c75a24fd957d58e843a36d9590/LeanBandits/ForMathlib/CondDistrib.lean#L81"
+    },
+    "id": "6e2df834d939f30025cebbd7f8bd22c401085c82ef8159cbb56e43433898c06c",
+    "location": {
+      "end_column": 7,
+      "end_line": 81,
+      "path": "LeanBandits/ForMathlib/CondDistrib.lean",
+      "start_column": 2,
+      "start_line": 81
+    },
+    "pretreatment_features": {
+      "goal_chars": 595,
+      "goal_lines": 25,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 24
+    },
+    "repo": {
+      "branch": "work",
+      "commit": "d84d16ee6af7e0c75a24fd957d58e843a36d9590",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/RemyDegenne/lean-bandits"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "μ ν : Measure ℝ\ninst✝¹ : IsProbabilityMeasure μ\ninst✝ : IsProbabilityMeasure ν\nn : ℕ\ni : Fin n\n⊢ HasLaw (fun ω => wignerMatrixMap n ω i i) ν (WignerMeasure μ ν n)",
+      "url": "https://github.com/FredRaj3/SemicircleLaw/blob/972ba89adc19bf0775bf37866c60ac0dba4adef8/SemicircleLaw/RandomMatrix/WignerMatrix.lean#L297"
+    },
+    "id": "64b2732a93ebb8120e4079f7381e679a2617a83b80a71916c51b50530e294182",
+    "location": {
+      "end_column": 7,
+      "end_line": 297,
+      "path": "SemicircleLaw/RandomMatrix/WignerMatrix.lean",
+      "start_column": 2,
+      "start_line": 297
+    },
+    "pretreatment_features": {
+      "goal_chars": 162,
+      "goal_lines": 6,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "972ba89adc19bf0775bf37866c60ac0dba4adef8",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/FredRaj3/SemicircleLaw"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ sorry ↔ IsRamseySizeLinear Erdos567.H5",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/2d387cc191243cd74dcfdb3d4e281ead4c1ec4a2/FormalConjectures/ErdosProblems/567.lean#L79"
+    },
+    "id": "df6f7de1826e9f9d28a522df436d5d79c86c54c9df996bd5c73a525d599e998b",
+    "location": {
+      "end_column": 7,
+      "end_line": 79,
+      "path": "FormalConjectures/ErdosProblems/567.lean",
+      "start_column": 2,
+      "start_line": 79
+    },
+    "pretreatment_features": {
+      "goal_chars": 40,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "2d387cc191243cd74dcfdb3d4e281ead4c1ec4a2",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case hf₂\nr : ℝ\nf : ℂ → ℂ\nhr : r ≠ 0\nh : Meromorphic f\nh₂ : 0 < meromorphicOrderAt f 0\nf2 :\n  circleAverage (fun a => logCounting f (↑a) r + log ‖meromorphicTrailingCoeffAt (fun x => f x - a) 0‖) 0 1 =\n    circleAverage (fun a => circleAverage (fun x => log ‖f x - a‖) 0 r + logCounting f ⊤ r) 0 1\n⊢ CircleIntegrable (fun a => log ‖meromorphicTrailingCoeffAt (fun x => f x - a) 0‖) 0 1",
+      "url": "https://github.com/kebekus/ProjectVD/blob/91a239351a488168b0d0881e5117ecffefb9e6de/VD/CartanExperimentation.lean#L308"
+    },
+    "id": "2fb50d70b91438c09e1eea3a7713fa654ee66a47ec07bbcec52d5de94665f428",
+    "location": {
+      "end_column": 9,
+      "end_line": 308,
+      "path": "VD/CartanExperimentation.lean",
+      "start_column": 4,
+      "start_line": 308
+    },
+    "pretreatment_features": {
+      "goal_chars": 384,
+      "goal_lines": 10,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 9
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "91a239351a488168b0d0881e5117ecffefb9e6de",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/kebekus/ProjectVD"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nβ : Type u_2\nG : Graph α β\nX : Set α\nhX : Maximal (fun X => @Graph.MatchingNumber α β (G - X) = @Graph.MatchingNumber α β G - X.encard) X\n⊢ 2 * @Graph.MatchingNumber α β (G - X) = (G.vertexSet \\ X).encard - encard (@Graph.OddComponents α β (G - X))",
+      "url": "https://github.com/apnelson1/Matroid/blob/3d4d082a70e17cc7ed1db37a316b7525e8f5f437/Matroid/Graph/Matching.lean#L400"
+    },
+    "id": "60a912a6e38236e3b5329bcf1dd0f0ade6ad55a9c0de470ca203517921bdc424",
+    "location": {
+      "end_column": 7,
+      "end_line": 400,
+      "path": "Matroid/Graph/Matching.lean",
+      "start_column": 2,
+      "start_line": 400
+    },
+    "pretreatment_features": {
+      "goal_chars": 261,
+      "goal_lines": 6,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "3d4d082a70e17cc7ed1db37a316b7525e8f5f437",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/apnelson1/Matroid"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case refine_2\n𝕜 : Type u_1\nB : Type u_2\nF : Type u_3\nE : B → Type u_5\ninst✝¹⁶ : NontriviallyNormedField 𝕜\ninst✝¹⁵ : (x : B) → AddCommMonoid (E x)\ninst✝¹⁴ : (x : B) → Module 𝕜 (E x)\ninst✝¹³ : NormedAddCommGroup F\ninst✝¹² : NormedSpace 𝕜 F\ninst✝¹¹ : TopologicalSpace (TotalSpace F E)\ninst✝¹⁰ : (x : B) → TopologicalSpace (E x)\nEB : Type u_6\ninst✝⁹ : NormedAddCommGroup EB\ninst✝⁸ : NormedSpace 𝕜 EB\nHB : Type u_7\ninst✝⁷ : TopologicalSpace HB\nIB : ModelWithCorners 𝕜 EB HB\ninst✝⁶ : TopologicalSpace B\ninst✝⁵ : ChartedSpace HB B\ninst✝⁴ : FiberBundle F E\ninst✝³ : VectorBundle 𝕜 F E\ninst✝² : IsManifold IB (↑⊤) B\ninst✝¹ : ContMDiffVectorBundle (↑⊤) F E IB\ne : Trivialization F TotalSpace.proj\ninst✝ : MemTrivializationAtlas e\nx₀ : TotalSpace F E\nhx₀ : x₀.proj ∈ e.baseSet\ne' : Trivialization F TotalSpace.proj := trivializationAt F E x₀.proj\nc : PartialEquiv EB B := (extChartAt IB x₀.proj).symm\nh0 : ↑(extChartAt IB x₀.proj).symm (↑(extChartAt IB x₀.proj) x₀.proj) = x₀.proj\nthis :\n  ContMDiffWithinAt (modelWithCornersSelf 𝕜 (EB × F)) (modelWithCornersSelf 𝕜 F) (↑⊤)\n    (fun x => (coordChangeL 𝕜 e' e (↑c x.1)) x.2) (Prod.fst ⁻¹' range ↑IB)\n    (↑(extChartAt IB x₀.proj) x₀.proj, (↑e' x₀).2)\n⊢ ContMDiffWithinAt (modelWithCornersSelf 𝕜 (EB × F)) (modelWithCornersSelf 𝕜 F) (↑⊤)\n    ((Prod.snd ∘ ↑e) ∘ ↑(chartAt (ModelProd HB F) x₀).symm ∘ ↑(IB.prod (PartialEquiv.refl F)).symm)\n    (range (Prod.map (↑IB) id)) (↑IB (↑(chartAt (ModelProd HB F) x₀) x₀).1, (↑(chartAt (ModelProd HB F) x₀) x₀).2)",
+      "url": "https://github.com/leanprover-community/sphere-eversion/blob/2c32227b231682fc0964b95660c52dc74667a997/SphereEversion/ToMathlib/Unused/GeometryManifoldMisc.lean#L126"
+    },
+    "id": "8dda18465b8ac16acaa56f16226609b28443074cb037cfd6f7fbb91d20507948",
+    "location": {
+      "end_column": 7,
+      "end_line": 126,
+      "path": "SphereEversion/ToMathlib/Unused/GeometryManifoldMisc.lean",
+      "start_column": 2,
+      "start_line": 126
+    },
+    "pretreatment_features": {
+      "goal_chars": 1489,
+      "goal_lines": 38,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 37
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "2c32227b231682fc0964b95660c52dc74667a997",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover-community/sphere-eversion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "nums : List ℤ\nh_precond : longestIncreasingSubsequence_precond nums\n⊢ longestIncreasingSubsequence_postcond nums (longestIncreasingSubsequence nums h_precond) h_precond",
+      "url": "https://github.com/sunblaze-ucb/verina/blob/f613b335b9119667647b9cd09b7f78bf08f4d808/datasets/verina/verina_advanced_33/task.lean#L73"
+    },
+    "id": "e9b4356a97886aa761223758fdf9d932c410c8cf3a7387bd56a5c61084f618f6",
+    "location": {
+      "end_column": 7,
+      "end_line": 73,
+      "path": "datasets/verina/verina_advanced_33/task.lean",
+      "start_column": 2,
+      "start_line": 73
+    },
+    "pretreatment_features": {
+      "goal_chars": 168,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "zhe/coq",
+      "commit": "f613b335b9119667647b9cd09b7f78bf08f4d808",
+      "lean_version": "v4.18.0",
+      "remote": "https://github.com/sunblaze-ucb/verina"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case none.refine_2\nHist : History\nL R : List Formula\nnlf : NegLoadFormula\nnbas : ¬Sequent.basic (L, R, some (Sum.inl nlf))\nlt : LocalTableau (L, R, some (Sum.inl nlf))\nnrep : ¬rep Hist (L, R, some (Sum.inl nlf))\nnext : (Y : Sequent) → Y ∈ endNodesOf lt → Tableau ((L, R, some (Sum.inl nlf)) :: Hist) Y\nLY RY : List Formula\nYf_in : Sequent.flip (LY, RY, none) ∈ endNodesOf lt.flip\nY_in : (LY, RY, none) ∈ endNodesOf (⋯ ▸ lt)\n⊢ PathIn.loc ⋯ PathIn.nil = ⋯ ▸ PathIn.loc ⋯ PathIn.nil",
+      "url": "https://github.com/m4lvin/lean4-pdl/blob/6f9009d2561a5d7528f84992efbffb948820719c/Pdl/PartInterpolation.lean#L715"
+    },
+    "id": "943f1948e3292d8b4ba0294b7dd21c5c4938d5cb422a6ad0b1fca59e48344e30",
+    "location": {
+      "end_column": 15,
+      "end_line": 715,
+      "path": "Pdl/PartInterpolation.lean",
+      "start_column": 10,
+      "start_line": 715
+    },
+    "pretreatment_features": {
+      "goal_chars": 479,
+      "goal_lines": 12,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 11
+    },
+    "repo": {
+      "branch": "simp-suggestion-incomplete",
+      "commit": "6f9009d2561a5d7528f84992efbffb948820719c",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/m4lvin/lean4-pdl"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "R : Type u_1\ninst✝¹ : DecidableEq R\ninst✝ : DivisionRing R\nh : Fintype R\nZ : Subring R := center R\nn : ℕ\nH : ∃ x y, x ≠ y\nh_n : n ≠ 0\nq : ℕ := Fintype.card ↥Z\nh_card : Fintype.card R = q ^ n\nfinclassa : (A : ConjClasses Rˣ) → Fintype ↑A.carrier\nthis✝² : (A : ConjClasses Rˣ) → Fintype ↑{Quotient.out A}.centralizer\nfintypea : ConjClasses Rˣ →\n  Fintype\n    ↑{A |\n        have this := finclassa A;\n        Fintype.card ↑A.carrier > 1} :=\n  fun A =>\n    setFintype\n      {A |\n        have this := finclassa A;\n        Fintype.card ↑A.carrier > 1}\nthis✝¹ :\n  Fintype\n    ↑{A |\n        have this := finclassa A;\n        Fintype.card ↑A.carrier > 1}\nS' : Set (ConjClasses Rˣ) := ConjClasses.noncenter Rˣ\nthis✝ : Fintype ↑S'\nS : Finset (ConjClasses Rˣ) := S'.toFinset\nn_k : ↑S' → ℕ := sorry\nh_R : Fintype.card Rˣ = q ^ n - 1\nh_Z : Fintype.card (↥Z)ˣ = q - 1\nH1 : q ^ n - 1 = q - 1 + ∑ x ∈ (ConjClasses.noncenter Rˣ).toFinset, x.carrier.toFinset.card\ne : ↥(Subgroup.center Rˣ) ≃* (↥(Submonoid.center R))ˣ := Subgroup.centerUnitsEquivUnitsCenter R\nf : (↥(Submonoid.center R))ˣ ≃ (↥Z)ˣ := Equiv.inv (↥(Submonoid.center R))ˣ\nthis : ∀ (A : ↑S'), Fintype.card ↑(↑A).carrier * (q ^ n_k A - 1) = q ^ n - 1\nh1 : q ^ n - 1 = q - 1 + ∑ A, (q ^ n - 1) / (q ^ n_k A - 1)\nhZ : Nonempty ↥Z\nhq_pow_pos : ∀ (m : ℕ), 1 ≤ q ^ m\nh_n_k_A_dvd : ∀ (A : ↑S'), n_k A ∣ n\nhq : q = Fintype.card ↥(center R)\nh₁_dvd : eval (↑q) (phi n) ∣ eval (↑q) (X ^ n - 1)\nA : ↑S'\nhs : A ∈ univ\nh_one_neq : 1 ≠ n_k A\n⊢ n_k A < n",
+      "url": "https://github.com/mo271/FormalBook/blob/865934361ca7005e0a874efb39f5809117052e85/FormalBook/Chapter_06.lean#L261"
+    },
+    "id": "401e41c6999eaa12fdbdb6a10080e76c49eeabb7656865b4426b20b5946dc3b9",
+    "location": {
+      "end_column": 44,
+      "end_line": 261,
+      "path": "FormalBook/Chapter_06.lean",
+      "start_column": 39,
+      "start_line": 261
+    },
+    "pretreatment_features": {
+      "goal_chars": 1480,
+      "goal_lines": 47,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 46
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "865934361ca7005e0a874efb39f5809117052e85",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/mo271/FormalBook"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "I : FKS.Inputs\nx σ₁ σ₂ : ℝ\nN : ℕ\nT : ℝ\nhσ₁ : σ₁ ∈ Set.Icc (5 / 8) 1\nhσ₂ : σ₂ ∈ Set.Ioc σ₁ 1\nhσ : failed to pretty print expression (use 'set_option pp.rawOnError true' for raw representation)\nhT : T ≥ FKS.Inputs.H₀ I\n⊢ FKS.riemannZeta.Sigma T x σ₁ σ₂ ≤ FKS.ε₃ I x σ₁ σ₂ N T",
+      "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/ddcb6542f2b62883c8642d3db4ecc115afcce33e/PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean#L306"
+    },
+    "id": "dfd3a2f6575aad5dd8f5bcfd4deb65f2554cdd3a931c2d7bf90825162aac2bfe",
+    "location": {
+      "end_column": 243,
+      "end_line": 306,
+      "path": "PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean",
+      "start_column": 238,
+      "start_line": 306
+    },
+    "pretreatment_features": {
+      "goal_chars": 273,
+      "goal_lines": 9,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 8
+    },
+    "repo": {
+      "branch": "More-FKS",
+      "commit": "ddcb6542f2b62883c8642d3db4ecc115afcce33e",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ sorry ↔\n    ∀ (V : Type) (G : SimpleGraph V),\n      ↑G.chromaticNumber = aleph 1 → ∃ s, s.Countable ∧ @Erdos1068.InfinitelyConnected (↑s) (SimpleGraph.induce s G)",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/40df92c5af58a2a2592dfe7b2dd967cb5942db42/FormalConjectures/ErdosProblems/1068.lean#L52"
+    },
+    "id": "201e1b2ea3b343ea236bfcb5f024eb9c54d90fbeee62e0c26476134758ad7891",
+    "location": {
+      "end_column": 7,
+      "end_line": 52,
+      "path": "FormalConjectures/ErdosProblems/1068.lean",
+      "start_column": 2,
+      "start_line": 52
+    },
+    "pretreatment_features": {
+      "goal_chars": 164,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "test",
+      "commit": "40df92c5af58a2a2592dfe7b2dd967cb5942db42",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "H : Type u_2\ninst✝² : NormedAddCommGroup H\ninst✝¹ : InnerProductSpace ℂ H\ninst✝ : CompleteSpace H\np : H →L[ℂ] H\n⊢ IsStarProjection p ↔ ∃ K, ∃ (kH : K.HasOrthogonalProjection), p = K.subtypeL.comp K.orthogonalProjection",
+      "url": "https://github.com/oliver-butterley/SpectralThm/blob/02099b8e7d2e117fc62cc41d81b5cbda35eb9808/SpectralThm/Resolutions.lean#L26"
+    },
+    "id": "2764e9a167fa39c06af401d6e15d0d19ba5a5e8b6f865a1e51c84ee4882fdb96",
+    "location": {
+      "end_column": 13,
+      "end_line": 26,
+      "path": "SpectralThm/Resolutions.lean",
+      "start_column": 8,
+      "start_line": 26
+    },
+    "pretreatment_features": {
+      "goal_chars": 218,
+      "goal_lines": 6,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "yoh-IsInnerPart",
+      "commit": "02099b8e7d2e117fc62cc41d81b5cbda35eb9808",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/oliver-butterley/SpectralThm"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case swap\nα : Type u_1\nl1 l2 : List α\nx y : α\nl : List α\n⊢ ∀ {idx1 : Fin (y :: x :: l).length} {idx2 : Fin (x :: y :: l).length},\n    (y :: x :: l)[idx1] = (x :: y :: l)[idx2] → ((y :: x :: l).eraseIdx ↑idx1).Perm ((x :: y :: l).eraseIdx ↑idx2)",
+      "url": "https://github.com/VCA-EPFL/graphiti/blob/3285ca701a33477bbd2a3ac954584439d80db747/Graphiti/Projects/Noc/Utils.lean#L441"
+    },
+    "id": "041f2a3ee066e88b677a3e222d9f3237b0ddfc5added958f13e576a50f850487",
+    "location": {
+      "end_column": 29,
+      "end_line": 441,
+      "path": "Graphiti/Projects/Noc/Utils.lean",
+      "start_column": 24,
+      "start_line": 441
+    },
+    "pretreatment_features": {
+      "goal_chars": 244,
+      "goal_lines": 7,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "type-inference",
+      "commit": "3285ca701a33477bbd2a3ac954584439d80db747",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/VCA-EPFL/graphiti"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "X : Type u_1\ninst✝¹ : MeasurableSpace X\nμ : Measure X\nY : Type u_2\ninst✝ : MeasurableSpace Y\nν : Measure Y\nf : X → Y\n⊢ ¬Integrable (fun x => 1) volume",
+      "url": "https://github.com/fpvandoorn/LeanCourse25/blob/cd0f32f5b07311e08a9e89733a1375f54eb790c0/LeanCourse25/Lectures/Lecture18Before.lean#L82"
+    },
+    "id": "62d03ed24af6e4542bc7d233b99ca3dca30310bad1f7de1a56540bbdaa23e973",
+    "location": {
+      "end_column": 7,
+      "end_line": 82,
+      "path": "LeanCourse25/Lectures/Lecture18Before.lean",
+      "start_column": 2,
+      "start_line": 82
+    },
+    "pretreatment_features": {
+      "goal_chars": 150,
+      "goal_lines": 8,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 7
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "cd0f32f5b07311e08a9e89733a1375f54eb790c0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/fpvandoorn/LeanCourse25"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "a : Type\ninst✝⁷ : Inhabited a\ninst✝⁶ : DecidableRel fun x1 x2 => x1 = x2\ninst✝⁵ : Max a\ninst✝⁴ : Min a\ninst✝³ : LT a\ninst✝² : DecidableRel fun x1 x2 => x1 < x2\ninst✝¹ : LE a\ninst✝ : DecidableRel fun x1 x2 => x1 ≤ x2\nk : ℕ\nxs : List a\nok : k ≤ xs.length\nus vs ws : List a\nm : ℕ := us.length\nn : ℕ := vs.length\nh₁ : k ≤ m\n⊢ k ≤ us.length",
+      "url": "https://github.com/arademaker/fad/blob/ac40e4faf3b1252bc943676314449c22b5af3c9d/Fad/Chapter6.lean#L157"
+    },
+    "id": "de969a6c0aacc96add3a63e8bcf90249f2c8a7adcd0b665f118c4fe2b1fec17d",
+    "location": {
+      "end_column": 52,
+      "end_line": 157,
+      "path": "Fad/Chapter6.lean",
+      "start_column": 47,
+      "start_line": 157
+    },
+    "pretreatment_features": {
+      "goal_chars": 335,
+      "goal_lines": 17,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 16
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "ac40e4faf3b1252bc943676314449c22b5af3c9d",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/arademaker/fad"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case h\nK : Type u_1\nL : Type u_2\ninst✝¹⁵ : Field K\ninst✝¹⁴ : Field L\ninst✝¹³ : Algebra K L\ninst✝¹² : NumberField K\ninst✝¹¹ : NumberField L\nV : Type u_3\ninst✝¹⁰ : AddCommGroup V\ninst✝⁹ : Module L V\ninst✝⁸ : Module K V\ninst✝⁷ : IsScalarTower K L V\ninst✝⁶ : FiniteDimensional L V\ninst✝⁵ : FiniteDimensional K V\nB : Type u_4\ninst✝⁴ : Ring B\ninst✝³ : Algebra K B\ninst✝² : FiniteDimensional K B\ninst✝¹ : Module ℚ V\ninst✝ : FiniteDimensional ℚ V\nv : IsDedekindDomain.HeightOneSpectrum (RingOfIntegers ℚ)\n⊢ Set.BijOn (⇑(LinearEquiv.toEquiv (@Aux.c_v_alg V inst✝¹⁰ inst✝¹ v)))\n    (Set.range\n      ⇑(LinearMap.lTensor (IntegralLattice ℤ ℚ V)\n          (↑(IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers ℚ v).subtype).toIntLinearMap))\n    (Set.range\n      (⇑(LinearEquiv.toEquiv (@Aux.c_v_alg V inst✝¹⁰ inst✝¹ v)) ∘\n        ⇑(LinearMap.lTensor (IntegralLattice ℤ ℚ V)\n            (↑(IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers ℚ v).subtype).toIntLinearMap)))",
+      "url": "https://github.com/ImperialCollegeLondon/FLT/blob/5150d6da6af292a826f46b22f4ba962252394b56/FLT/HaarMeasure/HaarChar/AdeleRing.lean#L249"
+    },
+    "id": "09f4b41a62846c157f682eb38c3dc5231bdf183c75d6c641c5b24f3e47eeca95",
+    "location": {
+      "end_column": 12,
+      "end_line": 249,
+      "path": "FLT/HaarMeasure/HaarChar/AdeleRing.lean",
+      "start_column": 7,
+      "start_line": 249
+    },
+    "pretreatment_features": {
+      "goal_chars": 972,
+      "goal_lines": 30,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 29
+    },
+    "repo": {
+      "branch": "kbuzzard-more-addHaarScalarFactor_tensor_adeles_rat_eq_one",
+      "commit": "5150d6da6af292a826f46b22f4ba962252394b56",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/ImperialCollegeLondon/FLT"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "L : Logic ℕ\nχ ξ : Formula ℕ\nT : LO.Propositional.FTheory L\nhT : χ ➝ ξ ∉ LO.Propositional.FTheory.theory L T\nΓ : Finset (Formula ℕ)\ni : ℕ\nx✝ : Option (Formula ℕ)\nδ : Formula ℕ\nhδ : decode i = some δ\nh :\n  ∀ (Γ : Finset (Formula ℕ)),\n    ↑Γ ⊆ LO.Propositional.FTheory.lindenbaum.construction L χ ξ T hT i →\n      Γ.conj ⋏ δ ➝ ξ ∉ LO.Propositional.FTheory.theory L T\nhΓ : ↑Γ ⊆ LO.Propositional.FTheory.lindenbaum.construction L χ ξ T hT (encode δ)\nhφ : Γ.conj ⋏ δ ➝ ξ ∈ LO.Propositional.FTheory.theory L T\nih : δ ∉ LO.Propositional.FTheory.lindenbaum.construction L χ ξ T hT i\nhC : δ ∈ insert δ (LO.Propositional.FTheory.lindenbaum.construction L χ ξ T hT i)\n⊢ encode δ = i",
+      "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/Propositional/Kripke2/FTheory.lean#L157"
+    },
+    "id": "4e5bb0df63d9c91b656473f42dad611f1209b9a72ea433a4226dc5519e386d28",
+    "location": {
+      "end_column": 46,
+      "end_line": 157,
+      "path": "Foundation/Propositional/Kripke2/FTheory.lean",
+      "start_column": 41,
+      "start_line": 157
+    },
+    "pretreatment_features": {
+      "goal_chars": 670,
+      "goal_lines": 18,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 17
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "7c74089c2442ee211abfa1e2dd5a75091800f57b",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/FormalizedFormalLogic/Foundation"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "E : Type u_1\ninst✝⁶ : NormedAddCommGroup E\ninst✝⁵ : NormedSpace ℝ E\nΩ : Opens E\nF : Type u_2\ninst✝⁴ : AddCommGroup F\ninst✝³ : Module ℝ F\ninst✝² : TopologicalSpace F\nn k : ℕ∞\ninst✝¹ : IsTopologicalAddGroup F\ninst✝ : ContinuousSMul ℝ F\nv : E\nT : @Distribution E inst✝⁶ inst✝⁵ Ω F inst✝⁴ inst✝³ inst✝² n\nφ : TestFunction Ω ℝ k\n⊢ (@DFunLike.coe\n        (@Distribution E inst✝⁶ inst✝⁵ Ω F inst✝⁴ inst✝³ inst✝² n →L[ℝ]\n          @Distribution E inst✝⁶ inst✝⁵ Ω F inst✝⁴ inst✝³ inst✝² k)\n        (@Distribution E inst✝⁶ inst✝⁵ Ω F inst✝⁴ inst✝³ inst✝² n)\n        (fun x => @Distribution E inst✝⁶ inst✝⁵ Ω F inst✝⁴ inst✝³ inst✝² k) ContinuousLinearMap.funLike\n        (@Distribution.lineDerivWithOrderCLM E inst✝⁶ inst✝⁵ Ω F inst✝⁴ inst✝³ inst✝² n k inst✝¹ inst✝ v) T)\n      φ =\n    T (-(TestFunction.lineDerivWithOrderCLM k n v) φ)",
+      "url": "https://github.com/leanprover-community/mathlib4/blob/3553b46195d3457be68d016ea3b14b2aab5e53ad/Mathlib/Analysis/Distribution/Distribution.lean#L323"
+    },
+    "id": "a9236d172f2853ab97a894cc4b65de5c87b43a7c9fd01c64fb94ce248e855ccd",
+    "location": {
+      "end_column": 95,
+      "end_line": 323,
+      "path": "Mathlib/Analysis/Distribution/Distribution.lean",
+      "start_column": 90,
+      "start_line": 323
+    },
+    "pretreatment_features": {
+      "goal_chars": 824,
+      "goal_lines": 22,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 21
+    },
+    "repo": {
+      "branch": "MR_fae_WeakDeriv",
+      "commit": "3553b46195d3457be68d016ea3b14b2aab5e53ad",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/leanprover-community/mathlib4"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "S : LightProfinite\n⊢ ∀ (X : ℕ+), sorry (CategoryStruct.id X) = CategoryStruct.id (LightProfinite.FreeImage.profiniteComponent S ↑↑X)",
+      "url": "https://github.com/dagurtomas/LeanCondensed/blob/de8a2f66d0863c0d1b4355aa6743fd228462d7df/LeanCondensed/Projects/FreeCondensed.lean#L41"
+    },
+    "id": "90af14ecf24cb5f2afd4ead25012a0c97bc7b992c3b4fbd27631675b7af08fb3",
+    "location": {
+      "end_column": 17,
+      "end_line": 41,
+      "path": "LeanCondensed/Projects/FreeCondensed.lean",
+      "start_column": 12,
+      "start_line": 41
+    },
+    "pretreatment_features": {
+      "goal_chars": 132,
+      "goal_lines": 2,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 1
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "de8a2f66d0863c0d1b4355aa6743fd228462d7df",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/dagurtomas/LeanCondensed"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "n k N M : ℕ\nh : 0 < n ∧ 0 < k ∧ k ≥ n\ninst✝ : NeZero n\nheven : Even (k - n)\nswitch_seq : (Fin (k + 1) → Fin (2 * n) → Bool) → Prop\nSN SM : Finset (Fin (k + 1) → Fin (2 * n) → Bool)\nh₀ :\n  ∀ (s : Fin (k + 1) → Fin (2 * n) → Bool),\n    switch_seq s ↔\n      s 0 = Function.const (Fin (2 * n)) false ∧\n        ∀ (t : Fin k), ∃ i, s t.succ = Function.update (s t.castSucc) i !s t.castSucc i\nh₁ :\n  ∀ (s : Fin (k + 1) → Fin (2 * n) → Bool),\n    s ∈ SN ↔\n      switch_seq s ∧\n        ∀ i ∈ Finset.Ico 0 n, s (Fin.last k) ↑i = true ∧ ∀ i ∈ Finset.Ico n (2 * n), s (Fin.last k) ↑i = false\nh₂ :\n  ∀ (s : Fin (k + 1) → Fin (2 * n) → Bool),\n    s ∈ SM ↔\n      switch_seq s ∧\n        ∀ i ∈ Finset.Ico 0 n, s (Fin.last k) ↑i = true ∧ ∀ i ∈ Finset.Ico n (2 * n), ∀ (t : Fin (k + 1)), s t ↑i = false\nh₃ : N = SN.card ∧ M = SM.card\n⊢ ↑N / ↑M = 2 ^ (k - n)",
+      "url": "https://github.com/google-deepmind/formal-imo/blob/d3f9410760a5566c773a9136023a08d9be86684e/Imo/2008/P5.lean#L57"
+    },
+    "id": "43433bc00059c0ba88604009f346d608c2fb7e94c00b60d4b540f143fefc5885",
+    "location": {
+      "end_column": 7,
+      "end_line": 57,
+      "path": "Imo/2008/P5.lean",
+      "start_column": 2,
+      "start_line": 57
+    },
+    "pretreatment_features": {
+      "goal_chars": 838,
+      "goal_lines": 23,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 22
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "d3f9410760a5566c773a9136023a08d9be86684e",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-imo"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "C : Type\ninst✝¹ : Category.{0, 0} C\nK : Type\ninst✝ : DivisionRing K\nM : CategoryTheory.Functor C (ModuleCat K)\nI J : @Dual.DirectSumDecomposition C inst✝¹ K inst✝ M\nh_J_le_I : I ≤ J\nh_I_le_J : J ≤ I\nh_final_left : ∀ N ∈ J, N ∈ I\n⊢ ∀ N ∈ I, N ∈ J",
+      "url": "https://github.com/Paul-Lez/PersistentDecomp/blob/c36471055817ef5332e27b4f99654257f45c68d1/PersistentDecomp/DirectSumDecompositionDual.lean#L287"
+    },
+    "id": "5eaf8dfb6126baf22c8c70d26a9578615d099143a8d9e249b83d78fff0b6def8",
+    "location": {
+      "end_column": 11,
+      "end_line": 287,
+      "path": "PersistentDecomp/DirectSumDecompositionDual.lean",
+      "start_column": 6,
+      "start_line": 287
+    },
+    "pretreatment_features": {
+      "goal_chars": 245,
+      "goal_lines": 10,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 9
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "c36471055817ef5332e27b4f99654257f45c68d1",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/Paul-Lez/PersistentDecomp"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "ι : Type u_1\nΩ : Type u_2\nE : Type u_3\nmΩ : MeasurableSpace Ω\nP : Measure Ω\ninst✝⁷ : LinearOrder ι\ninst✝⁶ : OrderBot ι\n𝓕 : Filtration ι mΩ\nX : ι → Ω → E\ninst✝⁵ : TopologicalSpace ι\ninst✝⁴ : OrderTopology ι\ninst✝³ : NormedAddCommGroup E\ninst✝² : 𝓕.HasUsualConditions P\ninst✝¹ : NormedSpace ℝ E\ninst✝ : CompleteSpace E\nhX :\n  @ProbabilityTheory.Locally ι Ω E mΩ inst✝⁷ inst✝⁶ inst✝⁵ inst✝⁴\n    SubtractionMonoid.toSubNegZeroMonoid.toNegZeroClass.toZero\n    (fun X => ∀ (ω : Ω) (x : ι), ∃ l, Tendsto (fun x => X x ω) (nhdsWithin x (Set.Iio x)) (nhds l)) 𝓕 X P\n⊢ ∀ᵐ (ω : Ω) ∂P, ∀ (x : ι), ∃ l, Tendsto (fun x => X x ω) (nhdsWithin x (Set.Iio x)) (nhds l)",
+      "url": "https://github.com/RemyDegenne/brownian-motion/blob/b0b7e11d4d90cc07aa198d440acf05e21ec9bde1/BrownianMotion/StochasticIntegral/Locally.lean#L452"
+    },
+    "id": "d751177f0381a82662c228b6b18b12f05d4f585dad0f0939890fc969193178e1",
+    "location": {
+      "end_column": 7,
+      "end_line": 452,
+      "path": "BrownianMotion/StochasticIntegral/Locally.lean",
+      "start_column": 2,
+      "start_line": 452
+    },
+    "pretreatment_features": {
+      "goal_chars": 650,
+      "goal_lines": 20,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 19
+    },
+    "repo": {
+      "branch": "blueprint",
+      "commit": "b0b7e11d4d90cc07aa198d440acf05e21ec9bde1",
+      "lean_version": "v4.25.0",
+      "remote": "https://github.com/RemyDegenne/brownian-motion"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "x y : EnchantedForest.Introduction.Bird\nkestrel_application :\n  EnchantedForest.Introduction.response EnchantedForest.Kestrel.K x =\n    EnchantedForest.Introduction.response EnchantedForest.Kestrel.K y\n⊢ x = y",
+      "url": "https://github.com/siddhartha-gadgil/LeanLangur/blob/b5426068c74cf7d09a5826cd38cf4fe99e44ec39/LeanLangur/Exercises/Combinatornithology.lean#L157"
+    },
+    "id": "e2f7fb98eac7f85032edae40e10c6cc36e8c407209720c786e1903510729efc1",
+    "location": {
+      "end_column": 11,
+      "end_line": 157,
+      "path": "LeanLangur/Exercises/Combinatornithology.lean",
+      "start_column": 6,
+      "start_line": 157
+    },
+    "pretreatment_features": {
+      "goal_chars": 209,
+      "goal_lines": 5,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 4
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "b5426068c74cf7d09a5826cd38cf4fe99e44ec39",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/siddhartha-gadgil/LeanLangur"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case refine_2.refine_1\nα : Type u_1\nR : Type u_2\nmα : MeasurableSpace α\nmR : MeasurableSpace R\ninst✝⁶ : Nonempty α\ninst✝⁵ : StandardBorelSpace α\ninst✝⁴ : DecidableEq α\ninst✝³ : Countable α\ninst✝² : StandardBorelSpace R\ninst✝¹ : Nonempty R\nalg : Algorithm α R\nν : Kernel α R\ninst✝ : IsMarkovKernel ν\nn : ℕ\n⊢ AEMeasurable\n    (fun ω =>\n      ω.2\n        (pullCount (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg)\n          (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) ω) (n + 1) ω)\n        (@Bandits.ArrayModel.action α R mα mR inst✝⁶ inst✝⁵ inst✝⁴ alg (n + 1) ω))\n    (@Bandits.ArrayModel.arrayMeasure α R mα mR ν)",
+      "url": "https://github.com/RemyDegenne/lean-bandits/blob/d84d16ee6af7e0c75a24fd957d58e843a36d9590/LeanBandits/Bandit/Bandit.lean#L544"
+    },
+    "id": "97aef3c3d6bcca26153715179eacf35fc5b015cb5fe4f28892e3f51976893d37",
+    "location": {
+      "end_column": 9,
+      "end_line": 544,
+      "path": "LeanBandits/Bandit/Bandit.lean",
+      "start_column": 4,
+      "start_line": 544
+    },
+    "pretreatment_features": {
+      "goal_chars": 655,
+      "goal_lines": 22,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 21
+    },
+    "repo": {
+      "branch": "work",
+      "commit": "d84d16ee6af7e0c75a24fd957d58e843a36d9590",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/RemyDegenne/lean-bandits"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "n : ℕ\nω : WignerSpace n\ni j : Fin n\n⊢ (if h_eq : i = j then @ω ⟨(i, i), wignerMatrixEntryFunction._proof_2 n i⟩\n    else\n      if h_lt : i < j then @ω ⟨(i, j), wignerMatrixEntryFunction._proof_3 n i j h_lt⟩\n      else\n        have h_gt := wignerMatrixEntryFunction._proof_4 n i j h_eq h_lt;\n        @ω ⟨(j, i), wignerMatrixEntryFunction._proof_5 n i j h_gt⟩) =\n    if h_eq : j = i then @ω ⟨(j, j), wignerMatrixEntryFunction._proof_2 n j⟩\n    else\n      if h_lt : j < i then @ω ⟨(j, i), wignerMatrixEntryFunction._proof_3 n j i h_lt⟩\n      else\n        have h_gt := wignerMatrixEntryFunction._proof_4 n j i h_eq h_lt;\n        @ω ⟨(i, j), wignerMatrixEntryFunction._proof_5 n j i h_gt⟩",
+      "url": "https://github.com/FredRaj3/SemicircleLaw/blob/972ba89adc19bf0775bf37866c60ac0dba4adef8/SemicircleLaw/RandomMatrix/WignerMatrix.lean#L214"
+    },
+    "id": "55b10a156e972a974212579c16a4da23d9c78448b9e39e0daa6dc582b03349c9",
+    "location": {
+      "end_column": 7,
+      "end_line": 214,
+      "path": "SemicircleLaw/RandomMatrix/WignerMatrix.lean",
+      "start_column": 2,
+      "start_line": 214
+    },
+    "pretreatment_features": {
+      "goal_chars": 683,
+      "goal_lines": 15,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 14
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "972ba89adc19bf0775bf37866c60ac0dba4adef8",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/FredRaj3/SemicircleLaw"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "case right\nr : ℝ\nf : ℂ → ℂ\nh : MeromorphicOn f ⊤\n⊢ MeasureTheory.Integrable (fun x => ∫ (y : ℝ) in Ioc 0 (2 * Real.pi), |log ‖f (circleMap 0 r x) - circleMap 0 1 y‖|)\n    (MeasureTheory.volume.restrict (Ioc 0 (2 * Real.pi)))",
+      "url": "https://github.com/kebekus/ProjectVD/blob/91a239351a488168b0d0881e5117ecffefb9e6de/VD/CartanExperimentation.lean#L139"
+    },
+    "id": "791305c542bbed8f4433400fd6fcf6961b0a8ad41c52ad2bd974f71be8d6b6ac",
+    "location": {
+      "end_column": 9,
+      "end_line": 139,
+      "path": "VD/CartanExperimentation.lean",
+      "start_column": 4,
+      "start_line": 139
+    },
+    "pretreatment_features": {
+      "goal_chars": 224,
+      "goal_lines": 6,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "91a239351a488168b0d0881e5117ecffefb9e6de",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/kebekus/ProjectVD"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nβ : Type u_2\nG H C : Graph α β\nS X Y : Set α\nM M' : Set β\nu v x y z : α\ne f : β\nP P' : WList α β\nhM✝ hM : @Graph.IsMatching α β G M\nhM' : @Graph.IsMatching α β G M'\ninst✝ : G.EdgeFinite\n⊢ EdgeFinite (@Graph.IsMatching.restrict₂ α β G M M' hM hM')",
+      "url": "https://github.com/apnelson1/Matroid/blob/3d4d082a70e17cc7ed1db37a316b7525e8f5f437/Matroid/Graph/Matching.lean#L90"
+    },
+    "id": "14577698b6fe941d7a29799a1cf75c577c8db84a72b333b4f3956d9188841302",
+    "location": {
+      "end_column": 7,
+      "end_line": 90,
+      "path": "Matroid/Graph/Matching.lean",
+      "start_column": 2,
+      "start_line": 90
+    },
+    "pretreatment_features": {
+      "goal_chars": 259,
+      "goal_lines": 12,
+      "goal_size_bin": 2,
+      "hypothesis_lines": 11
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "3d4d082a70e17cc7ed1db37a316b7525e8f5f437",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/apnelson1/Matroid"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "n : ℕ\nprimes : List ℕ\nh_precond : findExponents_precond n primes\n⊢ findExponents_postcond n primes (findExponents n primes h_precond) h_precond",
+      "url": "https://github.com/sunblaze-ucb/verina/blob/f613b335b9119667647b9cd09b7f78bf08f4d808/datasets/verina/verina_advanced_10/task.lean#L79"
+    },
+    "id": "2e9c02e39d2127aaf4b7e47b6908a41f6c8ea95ca902a2e34f3935933e1f37e4",
+    "location": {
+      "end_column": 7,
+      "end_line": 79,
+      "path": "datasets/verina/verina_advanced_10/task.lean",
+      "start_column": 2,
+      "start_line": 79
+    },
+    "pretreatment_features": {
+      "goal_chars": 143,
+      "goal_lines": 4,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 3
+    },
+    "repo": {
+      "branch": "zhe/coq",
+      "commit": "f613b335b9119667647b9cd09b7f78bf08f4d808",
+      "lean_version": "v4.18.0",
+      "remote": "https://github.com/sunblaze-ucb/verina"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "a✝ : GamePos\nbt : BuildTree a✝\nα : Program\nφ : Formula\nδ : List Program\nπ : PreState a✝ bt\n⊢ ¬α.isAtomic → (~⌈α⌉φ) ∈ PreState.forms a✝ bt π → ∃ Xδ ∈ H α, Xδ.1 ∪ [~⌈⌈δ⌉⌉φ] ⊆ PreState.forms a✝ bt π",
+      "url": "https://github.com/m4lvin/lean4-pdl/blob/6f9009d2561a5d7528f84992efbffb948820719c/Pdl/BuildTree.lean#L496"
+    },
+    "id": "868b25364d42ade412e6e8bdc5e203ba1a5a57528b1a35da43cf6d3706b07658",
+    "location": {
+      "end_column": 7,
+      "end_line": 496,
+      "path": "Pdl/BuildTree.lean",
+      "start_column": 2,
+      "start_line": 496
+    },
+    "pretreatment_features": {
+      "goal_chars": 195,
+      "goal_lines": 7,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 6
+    },
+    "repo": {
+      "branch": "simp-suggestion-incomplete",
+      "commit": "6f9009d2561a5d7528f84992efbffb948820719c",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/m4lvin/lean4-pdl"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "n : ℕ\nx : ℝ\nhxge : x ≥ ↑n\nhxlt : x < ↑n + 1\n⊢ ↑(∏ k ∈ Icc 1 (primeCountingReal x), nth Nat.Prime k / (nth Nat.Prime k - 1)) ≤\n    ↑(∏ k ∈ Icc 1 (primeCountingReal x), (k + 1) / k)",
+      "url": "https://github.com/mo271/FormalBook/blob/865934361ca7005e0a874efb39f5809117052e85/FormalBook/Chapter_01.lean#L191"
+    },
+    "id": "1404fd8c29641a0312cb9c9f79fb69017a1274c372110ba04643eb4dca1d0478",
+    "location": {
+      "end_column": 70,
+      "end_line": 191,
+      "path": "FormalBook/Chapter_01.lean",
+      "start_column": 65,
+      "start_line": 191
+    },
+    "pretreatment_features": {
+      "goal_chars": 179,
+      "goal_lines": 6,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 5
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "865934361ca7005e0a874efb39f5809117052e85",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/mo271/FormalBook"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "log_x0 σ2 c N K ε1 ε2 ε3 ε4 ε_total : ℝ\nh : (log_x0, σ2, ε1, ε2, ε3, ε4, ε_total) ∈ FKS.table_5\n⊢ ∀ (x : ℝ), log x ≥ log_x0 → Eψ x ≤ ε_total",
+      "url": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/ddcb6542f2b62883c8642d3db4ecc115afcce33e/PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean#L433"
+    },
+    "id": "d7e1e3d14fd89662fd2a7e8e886940f0d6271f9cc8526b1a33ccfbe4f2773fa0",
+    "location": {
+      "end_column": 10,
+      "end_line": 433,
+      "path": "PrimeNumberTheoremAnd/FioriKadiriSwidinsky.lean",
+      "start_column": 5,
+      "start_line": 433
+    },
+    "pretreatment_features": {
+      "goal_chars": 140,
+      "goal_lines": 3,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "More-FKS",
+      "commit": "ddcb6542f2b62883c8642d3db4ecc115afcce33e",
+      "lean_version": "v4.26.0",
+      "remote": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "⊢ sorry ↔ ∃ c > 0, ∀ᶠ (n : ℕ) in atTop, 2 ^ 2 ^ (c * n) ≤ ↑(hypergraphRamsey 3 n)",
+      "url": "https://github.com/google-deepmind/formal-conjectures/blob/40df92c5af58a2a2592dfe7b2dd967cb5942db42/FormalConjectures/ErdosProblems/564.lean#L48"
+    },
+    "id": "cdad3f817a4ecf9d1dc613fd4ff07f7ead664530e5ca580c4b19a9b19901ade1",
+    "location": {
+      "end_column": 7,
+      "end_line": 48,
+      "path": "FormalConjectures/ErdosProblems/564.lean",
+      "start_column": 2,
+      "start_line": 48
+    },
+    "pretreatment_features": {
+      "goal_chars": 81,
+      "goal_lines": 1,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 0
+    },
+    "repo": {
+      "branch": "test",
+      "commit": "40df92c5af58a2a2592dfe7b2dd967cb5942db42",
+      "lean_version": "v4.22.0",
+      "remote": "https://github.com/google-deepmind/formal-conjectures"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "H : Type u_1\ninst✝² : NormedAddCommGroup H\ninst✝¹ : InnerProductSpace ℂ H\ninst✝ : CompleteSpace H\na : H →L[ℂ] H\nha : IsSelfAdjoint a\nf : C(↑(spectrum ℂ a), ℂ)\nx✝ y✝ : H\nw✝ : ℕ → Set ↑(spectrum ℂ a)\n⊢ (∀ (i : ℕ), MeasurableSet (w✝ i)) →\n    Pairwise (Function.onFun Disjoint w✝) →\n      HasSum\n        (fun i =>\n          inner ℂ x✝\n            ((continuousLinearMapOfBilin (@toBoundedBilin H inst✝² inst✝¹ inst✝ a ha 1 ((w✝ i).indicator 1))) y✝))\n        (inner ℂ x✝\n          ((continuousLinearMapOfBilin (@toBoundedBilin H inst✝² inst✝¹ inst✝ a ha 1 ((⋃ i, w✝ i).indicator 1))) y✝))",
+      "url": "https://github.com/oliver-butterley/SpectralThm/blob/02099b8e7d2e117fc62cc41d81b5cbda35eb9808/SpectralThm/SpectralTheorem.lean#L154"
+    },
+    "id": "dbdd73aa3fa5dd953aa206bd62f7c09dced838ae5934116ab21c8b0fb89f9e6c",
+    "location": {
+      "end_column": 20,
+      "end_line": 154,
+      "path": "SpectralThm/SpectralTheorem.lean",
+      "start_column": 15,
+      "start_line": 154
+    },
+    "pretreatment_features": {
+      "goal_chars": 584,
+      "goal_lines": 17,
+      "goal_size_bin": 3,
+      "hypothesis_lines": 16
+    },
+    "repo": {
+      "branch": "yoh-IsInnerPart",
+      "commit": "02099b8e7d2e117fc62cc41d81b5cbda35eb9808",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/oliver-butterley/SpectralThm"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "α : Type u_1\nl1 l2 : List α\nidx1 idx2 : ℕ\nhidx1 : idx1 < l1.length\nhidx2 : idx2 < l2.length\nheq : l1[idx1] = l2[idx2]\nhperm : l1.Perm l2\n⊢ (l1.eraseIdx idx1).Perm (l2.eraseIdx idx2)",
+      "url": "https://github.com/VCA-EPFL/graphiti/blob/3285ca701a33477bbd2a3ac954584439d80db747/Graphiti/Projects/Noc/Utils.lean#L311"
+    },
+    "id": "e6f088dc61f83318bd214e5eb5ff94cacfede55e3fd62102979ca629da16f03c",
+    "location": {
+      "end_column": 58,
+      "end_line": 311,
+      "path": "Graphiti/Projects/Noc/Utils.lean",
+      "start_column": 53,
+      "start_line": 311
+    },
+    "pretreatment_features": {
+      "goal_chars": 181,
+      "goal_lines": 8,
+      "goal_size_bin": 1,
+      "hypothesis_lines": 7
+    },
+    "repo": {
+      "branch": "type-inference",
+      "commit": "3285ca701a33477bbd2a3ac954584439d80db747",
+      "lean_version": "v4.26.0-rc2",
+      "remote": "https://github.com/VCA-EPFL/graphiti"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "f : ℝ → ℝ\ns : Set ℝ\nhs : MeasurableSet s\n⊢ ∫ (x : ℝ) in s, exp x * f (exp x) = ∫ (y : ℝ) in exp '' s, f y",
+      "url": "https://github.com/fpvandoorn/LeanCourse25/blob/cd0f32f5b07311e08a9e89733a1375f54eb790c0/LeanCourse25/Assignments/Assignment9.lean#L27"
+    },
+    "id": "85ca10ceee15206071a6a072505686d65db5fdcefa3fc10d482594f4d69557fe",
+    "location": {
+      "end_column": 7,
+      "end_line": 27,
+      "path": "LeanCourse25/Assignments/Assignment9.lean",
+      "start_column": 2,
+      "start_line": 27
+    },
+    "pretreatment_features": {
+      "goal_chars": 105,
+      "goal_lines": 4,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 3
+    },
+    "repo": {
+      "branch": "master",
+      "commit": "cd0f32f5b07311e08a9e89733a1375f54eb790c0",
+      "lean_version": "v4.24.0",
+      "remote": "https://github.com/fpvandoorn/LeanCourse25"
+    }
+  },
+  {
+    "debug_info": {
+      "goal": "xs ys : List ℕ\nh : ∀ x ∈ xs, (xs ++ ys).head! ≤ x\n⊢ (∀ x ∈ ys, (xs ++ ys).head! ≤ x) → ∀ x ∈ ys, ys.head! ≤ x",
+      "url": "https://github.com/arademaker/fad/blob/ac40e4faf3b1252bc943676314449c22b5af3c9d/Fad/Chapter12-Ex.lean#L95"
+    },
+    "id": "a0b8602aa6323f6cd91a2a3a45e456286966881cc63fd7ceab5a5a0213d0e25f",
+    "location": {
+      "end_column": 8,
+      "end_line": 95,
+      "path": "Fad/Chapter12-Ex.lean",
+      "start_column": 3,
+      "start_line": 95
+    },
+    "pretreatment_features": {
+      "goal_chars": 109,
+      "goal_lines": 3,
+      "goal_size_bin": 0,
+      "hypothesis_lines": 2
+    },
+    "repo": {
+      "branch": "main",
+      "commit": "ac40e4faf3b1252bc943676314449c22b5af3c9d",
+      "lean_version": "v4.27.0-rc1",
+      "remote": "https://github.com/arademaker/fad"
+    }
+  }
+]

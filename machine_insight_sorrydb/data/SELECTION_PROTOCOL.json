@@ -1,0 +1,54 @@
+{
+  "available_repo_commit_groups": 107,
+  "dev_transfer_assignment": "alternating within selected repo/commit groups with hash-derived starting side",
+  "development_n": 120,
+  "development_size_bins": {
+    "0": 32,
+    "1": 32,
+    "2": 27,
+    "3": 29
+  },
+  "development_unique_projects": 32,
+  "development_unique_repo_commits": 38,
+  "evaluation_blob_sha": "af3b663429dc4689ee728d2fb5c7d8d5034476f7",
+  "evaluation_n": 1000,
+  "features_allowed_for_selection": [
+    "repo.remote",
+    "repo.commit",
+    "repo.branch",
+    "repo.lean_version",
+    "debug_info.goal character length"
+  ],
+  "features_forbidden_for_selection": [
+    "LLM output",
+    "Lean proof outcome",
+    "Machine Insight outcome",
+    "hidden solution",
+    "condition-specific success"
+  ],
+  "goal_char_quartile_cuts": [
+    126,
+    241,
+    532
+  ],
+  "group_size_quartile_cuts": [
+    2,
+    8,
+    17
+  ],
+  "official_sorrydb_commit": "83bd1976b2c0891dfd6dc997cd61956df7005a7f",
+  "project_group_selection": "metadata-only deterministic hash sampling stratified by repo/commit group-size quartile",
+  "seed": "machine-insight-sorrydb-v1-seed-2601",
+  "selected_repo_commit_groups": 40,
+  "transfer_n": 120,
+  "transfer_size_bins": {
+    "0": 29,
+    "1": 35,
+    "2": 26,
+    "3": 30
+  },
+  "transfer_unique_projects": 32,
+  "transfer_unique_repo_commits": 36,
+  "version": "1.0.0-frozen-selection",
+  "within_project_selection": "goal-character-size-quartile round-robin, deterministic hash ordering"
+}
