@@ -70,7 +70,12 @@ jobs:
               for name,data in files.items(): z.writestr(name,data)
           print(out, out.stat().st_size)
           PY
-          sha256sum aristotlelib-0.7.0-py3-none-any.whl
+          test "$(sha256sum aristotlelib-0.7.0-py3-none-any.whl | cut -d' ' -f1)" = "2245308ec8b20c70a5aeb9d0ae07b2294048f7816ccc17641cb7e01fc57a3fcc"
+          # The official commit references an Aristotle wheel that is not shipped in the repository.
+          # Aristotle is not imported by the verifier tests. Patch only its locked archive hash to the
+          # deterministic CI stub; no SorryDB verifier/test source is modified.
+          sed -i 's/sha256:cc8b6dccd5a4946bf69d7b72e0985f935370dd3a3d4dadcc61544ecb314cfe36/sha256:2245308ec8b20c70a5aeb9d0ae07b2294048f7816ccc17641cb7e01fc57a3fcc/' poetry.lock
+          grep -A12 -B2 'name = "aristotlelib"' poetry.lock | tee "$GITHUB_WORKSPACE/aristotle_ci_override.txt"
 
       - name: Record environment before install
         run: |
@@ -99,6 +104,7 @@ jobs:
         run: |
           {
             echo "sorrydb_commit=$(git rev-parse HEAD)"
+            echo "official_tree_modified_for_ci=$(git status --short -- poetry.lock aristotlelib-0.7.0-py3-none-any.whl | tr '\n' ';')"
             if [ -f tests/mock_lean_repository/lean-toolchain ]; then
               echo "mock_lean_toolchain=$(cat tests/mock_lean_repository/lean-toolchain)"
             fi
@@ -106,8 +112,8 @@ jobs:
             command -v lean || true
             command -v lake || true
             elan --version || true
-            lean --version || true
-            lake --version || true
+            (cd tests/mock_lean_repository && lean --version) || true
+            (cd tests/mock_lean_repository && lake --version) || true
           } | tee -a "$GITHUB_WORKSPACE/phase0_environment.txt"
 
       - name: Upload Phase 0 evidence
@@ -118,4 +124,5 @@ jobs:
           path: |
             phase0_environment.txt
             phase0_verifier_test.log
+            aristotle_ci_override.txt
           if-no-files-found: warn
