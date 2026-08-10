@@ -1,0 +1,63 @@
+name: Machine Insight OpenAI Preflight
+
+on:
+  push:
+    branches:
+      - machine-insight-sorrydb-ci
+    paths:
+      - '.github/workflows/machine-insight-openai-preflight.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check credential presence without disclosure
+        run: |
+          if [ -n "$OPENAI_API_KEY" ]; then
+            echo 'OPENAI_API_KEY_PRESENT=true' | tee openai_preflight.txt
+          else
+            echo 'OPENAI_API_KEY_PRESENT=false' | tee openai_preflight.txt
+            exit 17
+          fi
+      - name: Install OpenAI SDK
+        run: python -m pip install --quiet 'openai>=2.9,<3'
+      - name: Execute minimal frozen-model preflight
+        run: |
+          python - <<'PY' | tee -a openai_preflight.txt
+          import json, os
+          from openai import OpenAI
+          client=OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+          r=client.responses.create(
+              model='gpt-5.6-sol',
+              reasoning={'effort':'medium'},
+              input='Return exactly: LEAN_READY',
+              max_output_tokens=32,
+          )
+          out={
+              'requested_model':'gpt-5.6-sol',
+              'returned_model':getattr(r,'model',None),
+              'response_id_present':bool(getattr(r,'id',None)),
+              'output_text':getattr(r,'output_text',''),
+              'usage':getattr(getattr(r,'usage',None),'model_dump',lambda:None)(),
+          }
+          print(json.dumps(out,sort_keys=True))
+          if out['returned_model'] != 'gpt-5.6-sol':
+              raise SystemExit(f"MODEL_DRIFT requested gpt-5.6-sol returned {out['returned_model']}")
+          PY
+      - name: Upload non-secret preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: machine-insight-openai-preflight
+          path: openai_preflight.txt
+          if-no-files-found: warn
