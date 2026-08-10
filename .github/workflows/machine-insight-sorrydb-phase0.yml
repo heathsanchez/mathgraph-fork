@@ -25,6 +25,15 @@ jobs:
       - name: Install Poetry
         run: python -m pip install --upgrade pip poetry
 
+      - name: Install elan
+        run: |
+          set -euxo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --no-modify-path
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.elan/bin:$PATH"
+          elan --version
+
       - name: Clone pinned official SorryDB
         run: |
           set -euxo pipefail
@@ -34,6 +43,35 @@ jobs:
           test "$(git rev-parse HEAD)" = "83bd1976b2c0891dfd6dc997cd61956df7005a7f"
           git status --short
 
+      - name: Reconstruct unavailable optional Aristotle wheel
+        working-directory: /tmp/SorryDB
+        run: |
+          set -euxo pipefail
+          python - <<'PY'
+          import base64, csv, hashlib, io, zipfile
+          from pathlib import Path
+          out = Path('aristotlelib-0.7.0-py3-none-any.whl')
+          files = {
+              'aristotlelib/__init__.py': b'__version__ = "0.7.0"\n',
+              'aristotlelib-0.7.0.dist-info/METADATA': b'Metadata-Version: 2.1\nName: aristotlelib\nVersion: 0.7.0\nSummary: CI stub for unused optional SorryDB verifier dependency\n',
+              'aristotlelib-0.7.0.dist-info/WHEEL': b'Wheel-Version: 1.0\nGenerator: machine-insight-phase0\nRoot-Is-Purelib: true\nTag: py3-none-any\n',
+          }
+          records=[]
+          for name,data in files.items():
+              digest=base64.urlsafe_b64encode(hashlib.sha256(data).digest()).rstrip(b'=').decode()
+              records.append((name, f'sha256={digest}', str(len(data))))
+          record_name='aristotlelib-0.7.0.dist-info/RECORD'
+          buf=io.StringIO(newline='')
+          w=csv.writer(buf, lineterminator='\n')
+          for row in records: w.writerow(row)
+          w.writerow((record_name,'',''))
+          files[record_name]=buf.getvalue().encode()
+          with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED) as z:
+              for name,data in files.items(): z.writestr(name,data)
+          print(out, out.stat().st_size)
+          PY
+          sha256sum aristotlelib-0.7.0-py3-none-any.whl
+
       - name: Record environment before install
         run: |
           set -euxo pipefail
@@ -42,6 +80,7 @@ jobs:
             python --version
             poetry --version
             git --version
+            elan --version
           } | tee phase0_environment.txt
 
       - name: Install SorryDB dependencies
