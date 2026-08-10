@@ -1,0 +1,213 @@
+name: Machine Insight SorryDB Freeze Benchmark
+
+on:
+  push:
+    branches:
+      - machine-insight-sorrydb-ci
+    paths:
+      - '.github/workflows/machine-insight-sorrydb-freeze-benchmark.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: machine-insight-sorrydb-ci
+          fetch-depth: 0
+
+      - name: Fetch pinned official evaluation split
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/sorrydb-data
+          curl -fsSL \
+            https://raw.githubusercontent.com/SorryDB/SorryDB/83bd1976b2c0891dfd6dc997cd61956df7005a7f/data/SorryDB_2601/SorryDB_2601_1000_evaluation_split.json \
+            -o /tmp/sorrydb-data/eval.json
+          git clone --filter=blob:none --no-checkout https://github.com/SorryDB/SorryDB.git /tmp/SorryDB-meta
+          cd /tmp/SorryDB-meta
+          git checkout 83bd1976b2c0891dfd6dc997cd61956df7005a7f -- data/SorryDB_2601/SorryDB_2601_1000_evaluation_split.json
+          test "$(git hash-object data/SorryDB_2601/SorryDB_2601_1000_evaluation_split.json)" = "af3b663429dc4689ee728d2fb5c7d8d5034476f7"
+          cmp data/SorryDB_2601/SorryDB_2601_1000_evaluation_split.json /tmp/sorrydb-data/eval.json
+
+      - name: Freeze development and untouched transfer sets
+        run: |
+          mkdir -p machine_insight_sorrydb/data machine_insight_sorrydb/environment
+          python - <<'PY'
+          import hashlib, json, math
+          from collections import Counter, defaultdict
+          from pathlib import Path
+
+          SEED='machine-insight-sorrydb-v1-seed-2601'
+          DEV_N=120
+          TRANSFER_N=120
+          PROJECT_GROUPS=40
+          src=Path('/tmp/sorrydb-data/eval.json')
+          raw=json.loads(src.read_text())
+          tasks=raw['sorries'] if isinstance(raw,dict) and 'sorries' in raw else raw
+          assert len(tasks)==1000, len(tasks)
+
+          def repo_fields(t):
+              r=t['repo']
+              return (r['remote'], r['commit'], r.get('branch',''), r['lean_version'])
+          def h(*parts):
+              return hashlib.sha256(('|'.join(map(str,parts))).encode()).hexdigest()
+          def goal(t): return t.get('debug_info',{}).get('goal','') or ''
+          def hyp_count(g):
+              lines=g.splitlines()
+              return sum(1 for line in lines if '⊢' not in line and line.strip())
+
+          # Pre-treatment features only.
+          lens=sorted(len(goal(t)) for t in tasks)
+          def quantile_cut(q): return lens[min(len(lens)-1, math.floor(q*(len(lens)-1)))]
+          cuts=[quantile_cut(.25), quantile_cut(.50), quantile_cut(.75)]
+          def size_bin(n):
+              return 0 if n<=cuts[0] else 1 if n<=cuts[1] else 2 if n<=cuts[2] else 3
+
+          groups=defaultdict(list)
+          for t in tasks:
+              groups[repo_fields(t)].append(t)
+
+          # Deterministically choose 40 repo/commit groups, stratified by group-size quartile.
+          gitems=[]
+          sizes=sorted(len(v) for v in groups.values())
+          gcuts=[sizes[min(len(sizes)-1, math.floor(q*(len(sizes)-1)))] for q in (.25,.50,.75)]
+          def gbin(n): return 0 if n<=gcuts[0] else 1 if n<=gcuts[1] else 2 if n<=gcuts[2] else 3
+          gb=defaultdict(list)
+          for k,v in groups.items(): gb[gbin(len(v))].append((k,v))
+          chosen_groups=[]
+          quota=[PROJECT_GROUPS//4]*4
+          for i in range(PROJECT_GROUPS%4): quota[i]+=1
+          for b in range(4):
+              ordered=sorted(gb[b], key=lambda kv:h(SEED,'project',*kv[0]))
+              chosen_groups.extend(ordered[:quota[b]])
+          # If a sparse quartile made us short, fill globally without replacement.
+          chosen_keys={k for k,_ in chosen_groups}
+          if len(chosen_groups)<PROJECT_GROUPS:
+              rest=sorted([(k,v) for k,v in groups.items() if k not in chosen_keys], key=lambda kv:h(SEED,'project-fill',*kv[0]))
+              chosen_groups.extend(rest[:PROJECT_GROUPS-len(chosen_groups)])
+          assert len(chosen_groups)==PROJECT_GROUPS
+
+          # Within each selected group, rank tasks within goal-size bins, then round-robin bins.
+          pools={}
+          for k,vs in chosen_groups:
+              bins=defaultdict(list)
+              for t in vs: bins[size_bin(len(goal(t)))].append(t)
+              for b in bins:
+                  bins[b]=sorted(bins[b], key=lambda t:h(SEED,'task',t['id']))
+              order=[]
+              while any(bins.values()):
+                  for b in range(4):
+                      if bins[b]: order.append(bins[b].pop(0))
+              pools[k]=order
+
+          # Allocate one task at a time across projects to avoid domination. Assign alternating
+          # selections to dev/transfer using a hash-derived starting side per project.
+          dev=[]; transfer=[]; idx=Counter()
+          project_order=sorted(pools, key=lambda k:h(SEED,'project-order',*k))
+          side_start={k:int(h(SEED,'side',*k),16)%2 for k in project_order}
+          round_no=0
+          while (len(dev)<DEV_N or len(transfer)<TRANSFER_N):
+              progressed=False
+              for k in project_order:
+                  i=idx[k]
+                  if i>=len(pools[k]): continue
+                  t=pools[k][i]; idx[k]+=1; progressed=True
+                  preferred=(side_start[k]+i)%2
+                  if preferred==0 and len(dev)<DEV_N:
+                      dev.append(t)
+                  elif preferred==1 and len(transfer)<TRANSFER_N:
+                      transfer.append(t)
+                  elif len(dev)<DEV_N:
+                      dev.append(t)
+                  elif len(transfer)<TRANSFER_N:
+                      transfer.append(t)
+                  if len(dev)>=DEV_N and len(transfer)>=TRANSFER_N: break
+              round_no+=1
+              if not progressed: break
+          if len(dev)<DEV_N or len(transfer)<TRANSFER_N:
+              raise SystemExit(f'Insufficient selected-group tasks: dev={len(dev)} transfer={len(transfer)}')
+
+          dev=dev[:DEV_N]; transfer=transfer[:TRANSFER_N]
+          assert not ({t['id'] for t in dev}&{t['id'] for t in transfer})
+
+          def compact(t):
+              r=t['repo']; loc=t['location']; g=goal(t)
+              return {
+                  'id':t['id'],
+                  'repo':{'remote':r['remote'],'branch':r.get('branch'),'commit':r['commit'],'lean_version':r['lean_version']},
+                  'location':loc,
+                  'debug_info':{'goal':g,'url':t.get('debug_info',{}).get('url')},
+                  'pretreatment_features':{
+                      'goal_chars':len(g),
+                      'goal_lines':len(g.splitlines()),
+                      'hypothesis_lines':hyp_count(g),
+                      'goal_size_bin':size_bin(len(g)),
+                  },
+              }
+          dev=[compact(t) for t in dev]; transfer=[compact(t) for t in transfer]
+
+          out=Path('machine_insight_sorrydb/data')
+          for name,obj in [('frozen_tasks.json',dev),('transfer_tasks.json',transfer)]:
+              p=out/name
+              text=json.dumps(obj,indent=2,sort_keys=True,ensure_ascii=False)+'\n'
+              p.write_text(text)
+              (out/(name+'.sha256')).write_text(hashlib.sha256(text.encode()).hexdigest()+'  '+name+'\n')
+
+          selection={
+              'version':'1.0.0-frozen-selection',
+              'seed':SEED,
+              'official_sorrydb_commit':'83bd1976b2c0891dfd6dc997cd61956df7005a7f',
+              'evaluation_blob_sha':'af3b663429dc4689ee728d2fb5c7d8d5034476f7',
+              'evaluation_n':len(tasks),
+              'available_repo_commit_groups':len(groups),
+              'selected_repo_commit_groups':PROJECT_GROUPS,
+              'project_group_selection':'metadata-only deterministic hash sampling stratified by repo/commit group-size quartile',
+              'within_project_selection':'goal-character-size-quartile round-robin, deterministic hash ordering',
+              'dev_transfer_assignment':'alternating within selected repo/commit groups with hash-derived starting side',
+              'features_allowed_for_selection':['repo.remote','repo.commit','repo.branch','repo.lean_version','debug_info.goal character length'],
+              'features_forbidden_for_selection':['LLM output','Lean proof outcome','Machine Insight outcome','hidden solution','condition-specific success'],
+              'goal_char_quartile_cuts':cuts,
+              'group_size_quartile_cuts':gcuts,
+              'development_n':len(dev),
+              'transfer_n':len(transfer),
+              'development_unique_projects':len({t['repo']['remote'] for t in dev}),
+              'transfer_unique_projects':len({t['repo']['remote'] for t in transfer}),
+              'development_unique_repo_commits':len({(t['repo']['remote'],t['repo']['commit']) for t in dev}),
+              'transfer_unique_repo_commits':len({(t['repo']['remote'],t['repo']['commit']) for t in transfer}),
+              'development_size_bins':dict(sorted(Counter(t['pretreatment_features']['goal_size_bin'] for t in dev).items())),
+              'transfer_size_bins':dict(sorted(Counter(t['pretreatment_features']['goal_size_bin'] for t in transfer).items())),
+          }
+          sp=out/'SELECTION_PROTOCOL.json'
+          st=json.dumps(selection,indent=2,sort_keys=True)+'\n'; sp.write_text(st)
+          (out/'SELECTION_PROTOCOL.sha256').write_text(hashlib.sha256(st.encode()).hexdigest()+'  SELECTION_PROTOCOL.json\n')
+          print(json.dumps(selection,indent=2,sort_keys=True))
+          PY
+
+      - name: Verify frozen manifests are disjoint and immutable
+        run: |
+          set -euxo pipefail
+          cd machine_insight_sorrydb/data
+          sha256sum -c frozen_tasks.json.sha256
+          sha256sum -c transfer_tasks.json.sha256
+          sha256sum -c SELECTION_PROTOCOL.sha256
+          python - <<'PY'
+          import json
+          d=json.load(open('frozen_tasks.json')); t=json.load(open('transfer_tasks.json'))
+          assert len(d)==120 and len(t)==120
+          assert len({x['id'] for x in d})==120 and len({x['id'] for x in t})==120
+          assert not ({x['id'] for x in d}&{x['id'] for x in t})
+          print('FROZEN_TASKS_OK', len(d), len(t))
+          PY
+
+      - name: Commit frozen manifests
+        run: |
+          set -euxo pipefail
+          git config user.name 'machine-insight-bot'
+          git config user.email 'machine-insight-bot@users.noreply.github.com'
+          git add machine_insight_sorrydb/data
+          git commit -m 'Freeze Machine Insight SorryDB development and transfer task sets'
+          git push origin HEAD:machine-insight-sorrydb-ci
