@@ -1,0 +1,104 @@
+name: Machine Insight SorryDB Diagnostic Calibration
+
+on:
+  push:
+    branches: [machine-insight-sorrydb-ci]
+    paths: ['.github/workflows/machine-insight-sorrydb-diagnostic-calibration.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Poetry and elan
+        run: |
+          set -euxo pipefail
+          python -m pip install --upgrade pip poetry
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --no-modify-path
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Clone pinned SorryDB and make optional dependency installable
+        run: |
+          set -euxo pipefail
+          git clone https://github.com/SorryDB/SorryDB.git /tmp/SorryDB
+          cd /tmp/SorryDB
+          git checkout 83bd1976b2c0891dfd6dc997cd61956df7005a7f
+          python - <<'PY'
+          import base64,csv,hashlib,io,zipfile
+          from pathlib import Path
+          out=Path('aristotlelib-0.7.0-py3-none-any.whl')
+          files={
+            'aristotlelib/__init__.py':b'__version__ = "0.7.0"\n',
+            'aristotlelib-0.7.0.dist-info/METADATA':b'Metadata-Version: 2.1\nName: aristotlelib\nVersion: 0.7.0\nSummary: CI stub for unused optional SorryDB verifier dependency\n',
+            'aristotlelib-0.7.0.dist-info/WHEEL':b'Wheel-Version: 1.0\nGenerator: machine-insight-phase0\nRoot-Is-Purelib: true\nTag: py3-none-any\n'}
+          rows=[]
+          for n,d in files.items():
+            dig=base64.urlsafe_b64encode(hashlib.sha256(d).digest()).rstrip(b'=').decode();rows.append((n,f'sha256={dig}',str(len(d))))
+          rec='aristotlelib-0.7.0.dist-info/RECORD';buf=io.StringIO(newline='');w=csv.writer(buf,lineterminator='\n')
+          for r in rows:w.writerow(r)
+          w.writerow((rec,'',''));files[rec]=buf.getvalue().encode()
+          with zipfile.ZipFile(out,'w') as z:
+            for n,d in sorted(files.items()):
+              zi=zipfile.ZipInfo(n,date_time=(1980,1,1,0,0,0));zi.compress_type=zipfile.ZIP_DEFLATED;zi.external_attr=0o644<<16;z.writestr(zi,d)
+          PY
+          H=$(sha256sum aristotlelib-0.7.0-py3-none-any.whl|cut -d' ' -f1)
+          sed -i "s/sha256:cc8b6dccd5a4946bf69d7b72e0985f935370dd3a3d4dadcc61544ecb314cfe36/sha256:${H}/" poetry.lock
+          poetry install --no-interaction
+      - name: Clone and build exact real source project
+        run: |
+          set -euxo pipefail
+          git clone https://github.com/rkirov/category-theory-in-context-lean /tmp/project
+          cd /tmp/project
+          git checkout --detach 0c3d7da4c6d640d8c91d2d645837ee0458647e91
+          test "$(git rev-parse HEAD)" = "0c3d7da4c6d640d8c91d2d645837ee0458647e91"
+          lake exe cache get || true
+          lake build
+      - name: Verify accepted proof and collect well-formed wrong-proof diagnostic
+        working-directory: /tmp/SorryDB
+        run: |
+          set -o pipefail
+          poetry run python - <<'PY' 2>&1 | tee "$GITHUB_WORKSPACE/diagnostic_calibration.log"
+          import json
+          from pathlib import Path
+          from sorrydb.database.sorry import Location
+          from sorrydb.utils.verify import verify_proof
+
+          repo=Path('/tmp/project')
+          loc=Location(path='CategoryTheoryInContextLean/Section_1_3.lean',start_line=225,start_column=29,end_line=225,end_column=34)
+          cases=[
+            ('VALID_RFL','rfl'),
+            ('WELL_FORMED_TYPE_MISMATCH','exact Nat.zero_ne_one'),
+            ('UNSOLVED_GOAL','skip'),
+            ('UNKNOWN_IDENTIFIER','exact definitely_not_a_real_lean_identifier'),
+          ]
+          out=[]
+          for label,proof in cases:
+            ok,feedback=verify_proof(repo,'v4.24.0-rc1',loc,proof,use_lean_interact=True)
+            out.append({'label':label,'proof':proof,'verified':bool(ok),'feedback':feedback})
+            print('\n===',label,'===')
+            print('verified=',ok)
+            print(feedback)
+          if not out[0]['verified']: raise SystemExit('Known valid rfl failed')
+          for c in out[1:]:
+            if c['verified']: raise SystemExit(f"Wrong control unexpectedly verified: {c['label']}")
+          result={'task_id':'0726873810f86ae5d56f6024b5bd23114f223fe1c36954fee07ee87c104f9732',
+                  'project':'https://github.com/rkirov/category-theory-in-context-lean',
+                  'project_commit':'0c3d7da4c6d640d8c91d2d645837ee0458647e91',
+                  'sorrydb_commit':'83bd1976b2c0891dfd6dc997cd61956df7005a7f','cases':out}
+          Path('/home/runner/work/mathgraph-fork/mathgraph-fork/diagnostic_calibration.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: machine-insight-diagnostic-calibration
+          path: |
+            diagnostic_calibration.json
+            diagnostic_calibration.log
+          if-no-files-found: warn
