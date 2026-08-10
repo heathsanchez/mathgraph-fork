@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "official_sorrydb": {
+    "repository": "https://github.com/SorryDB/SorryDB",
+    "commit": "83bd1976b2c0891dfd6dc997cd61956df7005a7f",
+    "snapshot": "SorryDB_2601",
+    "evaluation_split": "data/SorryDB_2601/SorryDB_2601_1000_evaluation_split.json",
+    "evaluation_split_git_blob_sha": "af3b663429dc4689ee728d2fb5c7d8d5034476f7"
+  },
+  "official_mock_verifier_gate": {
+    "workflow_run_id": 31345390457,
+    "job_id": 93326250248,
+    "status": "VERIFIED",
+    "tests": {
+      "tests/test_verify.py::test_verify_proofs": "PASSED",
+      "tests/test_verify.py::test_verify_proofs_lean_interact": "PASSED"
+    },
+    "pytest_result": "2 passed in 116.95s",
+    "lean_toolchain": "leanprover/lean4:v4.24.0",
+    "lean_version": "Lean 4.24.0 (commit 797c613eb9b6d4ec95db23e3e00af9ac6657f24b)",
+    "lake_version": "Lake version 5.0.0-src+797c613",
+    "elan_version": "elan 4.2.3 (b6cec7e10 2026-06-08)",
+    "note": "Official SorryDB verifier source/tests were unmodified. CI reconstructed an unshipped optional Aristotle wheel and patched only its temporary lockfile archive hash; the verifier tests do not import Aristotle."
+  },
+  "real_sorrydb_task_gate": {
+    "workflow_run_id": 31345577531,
+    "job_id": 93326767001,
+    "status": "VERIFIED",
+    "task_id": "0726873810f86ae5d56f6024b5bd23114f223fe1c36954fee07ee87c104f9732",
+    "project": "https://github.com/rkirov/category-theory-in-context-lean",
+    "branch_recorded": "solutions",
+    "project_commit": "0c3d7da4c6d640d8c91d2d645837ee0458647e91",
+    "lean_version_recorded": "v4.24.0-rc1",
+    "source_path": "CategoryTheoryInContextLean/Section_1_3.lean",
+    "start_line": 225,
+    "start_column": 29,
+    "accepted_proof": "rfl",
+    "accepted_verified": true,
+    "invalid_replacement_verified": false,
+    "invalid_replacement_note": "The first negative control was rejected but contained a duplicated `by` because the source already had `:= by sorry`; a separate diagnostic-calibration run was subsequently created to obtain well-formed wrong-proof failures.",
+    "artifact_id": 9047263872,
+    "artifact_zip_sha256": "865664aa443cc32e3095aba47722a1186d3a03ae13cf91e6db964007bfd821dd"
+  },
+  "openai_preflight": {
+    "workflow_run_id": 31345873636,
+    "job_id": 93327592002,
+    "status": "BLOCKED_BEFORE_MODEL_CALL",
+    "requested_model_pending_verification": "gpt-5.6-sol",
+    "requested_reasoning_effort": "medium",
+    "credential_present": false,
+    "model_calls_made": 0,
+    "cost_incurred": 0,
+    "artifact_id": 9047302046,
+    "artifact_zip_sha256": "ceee553d0212f0c6b19b7f4c23b448d5a16a49f0eeeadc8c42b8ef890834a390"
+  },
+  "scientific_state": "PHASE0_PASSED_BENCHMARK_FROZEN_MODEL_PREFLIGHT_BLOCKED",
+  "main_comparative_llm_calls_made": 0
+}
