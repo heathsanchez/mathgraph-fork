@@ -1,9 +1,6 @@
 name: Machine Insight SorryDB Phase 0
 
 on:
-  push:
-    branches:
-      - machine-insight-sorrydb-ci
   workflow_dispatch:
 
 permissions:
@@ -72,19 +69,14 @@ jobs:
                   zi.compress_type=zipfile.ZIP_DEFLATED
                   zi.external_attr=0o644 << 16
                   z.writestr(zi,data)
-          print(out, out.stat().st_size)
           PY
           STUB_HASH="$(sha256sum aristotlelib-0.7.0-py3-none-any.whl | cut -d' ' -f1)"
           echo "stub_sha256=${STUB_HASH}" | tee "$GITHUB_WORKSPACE/aristotle_ci_override.txt"
-          # The official commit references an Aristotle wheel that is not shipped in the repository.
-          # Aristotle is not imported by the verifier tests. Patch only its locked archive hash to the
-          # deterministic CI stub; no SorryDB verifier/test source is modified.
           sed -i "s/sha256:cc8b6dccd5a4946bf69d7b72e0985f935370dd3a3d4dadcc61544ecb314cfe36/sha256:${STUB_HASH}/" poetry.lock
           grep -A12 -B2 'name = "aristotlelib"' poetry.lock | tee -a "$GITHUB_WORKSPACE/aristotle_ci_override.txt"
 
       - name: Record environment before install
         run: |
-          set -euxo pipefail
           {
             uname -a
             python --version
@@ -110,12 +102,7 @@ jobs:
           {
             echo "sorrydb_commit=$(git rev-parse HEAD)"
             echo "official_tree_modified_for_ci=$(git status --short -- poetry.lock aristotlelib-0.7.0-py3-none-any.whl | tr '\n' ';')"
-            if [ -f tests/mock_lean_repository/lean-toolchain ]; then
-              echo "mock_lean_toolchain=$(cat tests/mock_lean_repository/lean-toolchain)"
-            fi
-            command -v elan || true
-            command -v lean || true
-            command -v lake || true
+            echo "mock_lean_toolchain=$(cat tests/mock_lean_repository/lean-toolchain)"
             elan --version || true
             (cd tests/mock_lean_repository && lean --version) || true
             (cd tests/mock_lean_repository && lake --version) || true
