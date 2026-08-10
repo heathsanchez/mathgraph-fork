@@ -35,7 +35,6 @@ jobs:
           t=json.loads(Path('machine_insight_sorrydb/data/frozen_tasks.json').read_text())
           g=sorted({(x['repo']['remote'],x['repo']['commit'],x['repo']['branch'],x['repo']['lean_version']) for x in t})
           print('matrix='+json.dumps({'group_index':list(range(len(g)))},separators=(',',':')))
-          print('groups',len(g))
           PY
 
   run-group:
