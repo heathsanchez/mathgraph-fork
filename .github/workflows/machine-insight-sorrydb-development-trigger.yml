@@ -1,0 +1,19 @@
+name: Trigger Machine Insight Frozen Development
+
+on:
+  push:
+    branches: [machine-insight-sorrydb-ci]
+    paths: [machine_insight_sorrydb/TRIGGER_DEVELOPMENT_RUN.txt]
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch already-frozen development workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run machine-insight-sorrydb-development.yml --repo heathsanchez/mathgraph-fork --ref machine-insight-sorrydb-ci
