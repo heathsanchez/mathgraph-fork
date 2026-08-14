@@ -2,11 +2,14 @@
 
 Protocol ID: `TRISKELION_QUIXBUGS_SCALE_V1`. This document and its code, corpus hashes, task order, labels, routing rules, prompts, model settings, verifier, arms, and gates are frozen before any scale-model call.
 
+Frozen substrate archive SHA-256: `d7d0ec62b8d346fce583f11ce7b271e1281fc49c9bcac17d8527bda45b1071de`.
+
 ## Frozen substrate
 
 - Base model: `Qwen/Qwen3.5-9B` through River.
 - Temperature: `0.0`; output maximum: `1400`; seed base: `20260818`.
 - Source: `jkoppel/QuixBugs` at commit `4257f44b0ff1181dedaedee6a447e133219fcebf`.
+- Corpus manifest SHA-256: `8633fa6f447e8b820cf9f60c58ba4e7df52aba669b6b257f89ed59cac0bcf12c`; capability registry SHA-256: `5ee39a793fc7534f359f7559c95381cb96ef3af7e8d259c99e00db7b5875a3aa`; protocol-lock SHA-256: `f0406106a3c37e6d17b3ec13b5ab5eb1c00b91510ff51b6077c84d3463bd0e2c`.
 - Qualification audit: all 40 Python tasks have a passing reference; 37 buggy programs fail and 3 time out in isolated tests. Audit 001 is retained as an infrastructure negative; audit 002 is the qualifying evidence.
 - Acquisition set: `knapsack`, `gcd`, `lis`, `breadth_first_search`, and `powerset`.
 - Protected set: all remaining 35 Python tasks, split before calls into five seven-task categories recorded in `CORPUS_MANIFEST.json`.
