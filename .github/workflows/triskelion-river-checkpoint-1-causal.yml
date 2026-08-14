@@ -1,0 +1,54 @@
+name: Triskelion River Checkpoint 1 Causal
+
+on:
+  push:
+    branches:
+      - triskelion-runtime-cp1
+    paths:
+      - triskelion_runtime/river_checkpoint_1_causal_run.py
+      - triskelion_runtime/RIVER_CHECKPOINT_1_CAUSAL_PROTOCOL.md
+      - .github/workflows/triskelion-river-checkpoint-1-causal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-decomposition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Confirm secret binding
+        run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound'; exit 78; }
+      - name: Unpack frozen substrate and interventions
+        run: |
+          unzip -q triskelion_runtime/TRISKELION_RUNTIME_CHECKPOINT_1_PRECOMMITTED.zip -d triskelion_runtime/work
+          mkdir -p triskelion_runtime/work/experiments/river_checkpoint_1_v2
+          mkdir -p triskelion_runtime/work/experiments/river_checkpoint_1_causal
+          cp triskelion_runtime/river_checkpoint_1_v2_run.py triskelion_runtime/work/experiments/river_checkpoint_1_v2/run.py
+          cp triskelion_runtime/river_checkpoint_1_causal_run.py triskelion_runtime/work/experiments/river_checkpoint_1_causal/run.py
+          cp triskelion_runtime/RIVER_CHECKPOINT_1_CAUSAL_PROTOCOL.md triskelion_runtime/work/experiments/river_checkpoint_1_causal/PROTOCOL.md
+      - name: Install frozen dependency
+        run: pip install "river-client"
+      - name: Runtime and response-normalizer tests
+        working-directory: triskelion_runtime/work
+        run: |
+          python -B -m unittest discover -s tests -v
+          python -B experiments/river_checkpoint_1_v2/run.py --self-test
+      - name: Run frozen causal decomposition
+        working-directory: triskelion_runtime/work
+        run: python -B experiments/river_checkpoint_1_causal/run.py --out river_checkpoint_1_causal_result
+      - name: Upload complete causal evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TRISKELION_RIVER_CHECKPOINT_1_CAUSAL_RESULT
+          path: triskelion_runtime/work/river_checkpoint_1_causal_result/
+          if-no-files-found: warn
