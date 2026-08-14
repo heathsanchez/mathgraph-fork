@@ -1,6 +1,11 @@
 name: Triskelion QuixBugs Scale V1
 
 on:
+  push:
+    branches:
+      - triskelion-runtime-cp1
+    paths:
+      - .github/workflows/triskelion-quixbugs-scale-v1.yml
   workflow_dispatch:
 
 permissions:
