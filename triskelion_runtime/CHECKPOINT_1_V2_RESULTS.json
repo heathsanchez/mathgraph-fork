@@ -1,0 +1,51 @@
+{
+  "gates": {
+    "verified_gt_always_on": true,
+    "verified_gt_cold": true,
+    "verified_lower_false_activation": true,
+    "zero_infrastructure_errors": true
+  },
+  "max_tokens": 512,
+  "model": "Qwen/Qwen3.5-9B",
+  "protocol": "TRISKELION_RIVER_CHECKPOINT_1_V2",
+  "results": {
+    "always_on": {
+      "false_activation_rate": 0.6666666666666666,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 16790.75,
+      "output_format_errors": 5,
+      "output_tokens_total": 1327,
+      "passed": 1,
+      "total": 6
+    },
+    "cold": {
+      "false_activation_rate": 0.0,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 20554.082,
+      "output_format_errors": 0,
+      "output_tokens_total": 1913,
+      "passed": 3,
+      "total": 6
+    },
+    "raw_memory": {
+      "false_activation_rate": 0.5,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 20357.137,
+      "output_format_errors": 2,
+      "output_tokens_total": 3072,
+      "passed": 2,
+      "total": 6
+    },
+    "verified": {
+      "false_activation_rate": 0.0,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 18334.522,
+      "output_format_errors": 2,
+      "output_tokens_total": 1976,
+      "passed": 4,
+      "total": 6
+    }
+  },
+  "seed": 20260816,
+  "temperature": 0.0
+}
