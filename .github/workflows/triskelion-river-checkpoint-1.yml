@@ -1,0 +1,45 @@
+name: Triskelion River Checkpoint 1
+
+on:
+  push:
+    branches:
+      - triskelion-runtime-cp1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-four-arm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Confirm secret binding
+        run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound to this repository'; exit 78; }
+      - name: Unpack frozen checkpoint
+        run: |
+          mkdir -p triskelion_runtime/work
+          unzip -q triskelion_runtime/TRISKELION_RUNTIME_CHECKPOINT_1_PRECOMMITTED.zip -d triskelion_runtime/work
+      - name: Install frozen dependency
+        run: pip install "river-client"
+      - name: Runtime tests
+        working-directory: triskelion_runtime/work
+        run: python -B -m unittest discover -s tests -v
+      - name: Run frozen River protocol
+        working-directory: triskelion_runtime/work
+        run: python -B experiments/river_checkpoint_1/run.py --out river_checkpoint_1_result
+      - name: Upload complete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TRISKELION_RIVER_CHECKPOINT_1_RESULT
+          path: triskelion_runtime/work/river_checkpoint_1_result/
+          if-no-files-found: warn
+
