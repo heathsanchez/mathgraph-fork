@@ -1,0 +1,92 @@
+name: Triskelion QuixBugs Scale V1
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest river-client
+      - name: Unpack frozen checkpoint
+        run: |
+          base64 -d triskelion_runtime/TRISKELION_QUIXBUGS_SCALE_V1_PRECOMMITTED.zip.b64 > /tmp/quixbugs.zip
+          echo 'd7d0ec62b8d346fce583f11ce7b271e1281fc49c9bcac17d8527bda45b1071de  /tmp/quixbugs.zip' | sha256sum -c -
+          unzip -q /tmp/quixbugs.zip -d work
+      - name: Static and verifier preflight
+        working-directory: work
+        run: |
+          python -B -m py_compile experiments/checkpoint_2_quixbugs/run_scale.py experiments/checkpoint_2_quixbugs/aggregate.py
+          python -B experiments/checkpoint_2_quixbugs/run_scale.py --self-test
+
+  arm:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        arm: [cold, raw_memory, always_on, verified, wrong_scope_manifest]
+    env:
+      RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Confirm secret binding
+        run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound'; exit 78; }
+      - run: pip install pytest river-client
+      - name: Unpack frozen checkpoint
+        run: |
+          base64 -d triskelion_runtime/TRISKELION_QUIXBUGS_SCALE_V1_PRECOMMITTED.zip.b64 > /tmp/quixbugs.zip
+          echo 'd7d0ec62b8d346fce583f11ce7b271e1281fc49c9bcac17d8527bda45b1071de  /tmp/quixbugs.zip' | sha256sum -c -
+          unzip -q /tmp/quixbugs.zip -d work
+      - name: Run frozen arm
+        working-directory: work
+        run: python -B experiments/checkpoint_2_quixbugs/run_scale.py --arm '${{ matrix.arm }}' --out '${{ matrix.arm }}'
+      - name: Upload complete arm evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triskelion-quixbugs-${{ matrix.arm }}
+          path: work/${{ matrix.arm }}/
+          if-no-files-found: warn
+
+  aggregate:
+    if: always()
+    needs: arm
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack frozen checkpoint
+        run: |
+          base64 -d triskelion_runtime/TRISKELION_QUIXBUGS_SCALE_V1_PRECOMMITTED.zip.b64 > /tmp/quixbugs.zip
+          echo 'd7d0ec62b8d346fce583f11ce7b271e1281fc49c9bcac17d8527bda45b1071de  /tmp/quixbugs.zip' | sha256sum -c -
+          unzip -q /tmp/quixbugs.zip -d work
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: triskelion-quixbugs-*
+          path: arm-results
+      - name: Aggregate frozen metrics
+        run: python -B work/experiments/checkpoint_2_quixbugs/aggregate.py --inputs arm-results --out aggregate-result
+      - name: Upload aggregate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TRISKELION_QUIXBUGS_SCALE_V1_AGGREGATE
+          path: aggregate-result/
+          if-no-files-found: warn
