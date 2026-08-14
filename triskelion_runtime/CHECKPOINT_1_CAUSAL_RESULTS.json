@@ -1,0 +1,38 @@
+{
+  "artifact_causal_closures": 1,
+  "gates": {
+    "artifact_causal_closure": true,
+    "artifact_only_passes_both": false,
+    "full_passes_both": true,
+    "incremental_artifact_value_beyond_manifest": false,
+    "paired_outputs_identical": false,
+    "zero_infrastructure_errors": true
+  },
+  "incremental_artifact_closures_beyond_manifest": 0,
+  "infrastructure_errors": 0,
+  "max_tokens": 512,
+  "model": "Qwen/Qwen3.5-9B",
+  "paired_response_hashes": {
+    "acquire_ratio_zero": {
+      "manifest_only_equals_full": true,
+      "none_equals_artifact_only": true
+    },
+    "transfer_average_zero": {
+      "manifest_only_equals_full": false,
+      "none_equals_artifact_only": true
+    }
+  },
+  "passed": {
+    "artifact_only": 1,
+    "full": 2,
+    "manifest_only": 2,
+    "none": 0
+  },
+  "protocol": "TRISKELION_RIVER_CHECKPOINT_1_CAUSAL_V1",
+  "seed": 20260817,
+  "tasks": [
+    "acquire_ratio_zero",
+    "transfer_average_zero"
+  ],
+  "temperature": 0.0
+}
