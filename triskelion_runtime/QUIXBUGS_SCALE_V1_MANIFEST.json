@@ -1,0 +1,62 @@
+{
+  "protocol": "TRISKELION_QUIXBUGS_SCALE_V1",
+  "date_utc": "2026-08-14",
+  "base_model": "Qwen/Qwen3.5-9B",
+  "model_settings": {
+    "temperature": 0.0,
+    "max_tokens": 1400,
+    "seed_base": 20260818
+  },
+  "runtime_revision": {
+    "repository": "heathsanchez/mathgraph-fork",
+    "branch": "triskelion-runtime-cp1",
+    "commit": "ddcc85f68d275403bf66b044c18430ad2e822671"
+  },
+  "workflow": {
+    "run_id": 31846437763,
+    "attempts": 2,
+    "artifact_aggregate_id": 9236528473,
+    "artifact_aggregate_sha256": "cc936a28fab1f1f4e54fdaa093c59ab8234e8929303eed45990a7823b29b84b6"
+  },
+  "corpus": {
+    "name": "jkoppel/QuixBugs",
+    "commit": "4257f44b0ff1181dedaedee6a447e133219fcebf",
+    "qualified_tasks": 40,
+    "acquisition_tasks": 5,
+    "protected_tasks": 35,
+    "corpus_manifest_sha256": "8633fa6f447e8b820cf9f60c58ba4e7df52aba669b6b257f89ed59cac0bcf12c"
+  },
+  "capability_registry": {
+    "count": 5,
+    "sha256": "5ee39a793fc7534f359f7559c95381cb96ef3af7e8d259c99e00db7b5875a3aa",
+    "artifact_type": "deterministic executable prompt critic"
+  },
+  "protocol_lock_sha256": "f0406106a3c37e6d17b3ec13b5ab5eb1c00b91510ff51b6077c84d3463bd0e2c",
+  "substrate_archive_sha256": "d7d0ec62b8d346fce583f11ce7b271e1281fc49c9bcac17d8527bda45b1071de",
+  "arms": ["cold", "raw_memory", "always_on", "verified", "wrong_scope_manifest"],
+  "model_call_budget": 175,
+  "successful_model_calls": 175,
+  "verifier": {
+    "command": "python -B -m pytest -q <frozen_test>",
+    "timeout_seconds": 15,
+    "fresh_copy_per_verdict": true,
+    "immediate_replay_on_success": true,
+    "pythondontwritebytecode": true,
+    "candidate_provenance_hash": true
+  },
+  "dependencies": {
+    "python": "3.12.13",
+    "river-client": "0.6.1",
+    "pytest": "9.1.1"
+  },
+  "resource_cost": {
+    "github_actions": "public-repository hosted runners",
+    "river_api_cost": "not reported by provider response",
+    "output_tokens_total_all_arms": 150903,
+    "latency_ms_total_all_arms": 836429.704
+  },
+  "infrastructure_history": {
+    "attempt_1": "VERIFIED health check failed before any VERIFIED model call; excluded as infrastructure",
+    "attempt_2": "only failed jobs rerun; all 175 scientific observations completed; aggregate passed"
+  }
+}
