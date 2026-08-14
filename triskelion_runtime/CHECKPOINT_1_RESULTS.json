@@ -1,0 +1,39 @@
+{
+  "gates": {
+    "verified_gt_always_on": true,
+    "verified_gt_cold": false,
+    "verified_lower_false_activation": true,
+    "zero_infrastructure_errors": true
+  },
+  "max_tokens": 512,
+  "model": "Qwen/Qwen3.5-9B",
+  "protocol": "TRISKELION_RIVER_CHECKPOINT_1_V1",
+  "results": {
+    "always_on": {
+      "false_activation_rate": 0.6666666666666666,
+      "infrastructure_errors": 0,
+      "passed": 0,
+      "total": 6
+    },
+    "cold": {
+      "false_activation_rate": 0.0,
+      "infrastructure_errors": 0,
+      "passed": 2,
+      "total": 6
+    },
+    "raw_memory": {
+      "false_activation_rate": 0.5,
+      "infrastructure_errors": 0,
+      "passed": 1,
+      "total": 6
+    },
+    "verified": {
+      "false_activation_rate": 0.0,
+      "infrastructure_errors": 0,
+      "passed": 2,
+      "total": 6
+    }
+  },
+  "seed": 20260815,
+  "temperature": 0.0
+}
