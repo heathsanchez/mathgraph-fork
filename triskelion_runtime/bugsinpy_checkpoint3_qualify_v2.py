@@ -179,7 +179,9 @@ def attempt(bugsinpy: Path, project: str, candidate: dict, timeout: int) -> dict
     if not all((row["repository"], row["buggy_commit"], row["fixed_commit"], row["test_file"],
                 row["python_version_declared"])):
         return {**row, "classification": "infrastructure_negative", "stage": "metadata"}
-    if row["python_version_executed"] != row["python_version_declared"]:
+    declared_major_minor = ".".join(row["python_version_declared"].split(".")[:2])
+    executed_major_minor = ".".join(row["python_version_executed"].split(".")[:2])
+    if executed_major_minor != declared_major_minor:
         return {**row, "classification": "infrastructure_negative", "stage": "python_version_mismatch"}
     test_files = [item for item in row["test_file"].split(";") if item]
     with tempfile.TemporaryDirectory(prefix="triskelion_bip_q_") as temp_dir:
