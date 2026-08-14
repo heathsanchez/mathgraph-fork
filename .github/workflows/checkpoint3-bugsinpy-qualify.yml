@@ -23,23 +23,23 @@ jobs:
       max-parallel: 6
       matrix:
         include:
-          - {project: pandas, python: 3.8.3}
-          - {project: youtube-dl, python: 3.7.4}
-          - {project: httpie, python: 3.7.3}
-          - {project: PySnooper, python: 3.8.1}
-          - {project: cookiecutter, python: 3.6.9}
-          - {project: tornado, python: 3.7.0}
-          - {project: spacy, python: 3.7.7}
-          - {project: fastapi, python: 3.8.3}
-          - {project: black, python: 3.8.3}
-          - {project: scrapy, python: 3.8.3}
-          - {project: sanic, python: 3.8.3}
-          - {project: matplotlib, python: 3.8.1}
-          - {project: ansible, python: 3.6.9}
-          - {project: thefuck, python: 3.7.0}
-          - {project: keras, python: 3.7.3}
-          - {project: tqdm, python: 3.6.9}
-          - {project: luigi, python: 3.8.3}
+          - {project: pandas, python: '3.8'}
+          - {project: youtube-dl, python: '3.7'}
+          - {project: httpie, python: '3.7'}
+          - {project: PySnooper, python: '3.8'}
+          - {project: cookiecutter, python: '3.6'}
+          - {project: tornado, python: '3.7'}
+          - {project: spacy, python: '3.7'}
+          - {project: fastapi, python: '3.8'}
+          - {project: black, python: '3.8'}
+          - {project: scrapy, python: '3.8'}
+          - {project: sanic, python: '3.8'}
+          - {project: matplotlib, python: '3.8'}
+          - {project: ansible, python: '3.6'}
+          - {project: thefuck, python: '3.7'}
+          - {project: keras, python: '3.7'}
+          - {project: tqdm, python: '3.6'}
+          - {project: luigi, python: '3.8'}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
