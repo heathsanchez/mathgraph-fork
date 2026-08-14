@@ -1,0 +1,196 @@
+{
+  "arms": {
+    "always_on": {
+      "arm": "always_on",
+      "false_activation_rate": 0.6685714285714286,
+      "false_activation_wilson_95": [
+        0.5958661335634834,
+        0.7340350000386151
+      ],
+      "false_activations": 117,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 155008.302,
+      "max_tokens": 1400,
+      "missed_activations": 0,
+      "model": "Qwen/Qwen3.5-9B",
+      "output_format_errors": 19,
+      "output_tokens_total": 22951,
+      "passed": 10,
+      "protocol": "TRISKELION_QUIXBUGS_SCALE_V1",
+      "seed": 20260818,
+      "selected_activations": 175,
+      "success_wilson_95": [
+        0.16326536236434688,
+        0.45054934863182616
+      ],
+      "temperature": 0.0,
+      "total": 35
+    },
+    "cold": {
+      "arm": "cold",
+      "false_activation_rate": 0.0,
+      "false_activation_wilson_95": [
+        0.0,
+        0.0
+      ],
+      "false_activations": 0,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 156857.418,
+      "max_tokens": 1400,
+      "missed_activations": 58,
+      "model": "Qwen/Qwen3.5-9B",
+      "output_format_errors": 6,
+      "output_tokens_total": 25789,
+      "passed": 18,
+      "protocol": "TRISKELION_QUIXBUGS_SCALE_V1",
+      "seed": 20260818,
+      "selected_activations": 0,
+      "success_wilson_95": [
+        0.35568804595868564,
+        0.6700576399749026
+      ],
+      "temperature": 0.0,
+      "total": 35
+    },
+    "raw_memory": {
+      "arm": "raw_memory",
+      "false_activation_rate": 0.0,
+      "false_activation_wilson_95": [
+        0.0,
+        0.0
+      ],
+      "false_activations": 0,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 206153.519,
+      "max_tokens": 1400,
+      "missed_activations": 58,
+      "model": "Qwen/Qwen3.5-9B",
+      "output_format_errors": 29,
+      "output_tokens_total": 43639,
+      "passed": 2,
+      "protocol": "TRISKELION_QUIXBUGS_SCALE_V1",
+      "seed": 20260818,
+      "selected_activations": 0,
+      "success_wilson_95": [
+        0.015813161857108654,
+        0.1860705742016492
+      ],
+      "temperature": 0.0,
+      "total": 35
+    },
+    "verified": {
+      "arm": "verified",
+      "false_activation_rate": 0.15,
+      "false_activation_wilson_95": [
+        0.07061187717320358,
+        0.2907232436648971
+      ],
+      "false_activations": 6,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 151959.69,
+      "max_tokens": 1400,
+      "missed_activations": 24,
+      "model": "Qwen/Qwen3.5-9B",
+      "output_format_errors": 4,
+      "output_tokens_total": 27602,
+      "passed": 16,
+      "protocol": "TRISKELION_QUIXBUGS_SCALE_V1",
+      "seed": 20260818,
+      "selected_activations": 40,
+      "success_wilson_95": [
+        0.3046601928840721,
+        0.6181027493151624
+      ],
+      "temperature": 0.0,
+      "total": 35
+    },
+    "wrong_scope_manifest": {
+      "arm": "wrong_scope_manifest",
+      "false_activation_rate": 1.0,
+      "false_activation_wilson_95": [
+        0.9123783988027135,
+        1.0
+      ],
+      "false_activations": 40,
+      "infrastructure_errors": 0,
+      "latency_ms_total": 166450.775,
+      "max_tokens": 1400,
+      "missed_activations": 58,
+      "model": "Qwen/Qwen3.5-9B",
+      "output_format_errors": 11,
+      "output_tokens_total": 30922,
+      "passed": 12,
+      "protocol": "TRISKELION_QUIXBUGS_SCALE_V1",
+      "seed": 20260818,
+      "selected_activations": 40,
+      "success_wilson_95": [
+        0.20831694987048957,
+        0.5084805048600374
+      ],
+      "temperature": 0.0,
+      "total": 35
+    }
+  },
+  "deltas": {
+    "always_on_minus_verified_false_activation": {
+      "estimate": 0.5185714285714286,
+      "newcombe_95": [
+        0.3051428898985863,
+        0.6634231228654115
+      ]
+    },
+    "verified_minus_cold_success": {
+      "estimate": -0.057142857142857106,
+      "newcombe_95": [
+        -0.36539744709083055,
+        0.26241470335647676
+      ]
+    }
+  },
+  "gates": {
+    "complete_35_by_5": true,
+    "verified_false_activation_lt_always_on": true,
+    "verified_success_gt_always_on": true,
+    "verified_success_gt_cold": false,
+    "wrong_scope_harms_vs_verified": true,
+    "zero_infrastructure_errors": true
+  },
+  "protocol": "TRISKELION_QUIXBUGS_SCALE_V1",
+  "task_order": [
+    "find_first_in_sorted",
+    "mergesort",
+    "next_palindrome",
+    "pascal",
+    "quicksort",
+    "subsequences",
+    "sieve",
+    "bitcount",
+    "bucketsort",
+    "depth_first_search",
+    "minimum_spanning_tree",
+    "rpn_eval",
+    "shortest_paths",
+    "wrap",
+    "find_in_sorted",
+    "kth",
+    "lcs_length",
+    "levenshtein",
+    "longest_common_subsequence",
+    "shortest_path_lengths",
+    "to_base",
+    "detect_cycle",
+    "get_factors",
+    "hanoi",
+    "possible_change",
+    "sqrt",
+    "topological_ordering",
+    "reverse_linked_list",
+    "flatten",
+    "is_valid_parenthesization",
+    "kheapsort",
+    "max_sublist_sum",
+    "next_permutation",
+    "shunting_yard",
+    "shortest_path_length"
+  ]
+}
