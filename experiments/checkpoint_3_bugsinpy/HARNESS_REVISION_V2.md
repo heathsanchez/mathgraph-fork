@@ -17,7 +17,8 @@ V2 therefore:
 2. checks out and verifies the exact fixed and buggy commits;
 3. reproduces the essential official BugsInPy checkout rule by copying the fixed regression test
    into the exact buggy checkout before execution;
-4. provisions a disposable virtual environment with the bug's declared Python patch version;
+4. provisions a disposable virtual environment with the bug's declared Python major/minor line,
+   records both the declared and executed patch versions, and rejects any major/minor mismatch;
 5. executes every non-empty relevant-test command and records subprocess return codes;
 6. requires all fixed relevant tests to pass and at least one buggy relevant test to fail;
 7. retains all provisioning, timeout, network, checkout, and reproduction failures as
@@ -28,3 +29,10 @@ mode leaves `HEAD` at the buggy commit and overlays fixed files. V2 instead keep
 identity while applying only the benchmark's fixed regression test to the buggy checkout. The V1
 artifact remains in the repository as negative harness provenance. No V1 qualification outcome is
 used.
+
+Infrastructure preflight 001 attempted the exact historical patch releases with
+`actions/setup-python` on `ubuntu-22.04`. All matrix jobs stopped before corpus checkout because
+those patch builds are not available for that runner image. The retained preflight is GitHub Actions
+run `31851154622`; it is an infrastructure negative, not task evidence. V2 execution therefore uses
+the latest Actions-provided patch on the frozen declared major/minor line and records the resolved
+patch version per attempt.
