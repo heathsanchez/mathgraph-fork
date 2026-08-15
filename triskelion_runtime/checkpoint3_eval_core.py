@@ -47,7 +47,6 @@ def parse_file_selection(text: str, *, max_files: int = 4) -> tuple[str, ...]:
     last = text.rfind("}")
     if first >= 0 and last > first:
         candidates.append(text[first : last + 1])
-
     parsed = None
     for candidate in candidates:
         try:
@@ -86,35 +85,40 @@ def extract_unified_diff(text: str) -> str:
 
 
 def patch_paths(diff_text: str) -> tuple[str, ...]:
-    paths: list[str] = []
-    for raw in DIFF_HEADER_RE.findall(diff_text):
-        raw = raw.strip()
-        if raw == "/dev/null":
-            raise ValueError("file creation/deletion is outside frozen patch contract")
-        path = safe_repo_path(raw)
-        if path not in paths:
-            paths.append(path)
-    if not paths or len(paths) % 2 != 0:
+    headers = DIFF_HEADER_RE.findall(diff_text)
+    if not headers or len(headers) % 2 != 0:
         raise ValueError("malformed unified diff headers")
     paired: list[str] = []
-    for index in range(0, len(paths), 2):
-        before, after = paths[index], paths[index + 1]
+    for index in range(0, len(headers), 2):
+        raw_before, raw_after = headers[index].strip(), headers[index + 1].strip()
+        if raw_before == "/dev/null" or raw_after == "/dev/null":
+            raise ValueError("file creation/deletion is outside frozen patch contract")
+        before, after = safe_repo_path(raw_before), safe_repo_path(raw_after)
         if before != after:
             raise ValueError("patch may not rename files")
-        paired.append(before)
+        if before not in paired:
+            paired.append(before)
     return tuple(paired)
 
 
-def validate_patch_safety(diff_text: str, *, protected_test_paths: Sequence[str]) -> tuple[str, ...]:
+def validate_patch_safety(
+    diff_text: str,
+    *,
+    protected_test_paths: Sequence[str],
+    selected_paths: Sequence[str] = (),
+) -> tuple[str, ...]:
     if "GIT binary patch" in diff_text or "Binary files " in diff_text:
         raise ValueError("binary patch forbidden")
     changed = patch_paths(diff_text)
     tests = {safe_repo_path(path) for path in protected_test_paths}
+    selected = {safe_repo_path(path) for path in selected_paths}
     for path in changed:
         if path in tests:
             raise ValueError("protected regression test modification forbidden")
         if not path.endswith(".py"):
             raise ValueError("only Python production files may be modified")
+        if selected and path not in selected:
+            raise ValueError("patch changed a file outside call-1 selection")
     return changed
 
 
@@ -123,33 +127,21 @@ def rule_from_public(raw: Mapping[str, Any]) -> RepairRule:
     if set(raw) != required:
         raise ValueError("public capability rule fields must be exact")
     return RepairRule(
-        rule_id=str(raw["rule_id"]),
-        title=str(raw["title"]),
+        rule_id=str(raw["rule_id"]), title=str(raw["title"]),
         required_any=tuple(str(x) for x in raw["required_any"]),
         required_all=tuple(str(x) for x in raw["required_all"]),
         forbidden_any=tuple(str(x) for x in raw["forbidden_any"]),
-        repair_instruction=str(raw["repair_instruction"]),
-        evidence_project="",
-        evidence_bug_id="",
+        repair_instruction=str(raw["repair_instruction"]), evidence_project="", evidence_bug_id="",
     )
 
 
 def format_rules(rules: Sequence[RepairRule]) -> str:
     if not rules:
         return ""
-    return "\n\n".join(
-        f"RULE {rule.rule_id}: {rule.title}\n{rule.repair_instruction}"
-        for rule in rules
-    )
+    return "\n\n".join(f"RULE {rule.rule_id}: {rule.title}\n{rule.repair_instruction}" for rule in rules)
 
 
-def arm_context(
-    arm: str,
-    *,
-    visible_context: str,
-    rules: Sequence[RepairRule],
-    raw_memory_text: str,
-) -> ArmContext:
+def arm_context(arm: str, *, visible_context: str, rules: Sequence[RepairRule], raw_memory_text: str) -> ArmContext:
     if arm not in ARMS:
         raise ValueError(f"unknown arm: {arm}")
     matched = route_rules(rules, visible_context)
@@ -160,13 +152,7 @@ def arm_context(
         return ArmContext(arm, raw_memory_text, False, matched_ids, False)
     if arm == "always_on":
         activated = bool(rules)
-        return ArmContext(
-            arm,
-            format_rules(rules),
-            activated,
-            matched_ids,
-            activated and not bool(matched),
-        )
+        return ArmContext(arm, format_rules(rules), activated, matched_ids, activated and not bool(matched))
     activated = bool(matched)
     return ArmContext(arm, format_rules(matched), activated, matched_ids, False)
 
