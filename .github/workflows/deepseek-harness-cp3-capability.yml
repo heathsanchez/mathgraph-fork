@@ -2,12 +2,12 @@ name: DeepSeek Harness accepts learned CP3 capability
 
 on:
   workflow_run:
-    workflows: ["Checkpoint 3 frozen end-to-end pipeline"]
+    workflows: ["Checkpoint 3 protected four-arm evaluation"]
     types: [completed]
   workflow_dispatch:
     inputs:
       run_id:
-        description: "Completed Checkpoint 3 frozen pipeline run id"
+        description: "Completed Checkpoint 3 protected evaluation run id"
         required: true
         type: string
 
@@ -43,7 +43,7 @@ jobs:
       - name: Install Triskelion test/runtime dependencies
         run: python -m pip install -e '.[dev]'
 
-      - name: Download learned CP3 capability from frozen pipeline
+      - name: Download learned CP3 capability carried through protected evaluation
         uses: actions/download-artifact@v4
         with:
           name: cp3-pipeline-capability
