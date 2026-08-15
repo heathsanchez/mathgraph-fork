@@ -43,6 +43,15 @@ jobs:
           repository: ${{ github.repository }}
           run-id: ${{ env.CAPABILITY_RUN_ID }}
 
+      - name: Download immutable capability build for downstream identity chain
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-capability-v1
+          path: capability-build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.CAPABILITY_RUN_ID }}
+
       - name: Checkout pinned BugsInPy metadata and target harness
         run: |
           git init BugsInPy
@@ -116,4 +125,20 @@ jobs:
           name: checkpoint3-protected-eval-v1
           path: checkpoint3-protected-eval-v1
           if-no-files-found: warn
+          retention-days: 90
+
+      - name: Upload handoff-compatible protected evidence alias
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cp3-pipeline-protected-eval
+          path: checkpoint3-protected-eval-v1
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Upload handoff-compatible capability evidence alias
+        uses: actions/upload-artifact@v4
+        with:
+          name: cp3-pipeline-capability
+          path: capability-build
           retention-days: 90
