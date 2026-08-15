@@ -1,0 +1,62 @@
+name: Checkpoint 3 BugsInPy Python 3.6 recovery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [triskelion-runtime-cp1]
+    paths:
+      - .github/workflows/checkpoint3-bugsinpy-python36.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify_python36:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        project: [cookiecutter, ansible, tqdm]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout pinned BugsInPy and derive shard
+        env:
+          PROJECT: ${{ matrix.project }}
+        run: |
+          git init BugsInPy
+          git -C BugsInPy remote add origin https://github.com/soarsmu/BugsInPy.git
+          git -C BugsInPy fetch --depth=1 origin 11c5f1eea954a42132cfd06bf257766a7963e0fd
+          git -C BugsInPy checkout --detach FETCH_HEAD
+          test "$(git -C BugsInPy rev-parse HEAD)" = 11c5f1eea954a42132cfd06bf257766a7963e0fd
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          source = Path('triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json')
+          lock = json.loads(source.read_text())
+          lock['projects'] = [p for p in lock['projects'] if p['project'] == os.environ['PROJECT']]
+          if len(lock['projects']) != 1:
+              raise SystemExit('project shard invariant failed')
+          Path('project-lock.json').write_text(json.dumps(lock, indent=2, sort_keys=True) + '\n')
+          PY
+      - name: Qualify in pinned Python 3.6 container
+        run: |
+          docker run --rm -v "$PWD:/work" -w /work python:3.6.15-buster bash -c '
+            set -e
+            sed -i "s|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g; /buster-updates/d" /etc/apt/sources.list
+            apt-get -o Acquire::Check-Valid-Until=false update
+            apt-get install -y build-essential git libffi-dev libjpeg-dev libxml2-dev libxslt1-dev zlib1g-dev
+            git config --global --add safe.directory /work/BugsInPy
+            python triskelion_runtime/bugsinpy_checkpoint3_qualify_v2.py \
+              --bugsinpy BugsInPy --lock project-lock.json \
+              --out checkpoint3-python36-${{ matrix.project }} --split all --timeout 900
+          '
+      - name: Upload raw evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint3-python36-${{ matrix.project }}
+          path: checkpoint3-python36-${{ matrix.project }}
+          if-no-files-found: warn
+          retention-days: 90
