@@ -8,6 +8,7 @@ from typing import Any, Mapping, Sequence
 QUALIFICATION_PROTOCOL = "TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_V1"
 UPSTREAM_COMMIT = "11c5f1eea954a42132cfd06bf257766a7963e0fd"
 MERGE_PROTOCOL = "TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_MERGE_V1"
+TERMINAL_INFRASTRUCTURE_CLASSIFICATIONS = {"infrastructure_negative", "infrastructure_error"}
 
 
 def _project_order(lock: Mapping[str, Any]) -> list[str]:
@@ -27,8 +28,33 @@ def _project_order(lock: Mapping[str, Any]) -> list[str]:
 def _frozen_rank_key(row: Mapping[str, Any]) -> str:
     value = row.get("rank")
     if not isinstance(value, str) or not value:
-        raise ValueError(f"qualification attempt missing frozen rank key: {row.get('project')}/{row.get('bug_id')}")
+        raise ValueError(
+            f"qualification attempt missing frozen rank key: {row.get('project')}/{row.get('bug_id')}"
+        )
     return value
+
+
+def _terminal_statuses(summary: Mapping[str, Any], project_rank: Mapping[str, int]) -> list[dict[str, Any]]:
+    raw = summary.get("project_terminal_statuses", [])
+    if not isinstance(raw, list):
+        raise ValueError("project_terminal_statuses must be an array")
+    out: list[dict[str, Any]] = []
+    for item in raw:
+        if not isinstance(item, Mapping):
+            raise ValueError("project terminal status must be an object")
+        project = item.get("project")
+        if project not in project_rank:
+            raise ValueError(f"terminal status project outside frozen lock: {project}")
+        classification = item.get("classification")
+        if classification not in TERMINAL_INFRASTRUCTURE_CLASSIFICATIONS:
+            raise ValueError(f"invalid project terminal classification: {classification}")
+        stage = item.get("stage")
+        if not isinstance(stage, str) or not stage:
+            raise ValueError(f"project terminal status missing stage: {project}")
+        row = dict(item)
+        row["project"] = str(project)
+        out.append(row)
+    return out
 
 
 def merge_qualification_evidence(
@@ -44,6 +70,7 @@ def merge_qualification_evidence(
     selected_by_project: dict[str, dict[str, Any]] = {}
     evidence_projects: set[str] = set()
     attempts: list[dict[str, Any]] = []
+    terminal_status_by_project: dict[str, dict[str, Any]] = {}
     revisions: set[str] = set()
 
     for summary, source_attempts in sources:
@@ -66,8 +93,16 @@ def merge_qualification_evidence(
             if project not in project_rank:
                 raise ValueError(f"attempt references project outside frozen lock: {project}")
             _frozen_rank_key(row)
-            evidence_projects.add(project)
+            evidence_projects.add(str(project))
             attempts.append(dict(row))
+
+        for status in _terminal_statuses(summary, project_rank):
+            project = status["project"]
+            previous = terminal_status_by_project.get(project)
+            if previous is not None and previous != status:
+                raise ValueError(f"conflicting project terminal evidence: {project}")
+            terminal_status_by_project[project] = status
+            evidence_projects.add(project)
 
         selected = summary.get("selected", [])
         if not isinstance(selected, list):
@@ -80,11 +115,11 @@ def merge_qualification_evidence(
                 raise ValueError(f"selected project outside frozen lock: {project}")
             _frozen_rank_key(raw)
             row = dict(raw)
-            previous = selected_by_project.get(project)
+            previous = selected_by_project.get(str(project))
             if previous is not None and previous != row:
                 raise ValueError(f"conflicting selected evidence for project: {project}")
-            selected_by_project[project] = row
-            evidence_projects.add(project)
+            selected_by_project[str(project)] = row
+            evidence_projects.add(str(project))
 
     attempts.sort(key=lambda row: (project_rank[row["project"]], _frozen_rank_key(row)))
 
@@ -99,6 +134,8 @@ def merge_qualification_evidence(
     for project in order:
         if project not in selected_by_project:
             continue
+        if project in terminal_status_by_project:
+            raise ValueError(f"project cannot be both selected and terminal-only evidence: {project}")
         row = dict(selected_by_project[project])
         key = (project, str(row.get("bug_id")))
         matching = qualified_attempts.get(key, [])
@@ -112,6 +149,7 @@ def merge_qualification_evidence(
         row["python_version_declared"] = declared
         selected.append(row)
 
+    terminal_statuses = [terminal_status_by_project[p] for p in order if p in terminal_status_by_project]
     missing_evidence = [p for p in order if p not in evidence_projects]
     result = {
         "protocol": QUALIFICATION_PROTOCOL,
@@ -122,10 +160,17 @@ def merge_qualification_evidence(
         "projects_missing_evidence": missing_evidence,
         "attempt_count": len(attempts),
         "qualified_projects": len(selected),
-        "infrastructure_negatives": sum(row.get("classification") != "qualified" for row in attempts),
+        "infrastructure_negatives": (
+            sum(row.get("classification") != "qualified" for row in attempts)
+            + len(terminal_statuses)
+        ),
+        "project_terminal_statuses": terminal_statuses,
         "harness_revisions": sorted(revisions),
         "selected": selected,
-        "selection_order": "original frozen BUGSINPY_CORPUS_LOCK_V1 project order then frozen hexadecimal rank key",
+        "selection_order": (
+            "original frozen BUGSINPY_CORPUS_LOCK_V1 project order then frozen hexadecimal rank key; "
+            "project-level workflow terminal evidence is recorded separately and never mapped to a candidate"
+        ),
     }
     return result, attempts
 
@@ -151,10 +196,16 @@ def main() -> None:
     lock = json.loads(args.lock.read_text())
     if not isinstance(lock, Mapping):
         raise SystemExit("lock root must be an object")
-    result, attempts = merge_qualification_evidence([_load_source(path) for path in args.source], lock=lock)
+    result, attempts = merge_qualification_evidence(
+        [_load_source(path) for path in args.source], lock=lock
+    )
     args.out.mkdir(parents=True)
-    (args.out / "QUALIFIED_CORPUS.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
-    (args.out / "QUALIFICATION_ATTEMPTS.json").write_text(json.dumps(attempts, indent=2, sort_keys=True) + "\n")
+    (args.out / "QUALIFIED_CORPUS.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n"
+    )
+    (args.out / "QUALIFICATION_ATTEMPTS.json").write_text(
+        json.dumps(attempts, indent=2, sort_keys=True) + "\n"
+    )
     print(json.dumps(result, indent=2, sort_keys=True))
 
 
