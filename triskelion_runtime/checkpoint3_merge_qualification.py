@@ -24,13 +24,20 @@ def _project_order(lock: Mapping[str, Any]) -> list[str]:
     return order
 
 
+def _frozen_rank_key(row: Mapping[str, Any]) -> str:
+    value = row.get("rank")
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"qualification attempt missing frozen rank key: {row.get('project')}/{row.get('bug_id')}")
+    return value
+
+
 def merge_qualification_evidence(
     sources: Sequence[tuple[Mapping[str, Any], Sequence[Mapping[str, Any]]]],
     *,
     lock: Mapping[str, Any],
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     order = _project_order(lock)
-    rank = {project: i for i, project in enumerate(order)}
+    project_rank = {project: i for i, project in enumerate(order)}
     if lock.get("commit") != UPSTREAM_COMMIT:
         raise ValueError("lock upstream commit mismatch")
 
@@ -56,8 +63,9 @@ def merge_qualification_evidence(
             if not isinstance(row, Mapping):
                 raise ValueError("attempt rows must be objects")
             project = row.get("project")
-            if project not in rank:
+            if project not in project_rank:
                 raise ValueError(f"attempt references project outside frozen lock: {project}")
+            _frozen_rank_key(row)
             evidence_projects.add(project)
             attempts.append(dict(row))
 
@@ -68,8 +76,9 @@ def merge_qualification_evidence(
             if not isinstance(raw, Mapping):
                 raise ValueError("selected rows must be objects")
             project = raw.get("project")
-            if project not in rank:
+            if project not in project_rank:
                 raise ValueError(f"selected project outside frozen lock: {project}")
+            _frozen_rank_key(raw)
             row = dict(raw)
             previous = selected_by_project.get(project)
             if previous is not None and previous != row:
@@ -77,7 +86,7 @@ def merge_qualification_evidence(
             selected_by_project[project] = row
             evidence_projects.add(project)
 
-    attempts.sort(key=lambda row: (rank[row["project"]], int(row.get("rank", 10**9))))
+    attempts.sort(key=lambda row: (project_rank[row["project"]], _frozen_rank_key(row)))
 
     qualified_attempts: dict[tuple[str, str], list[dict[str, Any]]] = {}
     for row in attempts:
@@ -113,12 +122,10 @@ def merge_qualification_evidence(
         "projects_missing_evidence": missing_evidence,
         "attempt_count": len(attempts),
         "qualified_projects": len(selected),
-        "infrastructure_negatives": sum(
-            row.get("classification") != "qualified" for row in attempts
-        ),
+        "infrastructure_negatives": sum(row.get("classification") != "qualified" for row in attempts),
         "harness_revisions": sorted(revisions),
         "selected": selected,
-        "selection_order": "original frozen BUGSINPY_CORPUS_LOCK_V1 project order",
+        "selection_order": "original frozen BUGSINPY_CORPUS_LOCK_V1 project order then frozen hexadecimal rank key",
     }
     return result, attempts
 
@@ -136,29 +143,18 @@ def _load_source(path: Path) -> tuple[Mapping[str, Any], Sequence[Mapping[str, A
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", action="append", type=Path, required=True)
-    ap.add_argument(
-        "--lock",
-        type=Path,
-        default=Path(__file__).with_name("BUGSINPY_CORPUS_LOCK_V1.json"),
-    )
+    ap.add_argument("--lock", type=Path, default=Path(__file__).with_name("BUGSINPY_CORPUS_LOCK_V1.json"))
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
     if args.out.exists():
         raise SystemExit("output exists; refusing to overwrite merged qualification evidence")
-
     lock = json.loads(args.lock.read_text())
     if not isinstance(lock, Mapping):
         raise SystemExit("lock root must be an object")
-    result, attempts = merge_qualification_evidence(
-        [_load_source(path) for path in args.source], lock=lock
-    )
+    result, attempts = merge_qualification_evidence([_load_source(path) for path in args.source], lock=lock)
     args.out.mkdir(parents=True)
-    (args.out / "QUALIFIED_CORPUS.json").write_text(
-        json.dumps(result, indent=2, sort_keys=True) + "\n"
-    )
-    (args.out / "QUALIFICATION_ATTEMPTS.json").write_text(
-        json.dumps(attempts, indent=2, sort_keys=True) + "\n"
-    )
+    (args.out / "QUALIFIED_CORPUS.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    (args.out / "QUALIFICATION_ATTEMPTS.json").write_text(json.dumps(attempts, indent=2, sort_keys=True) + "\n")
     print(json.dumps(result, indent=2, sort_keys=True))
 
 
