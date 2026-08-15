@@ -22,6 +22,7 @@
     "fixed_commit": false,
     "gold_patch": false
   },
+  "scope_router_context": "deterministic concatenation of truncated repository file tree, protected regression failure, and protected regression test source before any model call; call-1-selected source cannot change activation",
   "context_limits": {
     "repository_tree_chars": 12000,
     "baseline_failure_chars": 12000,
@@ -33,7 +34,7 @@
   },
   "call_1": {
     "purpose": "select repair-relevant production files from visible buggy context",
-    "output": "one JSON object with key files, an array of at most 4 safe repository-relative production file paths",
+    "output": "one JSON object with key files, an array of at most 4 safe repository-relative existing Python production file paths",
     "invalid_output": "competence_failure_no_patch",
     "no_retry": true
   },
@@ -41,6 +42,7 @@
     "purpose": "produce one unified git diff against the buggy checkout",
     "input": "same visible baseline plus call-1-selected buggy source and arm context",
     "output": "one unified diff in a diff fenced block or raw unified diff",
+    "changed_paths": "subset of call-1-selected files only",
     "invalid_output": "competence_failure_no_patch",
     "no_retry": true
   },
@@ -48,15 +50,15 @@
     "cold": "none",
     "raw_memory": "all frozen acquisition RAW_MEMORY records in frozen acquisition order",
     "always_on": "all admitted public compiled repair rules",
-    "verified": "only admitted public compiled repair rules whose frozen literal scope router matches the visible protected context"
+    "verified": "only admitted public compiled repair rules whose frozen literal scope router matches the scope_router_context"
   },
   "activation": {
     "cold": false,
     "raw_memory": false,
     "always_on": "true iff the frozen capability contains at least one admitted rule",
-    "verified": "true iff at least one admitted rule matches the frozen visible protected context"
+    "verified": "true iff at least one admitted rule matches scope_router_context"
   },
-  "false_activation": "activated is true while the deterministic frozen scope router matches zero admitted rules to the visible protected context",
+  "false_activation": "activated is true while the deterministic frozen scope router matches zero admitted rules to scope_router_context",
   "misapplication": "activated is true, a syntactically valid patch is produced and applies cleanly to the buggy checkout, but the protected regression test still fails",
   "competence_failure": "model output invalid, no patch produced, patch rejected by path safety, patch does not apply, or protected regression test executes and fails",
   "repair_success": "patch applies cleanly and all frozen protected regression commands pass in the qualified historical environment",
@@ -69,9 +71,11 @@
   },
   "patch_safety": {
     "repository_relative_paths_only": true,
+    "changed_paths_subset_of_call_1_selection": true,
     "no_test_file_modification": true,
     "no_git_metadata_modification": true,
     "no_binary_patch": true,
+    "no_file_creation_deletion_or_rename": true,
     "no_file_outside_buggy_checkout": true
   },
   "stopping_rule": "evaluate every frozen qualified protected case exactly once in each of the four arms, two model calls maximum per case-arm, then stop",
