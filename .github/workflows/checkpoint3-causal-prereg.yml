@@ -7,13 +7,16 @@ on:
     paths:
       - .github/workflows/checkpoint3-causal-prereg.yml
       - triskelion_runtime/CHECKPOINT3_CAUSAL_PROTOCOL_V1.json
+      - triskelion_runtime/CHECKPOINT3_CAPABILITY_BUILD_V1.json
       - triskelion_runtime/checkpoint3_causal_protocol.py
       - triskelion_runtime/checkpoint3_merge_qualification.py
       - triskelion_runtime/checkpoint3_freeze_causal_corpus.py
+      - triskelion_runtime/checkpoint3_capability.py
       - triskelion_runtime/checkpoint3_causal_results.py
       - tests/test_checkpoint3_causal_protocol.py
       - tests/test_checkpoint3_merge_qualification.py
       - tests/test_checkpoint3_freeze_causal_corpus.py
+      - tests/test_checkpoint3_capability.py
       - tests/test_checkpoint3_causal_results.py
 
 permissions:
@@ -29,10 +32,11 @@ jobs:
           python-version: '3.11'
       - name: Install test dependency
         run: python -m pip install -r requirements.txt
-      - name: Validate frozen protocol, merge, corpus and result boundaries
+      - name: Validate frozen CP3 boundaries
         run: |
           python -m pytest -q \
             tests/test_checkpoint3_causal_protocol.py \
             tests/test_checkpoint3_merge_qualification.py \
             tests/test_checkpoint3_freeze_causal_corpus.py \
+            tests/test_checkpoint3_capability.py \
             tests/test_checkpoint3_causal_results.py
