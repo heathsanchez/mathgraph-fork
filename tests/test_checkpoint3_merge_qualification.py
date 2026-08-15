@@ -22,12 +22,16 @@ def lock_fixture() -> dict:
     }
 
 
-def summary(selected: list[dict], revision: str) -> dict:
+def selected(project: str, bug_id: str, rank: str, split: str) -> dict:
+    return {"project": project, "bug_id": bug_id, "rank": rank, "split": split}
+
+
+def summary(rows: list[dict], revision: str) -> dict:
     return {
         "protocol": QUALIFICATION_PROTOCOL,
         "upstream_commit": UPSTREAM_COMMIT,
         "harness_revision": revision,
-        "selected": selected,
+        "selected": rows,
     }
 
 
@@ -52,8 +56,8 @@ def test_merge_restores_original_frozen_project_order_and_hex_rank_order_across_
         (
             summary(
                 [
-                    {"project": "pandas", "bug_id": "5", "split": "acquisition"},
-                    {"project": "tqdm", "bug_id": "2", "split": "protected"},
+                    selected("pandas", "5", "a100", "acquisition"),
+                    selected("tqdm", "2", "f000", "protected"),
                 ],
                 "V2_3",
             ),
@@ -64,10 +68,7 @@ def test_merge_restores_original_frozen_project_order_and_hex_rank_order_across_
             ],
         ),
         (
-            summary(
-                [{"project": "ansible", "bug_id": "7", "split": "protected"}],
-                "V2_2",
-            ),
+            summary([selected("ansible", "7", "00ff", "protected")], "V2_2"),
             [attempt("ansible", "7", "00ff", python_version="3.6")],
         ),
     ]
@@ -90,7 +91,7 @@ def test_merge_restores_original_frozen_project_order_and_hex_rank_order_across_
 def test_merge_reports_missing_evidence_without_silently_dropping_project() -> None:
     sources = [
         (
-            summary([{"project": "pandas", "bug_id": "5", "split": "acquisition"}], "V2_3"),
+            summary([selected("pandas", "5", "abc0", "acquisition")], "V2_3"),
             [attempt("pandas", "5", "abc0")],
         )
     ]
@@ -99,9 +100,10 @@ def test_merge_reports_missing_evidence_without_silently_dropping_project() -> N
 
 
 def test_merge_rejects_conflicting_selected_evidence_for_same_project() -> None:
-    first = summary([{"project": "ansible", "bug_id": "7", "split": "protected"}], "V2_1")
+    first = summary([selected("ansible", "7", "a100", "protected")], "V2_1")
     second = copy.deepcopy(first)
     second["selected"][0]["bug_id"] = "8"
+    second["selected"][0]["rank"] = "b100"
 
     with pytest.raises(ValueError, match="conflicting selected evidence"):
         merge_qualification_evidence(
@@ -114,7 +116,7 @@ def test_merge_rejects_conflicting_selected_evidence_for_same_project() -> None:
 
 
 def test_merge_rejects_project_outside_frozen_lock() -> None:
-    bad = summary([{"project": "unknown", "bug_id": "1", "split": "protected"}], "V2")
+    bad = summary([selected("unknown", "1", "c100", "protected")], "V2")
     with pytest.raises(ValueError, match="outside frozen lock"):
         merge_qualification_evidence(
             [(bad, [attempt("unknown", "1", "c100")])], lock=lock_fixture()
@@ -122,8 +124,8 @@ def test_merge_rejects_project_outside_frozen_lock() -> None:
 
 
 def test_merge_rejects_selected_case_without_declared_python_runtime() -> None:
-    selected = summary([{"project": "pandas", "bug_id": "5", "split": "acquisition"}], "V2")
+    selected_summary = summary([selected("pandas", "5", "deadbeef", "acquisition")], "V2")
     bad_attempt = attempt("pandas", "5", "deadbeef")
     bad_attempt.pop("python_version_declared")
     with pytest.raises(ValueError, match="missing python_version_declared"):
-        merge_qualification_evidence([(selected, [bad_attempt])], lock=lock_fixture())
+        merge_qualification_evidence([(selected_summary, [bad_attempt])], lock=lock_fixture())
