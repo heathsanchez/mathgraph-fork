@@ -1,0 +1,137 @@
+name: Checkpoint 3 finalize qualification
+
+on:
+  workflow_dispatch:
+    inputs:
+      main_run_id:
+        description: "Completed 17-project qualification workflow run ID"
+        required: true
+        default: "31854063331"
+        type: string
+      python36_run_id:
+        description: "Completed Python 3.6 recovery workflow run ID"
+        required: true
+        default: "31853292021"
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  finalize:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Download main qualification aggregate
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-qualification-all
+          path: sources/main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.main_run_id }}
+
+      - name: Download Python 3.6 ansible recovery
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-python36-ansible
+          path: sources/ansible
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.python36_run_id }}
+
+      - name: Download Python 3.6 cookiecutter recovery
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-python36-cookiecutter
+          path: sources/cookiecutter
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.python36_run_id }}
+
+      - name: Download Python 3.6 tqdm recovery
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-python36-tqdm
+          path: sources/tqdm
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.python36_run_id }}
+
+      - name: Merge qualification evidence in frozen project order
+        run: |
+          python triskelion_runtime/checkpoint3_merge_qualification.py \
+            --source sources/main \
+            --source sources/ansible \
+            --source sources/cookiecutter \
+            --source sources/tqdm \
+            --out finalized/checkpoint3-qualification-final
+
+      - name: Require evidence for all frozen projects
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json')
+          data = json.loads(path.read_text())
+          if data['frozen_project_count'] != 17:
+              raise SystemExit(f"unexpected frozen project count: {data['frozen_project_count']}")
+          if data['projects_with_evidence'] != 17 or data['projects_missing_evidence']:
+              raise SystemExit(
+                  f"qualification evidence incomplete: {data['projects_with_evidence']}/17; "
+                  f"missing={data['projects_missing_evidence']}"
+              )
+          print(json.dumps({
+              'frozen_project_count': data['frozen_project_count'],
+              'projects_with_evidence': data['projects_with_evidence'],
+              'qualified_projects': data['qualified_projects'],
+              'attempt_count': data['attempt_count'],
+              'infrastructure_negatives': data['infrastructure_negatives'],
+              'harness_revisions': data['harness_revisions'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Freeze sanitized causal corpus
+        run: |
+          python triskelion_runtime/checkpoint3_freeze_causal_corpus.py \
+            --qualification finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json \
+            --out finalized/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+
+      - name: Validate protected gold boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from triskelion_runtime.checkpoint3_freeze_causal_corpus import PROTECTED_FORBIDDEN_FIELDS
+          data = json.loads(Path('finalized/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json').read_text())
+          for case in data['protected']:
+              leaked = PROTECTED_FORBIDDEN_FIELDS.intersection(case)
+              if leaked:
+                  raise SystemExit(f"protected leakage: {sorted(leaked)}")
+          print(json.dumps({
+              'qualified_project_count': data['qualified_project_count'],
+              'acquisition_count': data['acquisition_count'],
+              'protected_count': data['protected_count'],
+              'causal_protocol_sha256': data['causal_protocol_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload finalized immutable qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint3-qualification-final
+          path: finalized/checkpoint3-qualification-final
+          retention-days: 90
+
+      - name: Upload sanitized causal corpus
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint3-causal-corpus-v1
+          path: finalized/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+          retention-days: 90
