@@ -15,6 +15,14 @@ def run_git(repo, args, timeout=180):
     return {"returncode": proc.returncode, "output": proc.stdout[-4000:]}
 
 
+def mark_safe(repo):
+    proc = subprocess.run(
+        ["git", "config", "--global", "--add", "safe.directory", str(repo.resolve())],
+        universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    )
+    return proc.returncode == 0
+
+
 def compact_test(test, output_limit=10000):
     if not isinstance(test, dict):
         return test
@@ -25,20 +33,12 @@ def compact_test(test, output_limit=10000):
             continue
         output = str(step.get("output") or "")
         take = min(len(output), max(0, remaining))
-        compact = {
-            "command": step.get("command"),
-            "returncode": step.get("returncode"),
-            "timeout": bool(step.get("timeout", False)),
-            "output": output[-take:] if take else "",
-        }
+        rows.append({
+            "command": step.get("command"), "returncode": step.get("returncode"),
+            "timeout": bool(step.get("timeout", False)), "output": output[-take:] if take else "",
+        })
         remaining -= take
-        rows.append(compact)
-    return {
-        "ok": test.get("ok"),
-        "stage": test.get("stage"),
-        "test_passed": test.get("test_passed"),
-        "steps": rows,
-    }
+    return {"ok": test.get("ok"), "stage": test.get("stage"), "test_passed": test.get("test_passed"), "steps": rows}
 
 
 def load_bundle_case(bundle, case_index):
@@ -50,6 +50,8 @@ def load_bundle_case(bundle, case_index):
 
 
 def restore_pristine(repo, buggy_commit, bundle, case_index):
+    if not mark_safe(repo):
+        return {"ok": False, "stage": "safe_directory"}
     reset = run_git(repo, ["reset", "--hard", buggy_commit])
     if reset["returncode"] != 0:
         return {"ok": False, "stage": "reset", "detail": reset}
@@ -102,19 +104,11 @@ def evaluate(repo, buggy_commit, bug_dir, bundle, case_index, patch_path, timeou
         return {"ok": False, "classification": "infrastructure_error", "stage": pristine["stage"]}
     patch = apply_patch(repo, patch_path, timeout=min(timeout, 180))
     if not patch["ok"]:
-        return {
-            "ok": True, "classification": "competence", "stage": patch["stage"],
-            "patch_applied": False, "test_executed": False, "repaired": False,
-            "patch_output": patch.get("output", ""),
-        }
+        return {"ok": True, "classification": "competence", "stage": patch["stage"], "patch_applied": False, "test_executed": False, "repaired": False, "patch_output": patch.get("output", "")}
     test = compact_test(relevant_tests(repo, bug_dir, timeout), 6000)
     if not test.get("ok"):
         return {"ok": False, "classification": "infrastructure_error", "stage": "test_harness", "patch_applied": True, "test": test}
-    return {
-        "ok": True, "classification": "competence", "stage": "complete",
-        "patch_applied": True, "test_executed": True,
-        "repaired": bool(test.get("test_passed")), "test": test,
-    }
+    return {"ok": True, "classification": "competence", "stage": "complete", "patch_applied": True, "test_executed": True, "repaired": bool(test.get("test_passed")), "test": test}
 
 
 def main():
