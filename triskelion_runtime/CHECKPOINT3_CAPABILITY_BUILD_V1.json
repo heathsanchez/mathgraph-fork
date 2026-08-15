@@ -20,6 +20,16 @@
     "fixed_regression_output": true,
     "gold_diff": true
   },
+  "evidence_reconstruction": {
+    "source": "finalized immutable qualification attempts plus exact buggy-to-fixed git diff",
+    "rerun_historical_provisioning": false,
+    "git_diff_command": "git diff --no-ext-diff --unified=5 BUGGY FIXED --",
+    "reconstruction_failure": "abort_build",
+    "max_gold_diff_chars": 24000,
+    "max_buggy_regression_chars": 12000,
+    "max_fixed_regression_chars": 6000,
+    "truncation": "head_tail_equal_halves_with_explicit_omission_marker"
+  },
   "rule_schema": {
     "required_fields": [
       "title",
