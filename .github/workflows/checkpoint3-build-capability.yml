@@ -1,6 +1,10 @@
 name: Checkpoint 3 build acquisition capability
 
 on:
+  push:
+    branches: [triskelion-runtime-cp1]
+    paths:
+      - .github/workflows/checkpoint3-build-capability.yml
   workflow_run:
     workflows: ["Checkpoint 3 finalize qualification"]
     types: [completed]
@@ -18,11 +22,11 @@ permissions:
 env:
   RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
   PYTHONDONTWRITEBYTECODE: "1"
-  FINALIZER_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.finalizer_run_id }}
+  FINALIZER_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || github.event_name == 'workflow_dispatch' && inputs.finalizer_run_id || '31878237851' }}
 
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'triskelion-runtime-cp1')
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'triskelion-runtime-cp1')
     runs-on: ubuntu-22.04
     timeout-minutes: 60
     steps:
