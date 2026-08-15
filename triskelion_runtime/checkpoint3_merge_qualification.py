@@ -78,9 +78,32 @@ def merge_qualification_evidence(
             evidence_projects.add(project)
 
     attempts.sort(key=lambda row: (rank[row["project"]], int(row.get("rank", 10**9))))
-    selected = [selected_by_project[p] for p in order if p in selected_by_project]
-    missing_evidence = [p for p in order if p not in evidence_projects]
 
+    qualified_attempts: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for row in attempts:
+        if row.get("classification") != "qualified":
+            continue
+        key = (str(row.get("project")), str(row.get("bug_id")))
+        qualified_attempts.setdefault(key, []).append(row)
+
+    selected: list[dict[str, Any]] = []
+    for project in order:
+        if project not in selected_by_project:
+            continue
+        row = dict(selected_by_project[project])
+        key = (project, str(row.get("bug_id")))
+        matching = qualified_attempts.get(key, [])
+        if len(matching) != 1:
+            raise ValueError(
+                f"selected case must have exactly one qualified attempt for runtime metadata: {project}/{row.get('bug_id')}"
+            )
+        declared = matching[0].get("python_version_declared")
+        if not isinstance(declared, str) or not declared:
+            raise ValueError(f"selected case missing python_version_declared: {project}")
+        row["python_version_declared"] = declared
+        selected.append(row)
+
+    missing_evidence = [p for p in order if p not in evidence_projects]
     result = {
         "protocol": QUALIFICATION_PROTOCOL,
         "merge_protocol": MERGE_PROTOCOL,
