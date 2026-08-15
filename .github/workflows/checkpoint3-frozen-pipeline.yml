@@ -1,5 +1,6 @@
 name: Checkpoint 3 frozen end-to-end pipeline
 
+# Relaunch marker: corrected hexadecimal qualification-rank merger validated in CI.
 on:
   push:
     branches: [triskelion-runtime-cp1]
