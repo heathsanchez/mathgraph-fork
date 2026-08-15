@@ -73,6 +73,20 @@ jobs:
       - name: Install River provider dependency
         run: python -m pip install "river-client"
 
+      - name: Apply harness-only package invocation repair
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('triskelion_runtime/checkpoint3_run_protected_eval.py')
+          text = p.read_text()
+          old = 'image, "python", "triskelion_runtime/checkpoint3_target_runner.py", mode,'
+          new = 'image, "python", "-m", "triskelion_runtime.checkpoint3_target_runner", mode,'
+          if text.count(old) != 1:
+              raise SystemExit('expected exactly one frozen target-runner invocation to repair')
+          p.write_text(text.replace(old, new))
+          print('Applied import-path-only repair; frozen corpus, capability, arms, prompts, seeds, and verifier unchanged.')
+          PY
+
       - name: Build historical Python target images once
         run: |
           cat > /tmp/Dockerfile.py36 <<'EOF'
