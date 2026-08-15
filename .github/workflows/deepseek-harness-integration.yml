@@ -26,6 +26,13 @@ jobs:
       - run: python -m pip install -e '.[dev]'
       - name: Test lifecycle, content identity, routing and ablation
         run: pytest -q tests/test_deepseek_harness_bridge.py tests/test_checkpoint3_eval_core.py
+      - name: Exercise full acceptance runner on non-scientific smoke capability
+        env:
+          TRISKELION_REPO_ROOT: ${{ github.workspace }}
+        run: |
+          python integrations/deepseek-harness/accept_capability.py \
+            integrations/deepseek-harness/SMOKE_CAPABILITY.json \
+            --visible-context 'triskelion-smoke-trigger'
 
   harness-plugin:
     runs-on: ubuntu-latest
