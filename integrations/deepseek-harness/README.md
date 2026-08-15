@@ -59,6 +59,26 @@ pnpm dsh web --patch scratch-plugin/triskelion/cordis.yml
 
 Open `http://127.0.0.1:3080` and ask the agent to call `triskelion_status`.
 
+## Immediate integration smoke test
+
+`SMOKE_CAPABILITY.json` exists only to verify the Harness lifecycle. It is explicitly **not scientific evidence** and should never be reported as a learned capability result.
+
+In Harness, call:
+
+```text
+triskelion_install({"capability_path":"integrations/deepseek-harness/SMOKE_CAPABILITY.json"})
+```
+
+Then:
+
+```text
+triskelion_route({"visible_context":"triskelion-smoke-trigger"})
+```
+
+The route should activate `smoke-rule-v1`. Disable the returned capability id and call the same route again; it must not activate. Re-enable and it must activate again. Uninstall and it must disappear from `triskelion_status`.
+
+This proves only that native Harness → Triskelion lifecycle/routing plumbing works. The real demo substitutes a verifier-produced capability and an externally decided unseen task.
+
 ## Install a learned capability
 
 After a capability build has produced a `CAPABILITY.json`, place or copy it somewhere inside this repository, for example:
@@ -117,6 +137,8 @@ pytest -q tests/test_deepseek_harness_bridge.py tests/test_checkpoint3_eval_core
 ```
 
 The TypeScript plugin follows DeepSeek Harness's current native tool contract (`@deepseek-ai/cordis` + `@deepseek-ai/dsh-tools`) and is intentionally pinned to the upstream Harness revision above because Harness is still in developer preview.
+
+A GitHub Actions workflow at `.github/workflows/deepseek-harness-integration.yml` checks the Python lifecycle and imports the plugin against the pinned upstream Harness packages.
 
 ## Architecture
 
