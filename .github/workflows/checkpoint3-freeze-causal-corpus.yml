@@ -1,0 +1,70 @@
+name: Checkpoint 3 freeze causal corpus
+
+on:
+  workflow_dispatch:
+    inputs:
+      qualification_run_id:
+        description: "Completed Checkpoint 3 qualification workflow run ID"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  freeze:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Download immutable qualification aggregate
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-qualification-all
+          path: qualification
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.qualification_run_id }}
+
+      - name: Freeze sanitized causal corpus
+        run: |
+          python triskelion_runtime/checkpoint3_freeze_causal_corpus.py \
+            --qualification qualification/QUALIFIED_CORPUS.json \
+            --out causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+
+      - name: Validate protected boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from triskelion_runtime.checkpoint3_causal_protocol import load_default_protocol
+          from triskelion_runtime.checkpoint3_freeze_causal_corpus import PROTECTED_FORBIDDEN_FIELDS
+
+          protocol = load_default_protocol()
+          data = json.loads(Path('causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json').read_text())
+          assert data['causal_protocol'] == protocol.protocol
+          assert data['qualified_project_count'] == data['acquisition_count'] + data['protected_count']
+          assert data['protected_count'] > 0
+          for case in data['protected']:
+              leaked = PROTECTED_FORBIDDEN_FIELDS.intersection(case)
+              if leaked:
+                  raise SystemExit(f'protected leakage: {sorted(leaked)}')
+          print(json.dumps({
+              'qualified_project_count': data['qualified_project_count'],
+              'acquisition_count': data['acquisition_count'],
+              'protected_count': data['protected_count'],
+              'causal_protocol_sha256': data['causal_protocol_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload sanitized frozen causal corpus
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint3-causal-corpus-v1
+          path: causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+          retention-days: 90
