@@ -8,12 +8,14 @@ on:
       - .github/workflows/checkpoint3-causal-prereg.yml
       - triskelion_runtime/CHECKPOINT3_CAUSAL_PROTOCOL_V1.json
       - triskelion_runtime/CHECKPOINT3_CAPABILITY_BUILD_V1.json
+      - triskelion_runtime/CHECKPOINT3_PROTECTED_EVAL_V1.json
       - triskelion_runtime/checkpoint3_causal_protocol.py
       - triskelion_runtime/checkpoint3_merge_qualification.py
       - triskelion_runtime/checkpoint3_protected_tests.py
       - triskelion_runtime/checkpoint3_freeze_causal_corpus.py
       - triskelion_runtime/checkpoint3_capability.py
       - triskelion_runtime/checkpoint3_build_capability.py
+      - triskelion_runtime/checkpoint3_eval_core.py
       - triskelion_runtime/checkpoint3_causal_results.py
       - tests/test_checkpoint3_causal_protocol.py
       - tests/test_checkpoint3_merge_qualification.py
@@ -21,6 +23,7 @@ on:
       - tests/test_checkpoint3_freeze_causal_corpus.py
       - tests/test_checkpoint3_capability.py
       - tests/test_checkpoint3_build_capability.py
+      - tests/test_checkpoint3_eval_core.py
       - tests/test_checkpoint3_causal_results.py
 
 permissions:
@@ -45,4 +48,5 @@ jobs:
             tests/test_checkpoint3_freeze_causal_corpus.py \
             tests/test_checkpoint3_capability.py \
             tests/test_checkpoint3_build_capability.py \
+            tests/test_checkpoint3_eval_core.py \
             tests/test_checkpoint3_causal_results.py
