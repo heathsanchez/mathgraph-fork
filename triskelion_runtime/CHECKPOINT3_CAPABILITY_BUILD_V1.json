@@ -1,0 +1,66 @@
+{
+  "protocol": "TRISKELION_BUGSINPY_CHECKPOINT3_CAPABILITY_BUILD_V1",
+  "causal_protocol": "TRISKELION_BUGSINPY_CHECKPOINT3_CAUSAL_V1",
+  "frozen_before_protected_evaluation": true,
+  "input_split": "acquisition",
+  "protected_access_during_build": "forbidden",
+  "compiler": {
+    "provider": "river",
+    "model": "Qwen/Qwen3.5-9B",
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "seed_base": 20260818,
+    "calls_per_acquisition_case": 1,
+    "retry_on_invalid_output": false
+  },
+  "acquisition_visibility": {
+    "buggy_source": true,
+    "fixed_source": true,
+    "buggy_regression_output": true,
+    "fixed_regression_output": true,
+    "gold_diff": true
+  },
+  "rule_schema": {
+    "required_fields": [
+      "title",
+      "required_any",
+      "required_all",
+      "forbidden_any",
+      "repair_instruction"
+    ],
+    "max_rules_per_case": 1,
+    "max_signatures_per_field": 8,
+    "signature_min_chars": 2,
+    "signature_max_chars": 80,
+    "repair_instruction_max_chars": 1200,
+    "require_at_least_one_positive_signature": true
+  },
+  "identity_leakage_policy": {
+    "forbid_project_name": true,
+    "forbid_bug_id": true,
+    "forbid_commit_hashes": true,
+    "forbid_absolute_paths": true,
+    "forbid_exact_fixed_patch": true
+  },
+  "admission_policy": {
+    "admit_every_schema_valid_compiler_output": true,
+    "manual_rule_selection": "forbidden",
+    "manual_rule_editing": "forbidden",
+    "manual_rule_deletion": "forbidden",
+    "invalid_compiler_output": "record_compile_failure_and_continue"
+  },
+  "scope_policy": {
+    "normalization": "unicode_casefold_then_whitespace_collapse",
+    "positive_rule": "all required_all signatures and at least one required_any signature match; when required_any is empty, nonempty required_all is sufficient",
+    "negative_rule": "no forbidden_any signature may match",
+    "matching": "literal_substring",
+    "verified_context": "only matching admitted rules",
+    "always_on_context": "all admitted rules"
+  },
+  "raw_memory_policy": {
+    "representation": "deterministic acquisition evidence records containing failure summary and gold diff",
+    "manual_selection": "forbidden",
+    "ordering": "frozen acquisition project order"
+  },
+  "capability_id": "sha256_of_canonical_compiler_protocol_plus_all_admitted_rules_and_compile_failures"
+}
