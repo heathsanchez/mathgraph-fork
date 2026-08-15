@@ -146,6 +146,17 @@ jobs:
           print(json.dumps(receipt, indent=2, sort_keys=True))
           PY
 
+      - name: Independently verify complete CP3 to Harness evidence chain
+        run: |
+          python integrations/deepseek-harness/verify_cp3_handoff.py \
+            --capability .triskelion/imports/cp3/CAPABILITY.json \
+            --build-summary .triskelion/imports/cp3/BUILD_SUMMARY.json \
+            --rows .triskelion/imports/cp3-eval/ROWS.json \
+            --results .triskelion/imports/cp3-eval/RESULTS.json \
+            --demo harness-acceptance/DEMO_CASE.json \
+            --receipt harness-acceptance/RECEIPT.json \
+            --out harness-acceptance/VERIFICATION.json
+
       - uses: actions/upload-artifact@v4
         with:
           name: deepseek-harness-cp3-acceptance
