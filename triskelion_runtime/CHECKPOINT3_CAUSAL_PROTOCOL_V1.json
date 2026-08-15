@@ -1,0 +1,54 @@
+{
+  "protocol": "TRISKELION_BUGSINPY_CHECKPOINT3_CAUSAL_V1",
+  "qualification_protocol": "TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_V1",
+  "upstream_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
+  "frozen_before_protected_evaluation": true,
+  "arms": [
+    "cold",
+    "raw_memory",
+    "always_on",
+    "verified"
+  ],
+  "acquisition_policy": {
+    "source_split": "acquisition",
+    "capability_building": "qualified_acquisition_cases_only",
+    "protected_source_access": "forbidden",
+    "protected_outcome_access": "forbidden"
+  },
+  "evaluation_policy": {
+    "source_split": "protected",
+    "gold_patch_hidden": true,
+    "same_model_across_arms": true,
+    "same_task_order_across_arms": true,
+    "same_prompt_budget_across_arms": true,
+    "same_tool_budget_across_arms": true,
+    "same_time_budget_across_arms": true,
+    "same_repair_attempt_budget_across_arms": true,
+    "one_evaluation_per_qualified_case_per_arm": true
+  },
+  "arm_contracts": {
+    "cold": "Frozen model with no acquisition memory or installed capability.",
+    "raw_memory": "Frozen model with raw acquisition repair traces available as memory, without executable capability activation or verifier gating.",
+    "always_on": "Frozen model with the same acquisition-derived executable capability used by VERIFIED, forcibly active on every protected task.",
+    "verified": "Frozen model with the same acquisition-derived executable capability, activated only through scoped runtime applicability checks and verifier gates."
+  },
+  "primary_endpoint": "protected_repair_success_rate",
+  "secondary_endpoints": [
+    "false_activation_rate",
+    "misapplication_rate",
+    "activation_rate",
+    "infrastructure_error_rate"
+  ],
+  "repair_success_rule": "The candidate patch must make the frozen BugsInPy regression test pass on the pinned buggy commit under the task environment. Infrastructure errors are not repair failures.",
+  "false_activation_rule": "An activation is false when an arm applies acquisition-derived capability to a protected task outside its frozen applicability contract or when the verifier rejects the resulting intervention as inapplicable.",
+  "stopping_rule": "Attempt every frozen qualified protected case exactly once in each arm, then stop.",
+  "infrastructure_policy": "Record provisioning, dependency, network, timeout, checkout, and unreproducible-test failures separately from competence outcomes.",
+  "analysis_policy": {
+    "report_all_arms": true,
+    "report_per_case_outcomes": true,
+    "report_primary_endpoint_before_secondary": true,
+    "no_posthoc_exclusions": true,
+    "no_posthoc_protocol_changes": true,
+    "no_protected_tuning": true
+  }
+}
