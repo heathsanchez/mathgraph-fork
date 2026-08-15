@@ -12,10 +12,27 @@ from triskelion_runtime.checkpoint3_causal_protocol import (
 )
 
 FREEZE_ID = "TRISKELION_BUGSINPY_CHECKPOINT3_CAUSAL_CORPUS_V1"
+PROTECTED_FORBIDDEN_FIELDS = frozenset({
+    "fixed_commit",
+    "fixed_source",
+    "fixed_tree",
+    "patch",
+    "gold_patch",
+    "reference_patch",
+    "solution",
+})
 
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _sanitize_protected_item(raw: Mapping[str, Any]) -> dict[str, Any]:
+    item = {key: value for key, value in raw.items() if key not in PROTECTED_FORBIDDEN_FIELDS}
+    leaked = sorted(PROTECTED_FORBIDDEN_FIELDS.intersection(item))
+    if leaked:
+        raise ValueError(f"protected item retained forbidden fields: {leaked}")
+    return item
 
 
 def freeze_causal_corpus(
@@ -52,11 +69,10 @@ def freeze_causal_corpus(
         if split not in ("acquisition", "protected"):
             raise ValueError(f"unexpected split for {project}: {split}")
 
-        item = dict(raw)
         if split == "acquisition":
-            acquisition.append(item)
+            acquisition.append(dict(raw))
         else:
-            protected.append(item)
+            protected.append(_sanitize_protected_item(raw))
 
     # Preserve the qualification aggregate's deterministic selected ordering.
     return {
@@ -73,6 +89,7 @@ def freeze_causal_corpus(
         "protected": protected,
         "selection_rule": "all qualified projects from the immutable qualification aggregate; no manual case selection",
         "protected_source_access_before_freeze": "forbidden",
+        "protected_forbidden_fields_stripped": sorted(PROTECTED_FORBIDDEN_FIELDS),
     }
 
 
