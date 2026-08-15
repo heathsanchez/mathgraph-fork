@@ -18,6 +18,7 @@ class Checkpoint3CausalProtocol:
     upstream_commit: str
     arms: tuple[str, ...]
     primary_endpoint: str
+    primary_endpoint_denominator: str
     stopping_rule: str
     frozen_before_protected_evaluation: bool
     raw: Mapping[str, Any]
@@ -91,12 +92,18 @@ def validate_protocol(data: Mapping[str, Any]) -> Checkpoint3CausalProtocol:
     primary_endpoint = _require_string(data.get("primary_endpoint"), "primary_endpoint")
     if primary_endpoint != EXPECTED_PRIMARY_ENDPOINT:
         raise ValueError(f"primary_endpoint must be {EXPECTED_PRIMARY_ENDPOINT}")
+    primary_endpoint_denominator = _require_string(
+        data.get("primary_endpoint_denominator"), "primary_endpoint_denominator"
+    )
+    if "infrastructure errors are excluded" not in primary_endpoint_denominator:
+        raise ValueError("primary endpoint denominator must exclude infrastructure errors explicitly")
 
     analysis = _require_mapping(data.get("analysis_policy"), "analysis_policy")
     for field in (
         "report_all_arms",
         "report_per_case_outcomes",
         "report_primary_endpoint_before_secondary",
+        "report_evaluable_coverage_with_primary_endpoint",
         "no_posthoc_exclusions",
         "no_posthoc_protocol_changes",
         "no_protected_tuning",
@@ -110,6 +117,7 @@ def validate_protocol(data: Mapping[str, Any]) -> Checkpoint3CausalProtocol:
         upstream_commit=upstream_commit,
         arms=arms,
         primary_endpoint=primary_endpoint,
+        primary_endpoint_denominator=primary_endpoint_denominator,
         stopping_rule=stopping_rule,
         frozen_before_protected_evaluation=True,
         raw=data,
