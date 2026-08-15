@@ -91,7 +91,7 @@ jobs:
 
       - name: Freeze sanitized causal corpus
         run: |
-          python triskelion_runtime/checkpoint3_freeze_causal_corpus.py \
+          python -m triskelion_runtime.checkpoint3_freeze_causal_corpus \
             --qualification finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json \
             --out finalized/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json
 
