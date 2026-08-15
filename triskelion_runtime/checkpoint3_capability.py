@@ -63,17 +63,29 @@ def _clean_signatures(value: Any, field: str) -> tuple[str, ...]:
     return tuple(out)
 
 
-def _contains_forbidden_identity(text: str, *, project: str, bug_id: str) -> bool:
+def _contains_forbidden_identity(
+    text: str,
+    *,
+    project: str,
+    bug_id: str,
+    forbidden_literals: Sequence[str],
+) -> bool:
     normalized = normalize_context(text)
     project_norm = normalize_context(project)
     if project_norm and project_norm in normalized:
         return True
-    if bug_id and re.search(rf"(?<!\w){re.escape(str(bug_id))}(?!\w)", normalized):
-        return True
+    if bug_id:
+        bug = re.escape(str(bug_id))
+        if re.search(rf"\bbug(?:[_\s-]?id)?\s*[:=#-]?\s*{bug}\b", normalized):
+            return True
     if COMMIT_RE.search(text):
         return True
     if ABSOLUTE_PATH_RE.search(text):
         return True
+    for literal in forbidden_literals:
+        literal_norm = normalize_context(literal)
+        if len(literal_norm) >= 16 and literal_norm in normalized:
+            return True
     return False
 
 
@@ -82,6 +94,7 @@ def compile_rule(
     *,
     evidence_project: str,
     evidence_bug_id: str,
+    forbidden_literals: Sequence[str] = (),
 ) -> RepairRule:
     title = raw.get("title")
     instruction = raw.get("repair_instruction")
@@ -103,11 +116,14 @@ def compile_rule(
     identity_fields = [title, instruction, *required_any, *required_all, *forbidden_any]
     if any(
         _contains_forbidden_identity(
-            text, project=evidence_project, bug_id=evidence_bug_id
+            text,
+            project=evidence_project,
+            bug_id=evidence_bug_id,
+            forbidden_literals=forbidden_literals,
         )
         for text in identity_fields
     ):
-        raise ValueError("compiler output contains forbidden acquisition identity")
+        raise ValueError("compiler output contains forbidden acquisition identity or fixed patch")
 
     public = {
         "title": title,
@@ -153,11 +169,19 @@ def public_capability_payload(
     compile_failures: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
     public_rules = [rule.to_public_dict() for rule in rules]
+    sanitized_failures = [
+        {
+            key: row[key]
+            for key in ("case_index", "stage", "reason")
+            if key in row
+        }
+        for row in compile_failures
+    ]
     payload = {
         "build_protocol": CAPABILITY_BUILD_PROTOCOL,
         "build_protocol_sha256": build_protocol_sha256,
         "rules": public_rules,
-        "compile_failures": [dict(row) for row in compile_failures],
+        "compile_failures": sanitized_failures,
     }
     capability_id = hashlib.sha256(
         json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
