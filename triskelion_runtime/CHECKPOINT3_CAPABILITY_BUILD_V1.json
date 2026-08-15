@@ -15,8 +15,10 @@
     "provider_failure": "abort_build"
   },
   "acquisition_visibility": {
-    "buggy_source": true,
-    "fixed_source": true,
+    "full_buggy_tree": false,
+    "full_fixed_tree": false,
+    "buggy_source_context_from_gold_diff": true,
+    "fixed_source_context_from_gold_diff": true,
     "buggy_regression_output": true,
     "fixed_regression_output": true,
     "gold_diff": true
@@ -39,6 +41,7 @@
       "forbidden_any",
       "repair_instruction"
     ],
+    "allow_extra_fields": false,
     "max_rules_per_case": 1,
     "max_signatures_per_field": 8,
     "signature_min_chars": 2,
