@@ -1,0 +1,88 @@
+name: Checkpoint 3 build acquisition capability
+
+on:
+  workflow_dispatch:
+    inputs:
+      finalizer_run_id:
+        description: "Completed Checkpoint 3 finalize qualification workflow run ID"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Confirm frozen compiler provider binding
+        run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound to this repository'; exit 78; }
+
+      - name: Download finalized qualification evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-qualification-final
+          path: inputs/qualification
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.finalizer_run_id }}
+
+      - name: Download sanitized causal corpus
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-causal-corpus-v1
+          path: inputs/causal
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.finalizer_run_id }}
+
+      - name: Unpack frozen Triskelion provider runtime
+        run: |
+          mkdir -p triskelion_runtime/work
+          unzip -q triskelion_runtime/TRISKELION_RUNTIME_CHECKPOINT_1_PRECOMMITTED.zip -d triskelion_runtime/work
+
+      - name: Install frozen provider dependency
+        run: python -m pip install "river-client"
+
+      - name: Build acquisition-only capability exactly once
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/triskelion_runtime/work
+        run: |
+          python triskelion_runtime/checkpoint3_build_capability.py \
+            --causal-corpus inputs/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json \
+            --qualification-attempts inputs/qualification/QUALIFICATION_ATTEMPTS.json \
+            --out capability-build
+
+      - name: Validate capability build closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          summary = json.loads(Path('capability-build/BUILD_SUMMARY.json').read_text())
+          capability = json.loads(Path('capability-build/CAPABILITY.json').read_text())
+          if summary['compiler_call_count'] != summary['acquisition_case_count']:
+              raise SystemExit('not every acquisition case received exactly one compiler call')
+          if summary['admitted_rule_count'] < 1:
+              raise SystemExit('zero admitted rules; protected evaluation forbidden')
+          if summary['capability_id'] != capability['capability_id']:
+              raise SystemExit('capability identity mismatch')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload immutable capability build
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint3-capability-v1
+          path: capability-build
+          retention-days: 90
