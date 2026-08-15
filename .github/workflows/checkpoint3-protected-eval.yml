@@ -1,12 +1,11 @@
 name: Checkpoint 3 protected four-arm evaluation
 
 on:
+  workflow_run:
+    workflows: ["Checkpoint 3 build acquisition capability"]
+    types: [completed]
   workflow_dispatch:
     inputs:
-      finalizer_run_id:
-        description: "Completed Checkpoint 3 finalize qualification workflow run ID"
-        required: true
-        type: string
       capability_run_id:
         description: "Completed Checkpoint 3 acquisition capability build workflow run ID"
         required: true
@@ -19,9 +18,11 @@ permissions:
 env:
   RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
   PYTHONDONTWRITEBYTECODE: "1"
+  CAPABILITY_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.capability_run_id }}
 
 jobs:
   evaluate:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'triskelion-runtime-cp1')
     runs-on: ubuntu-22.04
     timeout-minutes: 350
     steps:
@@ -33,32 +34,14 @@ jobs:
       - name: Confirm frozen provider binding
         run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound to this repository'; exit 78; }
 
-      - name: Download sanitized causal corpus
+      - name: Download closed protected-evaluation inputs
         uses: actions/download-artifact@v4
         with:
-          name: checkpoint3-causal-corpus-v1
-          path: inputs/causal
+          name: checkpoint3-protected-eval-inputs-v1
+          path: inputs
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ inputs.finalizer_run_id }}
-
-      - name: Download protected regression test-only bundle
-        uses: actions/download-artifact@v4
-        with:
-          name: checkpoint3-protected-tests-v1
-          path: inputs/protected-tests
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: ${{ inputs.finalizer_run_id }}
-
-      - name: Download frozen acquisition capability
-        uses: actions/download-artifact@v4
-        with:
-          name: checkpoint3-capability-v1
-          path: inputs/capability
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: ${{ inputs.capability_run_id }}
+          run-id: ${{ env.CAPABILITY_RUN_ID }}
 
       - name: Checkout pinned BugsInPy metadata and target harness
         run: |
@@ -107,7 +90,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/triskelion_runtime/work
         run: |
           python triskelion_runtime/checkpoint3_run_protected_eval.py \
-            --causal-corpus inputs/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json \
+            --causal-corpus inputs/CHECKPOINT3_CAUSAL_CORPUS_V1.json \
             --protected-tests inputs/protected-tests \
             --capability inputs/capability/CAPABILITY.json \
             --raw-memory inputs/capability/RAW_MEMORY.json \
