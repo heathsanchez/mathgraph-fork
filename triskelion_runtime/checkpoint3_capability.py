@@ -9,6 +9,13 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 CAPABILITY_BUILD_PROTOCOL = "TRISKELION_BUGSINPY_CHECKPOINT3_CAPABILITY_BUILD_V1"
+RULE_FIELDS = frozenset({
+    "title",
+    "required_any",
+    "required_all",
+    "forbidden_any",
+    "repair_instruction",
+})
 MAX_SIGNATURES = 8
 MIN_SIGNATURE_CHARS = 2
 MAX_SIGNATURE_CHARS = 80
@@ -96,6 +103,11 @@ def compile_rule(
     evidence_bug_id: str,
     forbidden_literals: Sequence[str] = (),
 ) -> RepairRule:
+    if set(raw) != RULE_FIELDS:
+        missing = sorted(RULE_FIELDS.difference(raw))
+        extra = sorted(set(raw).difference(RULE_FIELDS))
+        raise ValueError(f"rule fields must be exact; missing={missing}; extra={extra}")
+
     title = raw.get("title")
     instruction = raw.get("repair_instruction")
     if not isinstance(title, str) or not title.strip():
