@@ -64,7 +64,8 @@
   "target_environment": {
     "source": "same frozen BugsInPy setup.sh, requirements.txt, run_test.sh and declared Python major.minor used for qualification",
     "fixed_regression_tests": "copied only from checkpoint3-protected-tests-v1 bundle",
-    "reuse": "provision one pristine buggy baseline per protected case, clone/copy that prepared baseline independently for each arm before patch application"
+    "reuse": "provision dependencies once per protected case; before baseline and each arm run, git reset --hard to the pinned buggy commit, restore the frozen protected test bundle, leave only the untracked dependency environment intact, then apply that arm patch",
+    "arm_code_isolation": "no production or protected-test modifications survive between arms"
   },
   "patch_safety": {
     "repository_relative_paths_only": true,
