@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import Any, Mapping
 
-from triskelion_runtime.bugsinpy_checkpoint3_qualify_v2 import (
+from bugsinpy_checkpoint3_qualify_v2 import (
     UPSTREAM_COMMIT,
     attempt,
     parse_assignments,
