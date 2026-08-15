@@ -14,7 +14,7 @@ from typing import Dict, List, Optional
 
 UPSTREAM_COMMIT = "11c5f1eea954a42132cfd06bf257766a7963e0fd"
 PROTOCOL = "TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_V1"
-HARNESS_REVISION = "V2_EXACT_COMMITS_FIXED_REGRESSION_TEST"
+HARNESS_REVISION = "V2_1_EXACT_COMMITS_FIXED_REGRESSION_TEST_ENCODING_AWARE"
 
 
 def run(cmd, cwd=None, env=None,
@@ -69,8 +69,15 @@ def runtime_env(repo: Path) -> Dict[str, str]:
     return env
 
 
+def read_benchmark_text(path: Path) -> str:
+    data = path.read_bytes()
+    if data.startswith((b"\xff\xfe", b"\xfe\xff")):
+        return data.decode("utf-16")
+    return data.decode("utf-8-sig")
+
+
 def shell_lines(path: Path) -> List[str]:
-    return [line.strip().replace("\r", "") for line in path.read_text().splitlines()
+    return [line.strip().replace("\r", "") for line in read_benchmark_text(path).splitlines()
             if line.strip() and not line.lstrip().startswith("#")]
 
 
