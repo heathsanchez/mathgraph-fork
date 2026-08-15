@@ -1,6 +1,9 @@
 name: Checkpoint 3 build acquisition capability
 
 on:
+  workflow_run:
+    workflows: ["Checkpoint 3 finalize qualification"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       finalizer_run_id:
@@ -15,9 +18,11 @@ permissions:
 env:
   RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
   PYTHONDONTWRITEBYTECODE: "1"
+  FINALIZER_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.finalizer_run_id }}
 
 jobs:
   build:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'triskelion-runtime-cp1')
     runs-on: ubuntu-22.04
     timeout-minutes: 60
     steps:
@@ -36,7 +41,7 @@ jobs:
           path: inputs/qualification
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ inputs.finalizer_run_id }}
+          run-id: ${{ env.FINALIZER_RUN_ID }}
 
       - name: Download sanitized causal corpus
         uses: actions/download-artifact@v4
@@ -45,7 +50,16 @@ jobs:
           path: inputs/causal
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ inputs.finalizer_run_id }}
+          run-id: ${{ env.FINALIZER_RUN_ID }}
+
+      - name: Download protected regression test-only bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-protected-tests-v1
+          path: inputs/protected-tests
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.FINALIZER_RUN_ID }}
 
       - name: Unpack frozen Triskelion provider runtime
         run: |
@@ -80,9 +94,23 @@ jobs:
           print(json.dumps(summary, indent=2, sort_keys=True))
           PY
 
+      - name: Stage immutable protected-evaluation inputs
+        run: |
+          mkdir -p eval-inputs/capability eval-inputs/protected-tests
+          cp inputs/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json eval-inputs/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+          cp capability-build/CAPABILITY.json capability-build/RAW_MEMORY.json eval-inputs/capability/
+          cp -a inputs/protected-tests/. eval-inputs/protected-tests/
+
       - name: Upload immutable capability build
         uses: actions/upload-artifact@v4
         with:
           name: checkpoint3-capability-v1
           path: capability-build
+          retention-days: 90
+
+      - name: Upload closed protected-evaluation inputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint3-protected-eval-inputs-v1
+          path: eval-inputs
           retention-days: 90
