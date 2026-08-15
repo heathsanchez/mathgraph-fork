@@ -35,7 +35,7 @@ def test_file_selection_requires_exact_safe_python_paths() -> None:
         parse_file_selection('{"files":[]}' )
 
 
-def test_extract_diff_and_patch_safety_forbid_test_edits() -> None:
+def test_extract_diff_and_patch_safety_forbid_test_edits_and_unselected_files() -> None:
     response = """```diff
 --- a/pkg/core.py
 +++ b/pkg/core.py
@@ -44,7 +44,18 @@ def test_extract_diff_and_patch_safety_forbid_test_edits() -> None:
 +old = 2
 ```"""
     diff = extract_unified_diff(response)
-    assert validate_patch_safety(diff, protected_test_paths=("tests/test_core.py",)) == ("pkg/core.py",)
+    assert validate_patch_safety(
+        diff,
+        protected_test_paths=("tests/test_core.py",),
+        selected_paths=("pkg/core.py",),
+    ) == ("pkg/core.py",)
+
+    with pytest.raises(ValueError, match="outside call-1 selection"):
+        validate_patch_safety(
+            diff,
+            protected_test_paths=("tests/test_core.py",),
+            selected_paths=("pkg/other.py",),
+        )
 
     bad = """--- a/tests/test_core.py
 +++ b/tests/test_core.py
