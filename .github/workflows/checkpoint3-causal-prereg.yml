@@ -16,6 +16,8 @@ on:
       - triskelion_runtime/checkpoint3_capability.py
       - triskelion_runtime/checkpoint3_build_capability.py
       - triskelion_runtime/checkpoint3_eval_core.py
+      - triskelion_runtime/checkpoint3_target_runner.py
+      - triskelion_runtime/checkpoint3_run_protected_eval.py
       - triskelion_runtime/checkpoint3_causal_results.py
       - tests/test_checkpoint3_causal_protocol.py
       - tests/test_checkpoint3_merge_qualification.py
@@ -24,6 +26,8 @@ on:
       - tests/test_checkpoint3_capability.py
       - tests/test_checkpoint3_build_capability.py
       - tests/test_checkpoint3_eval_core.py
+      - tests/test_checkpoint3_target_runner.py
+      - tests/test_checkpoint3_run_protected_eval.py
       - tests/test_checkpoint3_causal_results.py
 
 permissions:
@@ -49,4 +53,6 @@ jobs:
             tests/test_checkpoint3_capability.py \
             tests/test_checkpoint3_build_capability.py \
             tests/test_checkpoint3_eval_core.py \
+            tests/test_checkpoint3_target_runner.py \
+            tests/test_checkpoint3_run_protected_eval.py \
             tests/test_checkpoint3_causal_results.py
