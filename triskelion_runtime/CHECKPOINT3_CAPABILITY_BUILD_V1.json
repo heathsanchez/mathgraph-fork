@@ -11,7 +11,8 @@
     "max_tokens": 2048,
     "seed_base": 20260818,
     "calls_per_acquisition_case": 1,
-    "retry_on_invalid_output": false
+    "retry_on_invalid_output": false,
+    "provider_failure": "abort_build"
   },
   "acquisition_visibility": {
     "buggy_source": true,
@@ -57,7 +58,8 @@
     "manual_rule_selection": "forbidden",
     "manual_rule_editing": "forbidden",
     "manual_rule_deletion": "forbidden",
-    "invalid_compiler_output": "record_compile_failure_and_continue"
+    "invalid_compiler_output": "record_compile_failure_and_continue",
+    "minimum_admitted_rules_for_protected_evaluation": 1
   },
   "scope_policy": {
     "normalization": "unicode_casefold_then_whitespace_collapse",
