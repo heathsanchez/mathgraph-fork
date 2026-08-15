@@ -1,12 +1,22 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 from pathlib import Path
+from types import ModuleType
 from typing import Any, Mapping
 
-from integrations.deepseek_harness_bridge_loader import load_bridge
+
+def load_bridge(repo_root: Path) -> ModuleType:
+    path = repo_root / "integrations" / "deepseek-harness" / "bridge.py"
+    spec = importlib.util.spec_from_file_location("triskelion_deepseek_harness_bridge", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("could not load DeepSeek Harness bridge")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def require(condition: bool, message: str) -> None:
@@ -27,6 +37,7 @@ def main() -> None:
     args = ap.parse_args()
 
     repo_root = Path(os.environ.get("TRISKELION_REPO_ROOT", Path(__file__).resolve().parents[2])).resolve()
+    os.environ["TRISKELION_REPO_ROOT"] = str(repo_root)
     capability = args.capability.resolve()
     try:
         relative = capability.relative_to(repo_root)
