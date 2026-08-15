@@ -8,6 +8,7 @@ on:
     paths:
       - 'integrations/deepseek-harness/**'
       - 'tests/test_deepseek_harness_bridge.py'
+      - 'tests/test_cp3_handoff_verifier.py'
       - 'triskelion_runtime/checkpoint3_capability.py'
       - 'triskelion_runtime/checkpoint3_eval_core.py'
       - '.github/workflows/deepseek-harness-integration.yml'
@@ -24,8 +25,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -e '.[dev]'
-      - name: Test lifecycle, content identity, routing and ablation
-        run: pytest -q tests/test_deepseek_harness_bridge.py tests/test_checkpoint3_eval_core.py
+      - name: Test lifecycle, content identity, routing, ablation and handoff evidence
+        run: pytest -q tests/test_deepseek_harness_bridge.py tests/test_checkpoint3_eval_core.py tests/test_cp3_handoff_verifier.py
       - name: Exercise full acceptance runner on non-scientific smoke capability
         env:
           TRISKELION_REPO_ROOT: ${{ github.workspace }}
