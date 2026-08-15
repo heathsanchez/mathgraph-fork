@@ -28,6 +28,7 @@ def qualification_fixture() -> dict:
                 "split": "protected",
                 "buggy_commit": "buggy-b",
                 "fixed_commit": "fixed-b",
+                "gold_patch": "do not leak this",
                 "test_file": "test_b.py",
             },
         ],
@@ -46,6 +47,20 @@ def test_freeze_uses_every_qualified_case_without_manual_selection() -> None:
     assert [x["project"] for x in frozen["protected"]] == ["black"]
     assert "no manual case selection" in frozen["selection_rule"]
     assert len(frozen["causal_protocol_sha256"]) == 64
+
+
+def test_freeze_preserves_acquisition_fixed_commit_but_strips_protected_gold_fields() -> None:
+    frozen = freeze_causal_corpus(
+        qualification_fixture(), protocol_path=default_protocol_path()
+    )
+
+    assert frozen["acquisition"][0]["fixed_commit"] == "fixed-a"
+    protected = frozen["protected"][0]
+    assert protected["buggy_commit"] == "buggy-b"
+    assert protected["test_file"] == "test_b.py"
+    assert "fixed_commit" not in protected
+    assert "gold_patch" not in protected
+    assert "fixed_commit" in frozen["protected_forbidden_fields_stripped"]
 
 
 def test_freeze_rejects_duplicate_projects() -> None:
