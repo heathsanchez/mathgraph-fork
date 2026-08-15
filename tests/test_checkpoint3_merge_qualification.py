@@ -26,12 +26,13 @@ def selected(project: str, bug_id: str, rank: str, split: str) -> dict:
     return {"project": project, "bug_id": bug_id, "rank": rank, "split": split}
 
 
-def summary(rows: list[dict], revision: str) -> dict:
+def summary(rows: list[dict], revision: str, terminal: list[dict] | None = None) -> dict:
     return {
         "protocol": QUALIFICATION_PROTOCOL,
         "upstream_commit": UPSTREAM_COMMIT,
         "harness_revision": revision,
         "selected": rows,
+        "project_terminal_statuses": terminal or [],
     }
 
 
@@ -86,6 +87,60 @@ def test_merge_restores_original_frozen_project_order_and_hex_rank_order_across_
         ("tqdm", "f000"),
     ]
     assert merged["harness_revisions"] == ["V2_2", "V2_3"]
+    assert merged["project_terminal_statuses"] == []
+
+
+def test_project_level_timeout_counts_as_evidence_without_inventing_candidate() -> None:
+    timeout = {
+        "project": "pandas",
+        "classification": "infrastructure_negative",
+        "stage": "workflow_timeout",
+        "workflow_run_id": 123,
+        "job_id": 456,
+    }
+    sources = [
+        (summary([], "V2_3", [timeout]), []),
+        (
+            summary([selected("ansible", "7", "00ff", "protected")], "V2_2"),
+            [attempt("ansible", "7", "00ff", python_version="3.6")],
+        ),
+        (
+            summary([selected("tqdm", "2", "f000", "protected")], "V2_2"),
+            [attempt("tqdm", "2", "f000", python_version="3.6")],
+        ),
+    ]
+    merged, attempts = merge_qualification_evidence(sources, lock=lock_fixture())
+    assert merged["projects_with_evidence"] == 3
+    assert merged["projects_missing_evidence"] == []
+    assert merged["qualified_projects"] == 2
+    assert merged["project_terminal_statuses"] == [timeout]
+    assert merged["infrastructure_negatives"] == 1
+    assert all(row["project"] != "pandas" for row in attempts)
+
+
+def test_terminal_status_rejects_non_infrastructure_classification() -> None:
+    bad = {
+        "project": "pandas",
+        "classification": "qualified",
+        "stage": "workflow_timeout",
+    }
+    with pytest.raises(ValueError, match="terminal classification"):
+        merge_qualification_evidence([(summary([], "V2", [bad]), [])], lock=lock_fixture())
+
+
+def test_selected_and_terminal_only_evidence_for_same_project_is_rejected() -> None:
+    terminal = {
+        "project": "pandas",
+        "classification": "infrastructure_negative",
+        "stage": "workflow_timeout",
+    }
+    selected_summary = summary(
+        [selected("pandas", "5", "abc0", "acquisition")], "V2", [terminal]
+    )
+    with pytest.raises(ValueError, match="both selected and terminal-only"):
+        merge_qualification_evidence(
+            [(selected_summary, [attempt("pandas", "5", "abc0")])], lock=lock_fixture()
+        )
 
 
 def test_merge_reports_missing_evidence_without_silently_dropping_project() -> None:
