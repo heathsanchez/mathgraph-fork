@@ -50,11 +50,15 @@ def test_compile_rule_rejects_project_identity_leakage() -> None:
         compile_rule(raw, evidence_project="exampleproj", evidence_bug_id="17")
 
 
-def test_compile_rule_rejects_bug_id_leakage() -> None:
+def test_compile_rule_rejects_bug_identity_phrase_but_not_ordinary_number() -> None:
     raw = valid_rule()
     raw["title"] = "Repair bug 17 by guarding lookup"
     with pytest.raises(ValueError, match="forbidden acquisition identity"):
         compile_rule(raw, evidence_project="exampleproj", evidence_bug_id="17")
+
+    ordinary = valid_rule()
+    ordinary["repair_instruction"] += " Preserve behavior for 17 ordinary inputs."
+    compile_rule(ordinary, evidence_project="exampleproj", evidence_bug_id="17")
 
 
 def test_compile_rule_rejects_commit_hash_and_absolute_path() -> None:
@@ -62,6 +66,19 @@ def test_compile_rule_rejects_commit_hash_and_absolute_path() -> None:
     raw["repair_instruction"] = "Use behavior from commit deadbeef in /tmp/source/module.py"
     with pytest.raises(ValueError, match="forbidden acquisition identity"):
         compile_rule(raw, evidence_project="exampleproj", evidence_bug_id="17")
+
+
+def test_compile_rule_rejects_verbatim_fixed_patch_fragment() -> None:
+    raw = valid_rule()
+    fixed_line = "if request_timeout is None: return default_timeout"
+    raw["repair_instruction"] = f"Apply this exact change: {fixed_line}"
+    with pytest.raises(ValueError, match="fixed patch"):
+        compile_rule(
+            raw,
+            evidence_project="exampleproj",
+            evidence_bug_id="17",
+            forbidden_literals=[fixed_line],
+        )
 
 
 def test_compile_rule_requires_positive_scope_signature() -> None:
@@ -72,13 +89,21 @@ def test_compile_rule_requires_positive_scope_signature() -> None:
         compile_rule(raw, evidence_project="exampleproj", evidence_bug_id="17")
 
 
-def test_public_capability_id_is_stable_and_hides_evidence_identity() -> None:
+def test_public_capability_id_is_stable_and_hides_evidence_identity_and_failure_identity() -> None:
     rule = compile_rule(valid_rule(), evidence_project="exampleproj", evidence_bug_id="17")
     protocol_hash = capability_build_protocol_sha256()
-    first = public_capability_payload((rule,), build_protocol_sha256=protocol_hash, compile_failures=[])
-    second = public_capability_payload((rule,), build_protocol_sha256=protocol_hash, compile_failures=[])
+    failures = [{
+        "case_index": 0,
+        "stage": "parse",
+        "reason": "invalid_json",
+        "project": "exampleproj",
+        "bug_id": "17",
+    }]
+    first = public_capability_payload((rule,), build_protocol_sha256=protocol_hash, compile_failures=failures)
+    second = public_capability_payload((rule,), build_protocol_sha256=protocol_hash, compile_failures=failures)
     assert first == second
     serialized = str(first).casefold()
     assert "exampleproj" not in serialized
     assert "evidence_bug_id" not in serialized
+    assert "bug_id" not in serialized
     assert len(first["capability_id"]) == 64
