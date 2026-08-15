@@ -1,0 +1,55 @@
+{
+  "protocol": "TRISKELION_BUGSINPY_CHECKPOINT4_TRANSFER_FAMILY_V1",
+  "status": "FROZEN_BEFORE_FRESH_CASE_GROUPING",
+  "source": "qualified BugsInPy attempts only",
+  "freshness": {
+    "exclude_all_checkpoint3_case_ids": true,
+    "exclusion_source": "immutable CHECKPOINT3_CAUSAL_CORPUS_V1.json",
+    "fixed_source_features_for_grouping": false,
+    "gold_patch_features_for_grouping": false,
+    "protected_model_outputs_for_grouping": false
+  },
+  "visible_fields": {
+    "buggy_test_command": true,
+    "buggy_test_output": true,
+    "project_name_removed": true,
+    "bug_id_removed": true,
+    "absolute_paths_removed": true,
+    "commit_hashes_removed": true,
+    "numbers_longer_than_3_digits_removed": true
+  },
+  "fingerprint": {
+    "test_tokens": "lowercase alphanumeric tokens from failing test commands, stop-token filtered",
+    "class_tokens": "exception names ending Error/Exception plus AssertionError and pytest assertion marker",
+    "message_tokens": "lowercase alphanumeric tokens from failing output, stop-token filtered",
+    "token_min_length": 3,
+    "maximum_tokens_per_channel": 128,
+    "ordering": "lexicographic"
+  },
+  "similarity": {
+    "test_jaccard_weight": 0.35,
+    "class_exact_weight": 0.20,
+    "message_jaccard_weight": 0.45,
+    "edge_threshold": 0.60,
+    "guard": "class_exact OR test_jaccard >= 0.50",
+    "round_decimals": 6
+  },
+  "family_construction": {
+    "order": "immutable global order: lock project order then candidate_order position",
+    "algorithm": "greedy complete-link in frozen order",
+    "join_rule": "candidate must satisfy edge threshold and guard against every existing family member",
+    "minimum_members": 2,
+    "maximum_members": 4,
+    "overflow": "leave later matching members unused and unopened",
+    "acquisition_member": "first frozen member",
+    "protected_members": "remaining frozen members",
+    "family_selection": "first qualifying family in frozen order",
+    "no_family_terminal": "NO_MATCHED_TRANSFER_FAMILY"
+  },
+  "manual_intervention": {
+    "case_selection": "forbidden",
+    "family_reassignment": "forbidden",
+    "threshold_tuning_after_grouping": "forbidden",
+    "token_editing": "forbidden"
+  }
+}
