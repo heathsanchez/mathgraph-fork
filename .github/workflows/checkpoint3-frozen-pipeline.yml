@@ -1,0 +1,298 @@
+name: Checkpoint 3 frozen end-to-end pipeline
+
+on:
+  push:
+    branches: [triskelion-runtime-cp1]
+    paths:
+      - .github/workflows/checkpoint3-frozen-pipeline.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  MAIN_QUALIFICATION_RUN_ID: "31854063331"
+  PY36_RECOVERY_RUN_ID: "31853292021"
+  RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  wait_and_finalize:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Wait only for the frozen main qualification run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 330); do
+            payload="$(curl -fsSL \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${MAIN_QUALIFICATION_RUN_ID}")"
+            status="$(printf '%s' "$payload" | python -c 'import json,sys; print(json.load(sys.stdin)["status"])')"
+            conclusion="$(printf '%s' "$payload" | python -c 'import json,sys; print(json.load(sys.stdin).get("conclusion"))')"
+            echo "qualification status=$status conclusion=$conclusion poll=$i"
+            if [ "$status" = "completed" ]; then
+              exit 0
+            fi
+            sleep 60
+          done
+          echo "frozen qualification run did not complete inside polling envelope" >&2
+          exit 1
+
+      - name: Download main qualification aggregate
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-qualification-all
+          path: sources/main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.MAIN_QUALIFICATION_RUN_ID }}
+
+      - name: Download recovered Python 3.6 shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: checkpoint3-python36-*
+          path: sources/python36
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.PY36_RECOVERY_RUN_ID }}
+
+      - name: Merge all frozen qualification evidence
+        run: |
+          python triskelion_runtime/checkpoint3_merge_qualification.py \
+            --source sources/main \
+            --source sources/python36/checkpoint3-python36-ansible \
+            --source sources/python36/checkpoint3-python36-cookiecutter \
+            --source sources/python36/checkpoint3-python36-tqdm \
+            --out finalized/checkpoint3-qualification-final
+
+      - name: Require 17-of-17 project evidence before proceeding
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json').read_text())
+          if data['frozen_project_count'] != 17:
+              raise SystemExit(f"unexpected frozen project count: {data['frozen_project_count']}")
+          if data['projects_with_evidence'] != 17 or data['projects_missing_evidence']:
+              raise SystemExit(f"incomplete frozen evidence: {data['projects_with_evidence']}/17 missing={data['projects_missing_evidence']}")
+          print(json.dumps(data, indent=2, sort_keys=True))
+          PY
+
+      - name: Materialize protected regression tests only
+        run: |
+          python triskelion_runtime/checkpoint3_protected_tests.py \
+            --qualification finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json \
+            --out finalized/protected-tests
+
+      - name: Freeze sanitized causal corpus
+        run: |
+          python triskelion_runtime/checkpoint3_freeze_causal_corpus.py \
+            --qualification finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json \
+            --out finalized/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+
+      - name: Validate protected boundary and counts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from triskelion_runtime.checkpoint3_freeze_causal_corpus import PROTECTED_FORBIDDEN_FIELDS
+          causal = json.loads(Path('finalized/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json').read_text())
+          tests = json.loads(Path('finalized/protected-tests/MANIFEST.json').read_text())
+          for case in causal['protected']:
+              leaked = PROTECTED_FORBIDDEN_FIELDS.intersection(case)
+              if leaked:
+                  raise SystemExit(f"protected leakage: {sorted(leaked)}")
+          if tests['protected_case_count'] != causal['protected_count']:
+              raise SystemExit('protected test/corpus count mismatch')
+          if tests['fixed_production_source_materialized'] or tests['gold_patch_materialized']:
+              raise SystemExit('test-only bundle crossed protected boundary')
+          print(json.dumps({
+              'qualified': causal['qualified_project_count'],
+              'acquisition': causal['acquisition_count'],
+              'protected': causal['protected_count'],
+              'causal_protocol_sha256': causal['causal_protocol_sha256'],
+          }, indent=2, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cp3-pipeline-qualification-final
+          path: finalized/checkpoint3-qualification-final
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cp3-pipeline-causal-corpus
+          path: finalized/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cp3-pipeline-protected-tests
+          path: finalized/protected-tests
+          retention-days: 90
+
+  build_capability:
+    needs: wait_and_finalize
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Confirm River binding
+        run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound'; exit 78; }
+      - uses: actions/download-artifact@v4
+        with:
+          name: cp3-pipeline-qualification-final
+          path: inputs/qualification
+      - uses: actions/download-artifact@v4
+        with:
+          name: cp3-pipeline-causal-corpus
+          path: inputs/causal
+      - uses: actions/download-artifact@v4
+        with:
+          name: cp3-pipeline-protected-tests
+          path: inputs/protected-tests
+
+      - name: Unpack frozen Triskelion provider runtime
+        run: |
+          mkdir -p triskelion_runtime/work
+          unzip -q triskelion_runtime/TRISKELION_RUNTIME_CHECKPOINT_1_PRECOMMITTED.zip -d triskelion_runtime/work
+      - name: Install provider dependency
+        run: python -m pip install "river-client"
+      - name: Build frozen acquisition capability
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/triskelion_runtime/work
+        run: |
+          python triskelion_runtime/checkpoint3_build_capability.py \
+            --causal-corpus inputs/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json \
+            --qualification-attempts inputs/qualification/QUALIFICATION_ATTEMPTS.json \
+            --out capability-build
+      - name: Enforce capability closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          s = json.loads(Path('capability-build/BUILD_SUMMARY.json').read_text())
+          c = json.loads(Path('capability-build/CAPABILITY.json').read_text())
+          if s['compiler_call_count'] != s['acquisition_case_count']:
+              raise SystemExit('compiler call count drift')
+          if s['admitted_rule_count'] < 1:
+              raise SystemExit('zero admitted rules')
+          if s['capability_id'] != c['capability_id']:
+              raise SystemExit('capability identity mismatch')
+          print(json.dumps(s, indent=2, sort_keys=True))
+          PY
+      - name: Stage closed protected-evaluation inputs
+        run: |
+          mkdir -p eval-inputs/capability eval-inputs/protected-tests
+          cp inputs/causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json eval-inputs/CHECKPOINT3_CAUSAL_CORPUS_V1.json
+          cp capability-build/CAPABILITY.json capability-build/RAW_MEMORY.json eval-inputs/capability/
+          cp -a inputs/protected-tests/. eval-inputs/protected-tests/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cp3-pipeline-capability
+          path: capability-build
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cp3-pipeline-eval-inputs
+          path: eval-inputs
+          retention-days: 90
+
+  protected_evaluation:
+    needs: build_capability
+    runs-on: ubuntu-22.04
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Confirm River binding
+        run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound'; exit 78; }
+      - uses: actions/download-artifact@v4
+        with:
+          name: cp3-pipeline-eval-inputs
+          path: inputs
+
+      - name: Checkout pinned BugsInPy
+        run: |
+          git init BugsInPy
+          git -C BugsInPy remote add origin https://github.com/soarsmu/BugsInPy.git
+          git -C BugsInPy fetch --depth=1 origin 11c5f1eea954a42132cfd06bf257766a7963e0fd
+          git -C BugsInPy checkout --detach FETCH_HEAD
+          test "$(git -C BugsInPy rev-parse HEAD)" = 11c5f1eea954a42132cfd06bf257766a7963e0fd
+
+      - name: Unpack frozen Triskelion provider runtime
+        run: |
+          mkdir -p triskelion_runtime/work
+          unzip -q triskelion_runtime/TRISKELION_RUNTIME_CHECKPOINT_1_PRECOMMITTED.zip -d triskelion_runtime/work
+      - name: Install provider dependency
+        run: python -m pip install "river-client"
+
+      - name: Build historical Python target images once
+        run: |
+          cat > /tmp/Dockerfile.py36 <<'EOF'
+          FROM python:3.6.15-buster
+          RUN sed -i 's|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g; /buster-updates/d' /etc/apt/sources.list \
+              && apt-get -o Acquire::Check-Valid-Until=false update \
+              && apt-get install -y --no-install-recommends build-essential git libffi-dev libjpeg-dev libxml2-dev libxslt1-dev zlib1g-dev \
+              && rm -rf /var/lib/apt/lists/*
+          EOF
+          cat > /tmp/Dockerfile.py37 <<'EOF'
+          FROM python:3.7.17-buster
+          RUN sed -i 's|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g; /buster-updates/d' /etc/apt/sources.list \
+              && apt-get -o Acquire::Check-Valid-Until=false update \
+              && apt-get install -y --no-install-recommends build-essential git libffi-dev libjpeg-dev libxml2-dev libxslt1-dev zlib1g-dev \
+              && rm -rf /var/lib/apt/lists/*
+          EOF
+          cat > /tmp/Dockerfile.py38 <<'EOF'
+          FROM python:3.8.20-bullseye
+          RUN apt-get update \
+              && apt-get install -y --no-install-recommends build-essential git libffi-dev libjpeg-dev libxml2-dev libxslt1-dev zlib1g-dev \
+              && rm -rf /var/lib/apt/lists/*
+          EOF
+          docker build -q -t cp3-python36 -f /tmp/Dockerfile.py36 /tmp
+          docker build -q -t cp3-python37 -f /tmp/Dockerfile.py37 /tmp
+          docker build -q -t cp3-python38 -f /tmp/Dockerfile.py38 /tmp
+
+      - name: Run frozen four-arm protected evaluation
+        env:
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/triskelion_runtime/work
+        run: |
+          python triskelion_runtime/checkpoint3_run_protected_eval.py \
+            --causal-corpus inputs/CHECKPOINT3_CAUSAL_CORPUS_V1.json \
+            --protected-tests inputs/protected-tests \
+            --capability inputs/capability/CAPABILITY.json \
+            --raw-memory inputs/capability/RAW_MEMORY.json \
+            --bugsinpy BugsInPy \
+            --out checkpoint3-protected-eval-v1
+
+      - name: Enforce complete result matrix
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path('checkpoint3-protected-eval-v1/RESULTS.json').read_text())
+          if r['row_count'] != r['protected_case_count'] * 4:
+              raise SystemExit('incomplete frozen result matrix')
+          print(json.dumps(r, indent=2, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cp3-pipeline-protected-eval
+          path: checkpoint3-protected-eval-v1
+          if-no-files-found: warn
+          retention-days: 90
