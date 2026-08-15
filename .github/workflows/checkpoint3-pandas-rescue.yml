@@ -42,7 +42,7 @@ jobs:
           git -C BugsInPy fetch --depth=1 origin 11c5f1eea954a42132cfd06bf257766a7963e0fd
           git -C BugsInPy checkout --detach FETCH_HEAD
           test "$(git -C BugsInPy rev-parse HEAD)" = 11c5f1eea954a42132cfd06bf257766a7963e0fd
-      - name: Evaluate frozen pandas rank shard
+      - name: Evaluate frozen pandas order shard
         run: |
           python triskelion_runtime/bugsinpy_checkpoint3_pandas_shard.py \
             --bugsinpy BugsInPy \
@@ -84,18 +84,21 @@ jobs:
               raise SystemExit(f'incomplete pandas shard evidence: {len(summaries)}/16')
 
           winners = [x for s in summaries for x in s.get('selected', [])]
-          winner = min(winners, key=lambda x: int(x['rank'])) if winners else None
-          cutoff = int(winner['rank']) if winner else None
-          # A sequential scan would stop at the first qualified rank. Keep only the evidence
-          # that could have been observed by that scan; higher-rank speculative parallel work
-          # is intentionally discarded from the scientific record.
-          attempts = sorted(attempts, key=lambda r: int(r['rank']))
+          winner = min(winners, key=lambda x: int(x['frozen_order_index'])) if winners else None
+          cutoff = int(winner['frozen_order_index']) if winner else None
+
+          # A sequential scan would stop at the first successful position in the already-frozen
+          # candidate_order list. The hash-valued `rank` field is preserved as evidence, but it is
+          # not an ordinal and must never be interpreted as one.
+          attempts = sorted(attempts, key=lambda r: int(r['frozen_order_index']))
           if cutoff is not None:
-              attempts = [r for r in attempts if int(r['rank']) <= cutoff]
-          expected_ranks = list(range(1, cutoff + 1)) if cutoff is not None else None
-          observed_ranks = [int(r['rank']) for r in attempts]
-          if expected_ranks is not None and observed_ranks != expected_ranks:
-              raise SystemExit(f'rank coverage gap before winner: expected={expected_ranks} observed={observed_ranks}')
+              attempts = [r for r in attempts if int(r['frozen_order_index']) <= cutoff]
+          expected_positions = list(range(1, cutoff + 1)) if cutoff is not None else None
+          observed_positions = [int(r['frozen_order_index']) for r in attempts]
+          if expected_positions is not None and observed_positions != expected_positions:
+              raise SystemExit(
+                  f'order coverage gap before winner: expected={expected_positions} observed={observed_positions}'
+              )
 
           selected = [winner] if winner else []
           out = Path('checkpoint3-qualification-pandas-rescue')
@@ -111,6 +114,7 @@ jobs:
               'selected': selected,
               'parallel_execution_only': True,
               'reduced_to_frozen_sequential_prefix': True,
+              'ordering_key': 'candidate_order list position; rank remains frozen hash key',
               'shard_count': 16,
           }
           (out/'QUALIFICATION_ATTEMPTS.json').write_text(json.dumps(attempts, indent=2, sort_keys=True)+'\n')
