@@ -1,0 +1,124 @@
+name: Checkpoint 3 pandas qualification rescue
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [triskelion-runtime-cp1]
+    paths:
+      - .github/workflows/checkpoint3-pandas-rescue.yml
+      - triskelion_runtime/bugsinpy_checkpoint3_pandas_shard.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checkpoint3-pandas-rescue
+  cancel-in-progress: true
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+      - name: Freeze execution environment
+        run: |
+          python --version
+          git --version
+          sudo apt-get update
+          sudo apt-get install -y build-essential dos2unix libffi-dev libjpeg-dev libxml2-dev libxslt1-dev zlib1g-dev
+      - name: Checkout pinned BugsInPy
+        run: |
+          git init BugsInPy
+          git -C BugsInPy remote add origin https://github.com/soarsmu/BugsInPy.git
+          git -C BugsInPy fetch --depth=1 origin 11c5f1eea954a42132cfd06bf257766a7963e0fd
+          git -C BugsInPy checkout --detach FETCH_HEAD
+          test "$(git -C BugsInPy rev-parse HEAD)" = 11c5f1eea954a42132cfd06bf257766a7963e0fd
+      - name: Evaluate frozen pandas rank shard
+        run: |
+          python triskelion_runtime/bugsinpy_checkpoint3_pandas_shard.py \
+            --bugsinpy BugsInPy \
+            --lock triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json \
+            --out pandas-shard-${{ matrix.shard }} \
+            --shard-index ${{ matrix.shard }} \
+            --shard-count 16 \
+            --timeout 900
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checkpoint3-pandas-shard-${{ matrix.shard }}
+          path: pandas-shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 90
+
+  reduce:
+    if: always()
+    needs: qualify
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: checkpoint3-pandas-shard-*
+          path: shards
+      - name: Reconstruct frozen sequential pandas result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          summaries = []
+          attempts = []
+          for p in sorted(Path('shards').rglob('QUALIFIED_CORPUS.json')):
+              summaries.append(json.loads(p.read_text()))
+          for p in sorted(Path('shards').rglob('QUALIFICATION_ATTEMPTS.json')):
+              attempts.extend(json.loads(p.read_text()))
+          if len(summaries) != 16:
+              raise SystemExit(f'incomplete pandas shard evidence: {len(summaries)}/16')
+
+          winners = [x for s in summaries for x in s.get('selected', [])]
+          winner = min(winners, key=lambda x: int(x['rank'])) if winners else None
+          cutoff = int(winner['rank']) if winner else None
+          # A sequential scan would stop at the first qualified rank. Keep only the evidence
+          # that could have been observed by that scan; higher-rank speculative parallel work
+          # is intentionally discarded from the scientific record.
+          attempts = sorted(attempts, key=lambda r: int(r['rank']))
+          if cutoff is not None:
+              attempts = [r for r in attempts if int(r['rank']) <= cutoff]
+          expected_ranks = list(range(1, cutoff + 1)) if cutoff is not None else None
+          observed_ranks = [int(r['rank']) for r in attempts]
+          if expected_ranks is not None and observed_ranks != expected_ranks:
+              raise SystemExit(f'rank coverage gap before winner: expected={expected_ranks} observed={observed_ranks}')
+
+          selected = [winner] if winner else []
+          out = Path('checkpoint3-qualification-pandas-rescue')
+          out.mkdir()
+          summary = {
+              'protocol': 'TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_V1',
+              'harness_revision': 'V2_3_EXACT_COMMITS_FIXED_REGRESSION_TEST_ENCODING_AWARE_PKG_RESOURCES_SENTINEL',
+              'upstream_commit': '11c5f1eea954a42132cfd06bf257766a7963e0fd',
+              'projects_with_evidence': 1,
+              'attempt_count': len(attempts),
+              'qualified_projects': len(selected),
+              'infrastructure_negatives': sum(r['classification'] != 'qualified' for r in attempts),
+              'selected': selected,
+              'parallel_execution_only': True,
+              'reduced_to_frozen_sequential_prefix': True,
+              'shard_count': 16,
+          }
+          (out/'QUALIFICATION_ATTEMPTS.json').write_text(json.dumps(attempts, indent=2, sort_keys=True)+'\n')
+          (out/'QUALIFIED_CORPUS.json').write_text(json.dumps(summary, indent=2, sort_keys=True)+'\n')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint3-qualification-pandas-rescue
+          path: checkpoint3-qualification-pandas-rescue
+          retention-days: 90
