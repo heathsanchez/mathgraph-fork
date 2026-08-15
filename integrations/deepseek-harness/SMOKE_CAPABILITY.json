@@ -1,0 +1,18 @@
+{
+  "build_protocol": "TRISKELION_DEEPSEEK_HARNESS_SMOKE_ONLY_V1",
+  "build_protocol_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "capability_id": "b8c2fd2e427c85ba77d7d79fe561e901a345765435e221871cf175f50ea059b0",
+  "compile_failures": [],
+  "rules": [
+    {
+      "forbidden_any": [],
+      "repair_instruction": "For integration smoke testing only: report that the Triskelion routed capability is active.",
+      "required_all": [],
+      "required_any": [
+        "triskelion-smoke-trigger"
+      ],
+      "rule_id": "smoke-rule-v1",
+      "title": "Non-scientific Harness smoke trigger"
+    }
+  ]
+}
