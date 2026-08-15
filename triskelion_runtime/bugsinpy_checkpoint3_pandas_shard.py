@@ -2,9 +2,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
-from bugsinpy_checkpoint3_qualify_v2 import (
+# When executed as a file, Python puts triskelion_runtime/ rather than the repo root
+# on sys.path. Add the repo root explicitly so the package import is deterministic in CI.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from triskelion_runtime.bugsinpy_checkpoint3_qualify_v2 import (
     HARNESS_REVISION,
     PROTOCOL,
     UPSTREAM_COMMIT,
@@ -15,7 +22,7 @@ from bugsinpy_checkpoint3_qualify_v2 import (
 
 def main() -> None:
     ap = argparse.ArgumentParser(
-        description="Evaluate one deterministic rank shard of the frozen pandas Checkpoint 3 candidate order."
+        description="Evaluate one deterministic position shard of the frozen pandas Checkpoint 3 candidate order."
     )
     ap.add_argument("--bugsinpy", type=Path, required=True)
     ap.add_argument("--lock", type=Path, required=True)
@@ -42,28 +49,36 @@ def main() -> None:
         raise SystemExit("pandas lock invariant failed")
     project = projects[0]
 
+    # IMPORTANT: candidate['rank'] is the frozen hash-based rank key, not an integer.
+    # The scientific sequential order is the list position in candidate_order. Shard only
+    # by that immutable position. The reducer later chooses the minimum successful position
+    # and retains exactly the sequential prefix that would have been observed without parallelism.
     candidates = [
-        c for c in project["candidate_order"]
-        if (int(c["rank"]) - 1) % args.shard_count == args.shard_index
+        (position, candidate)
+        for position, candidate in enumerate(project["candidate_order"], start=1)
+        if (position - 1) % args.shard_count == args.shard_index
     ]
 
     args.out.mkdir(parents=True)
     rows = []
     selected = []
-    for candidate in candidates:
+    for position, candidate in candidates:
         row = attempt(args.bugsinpy, "pandas", candidate, args.timeout)
         row["split"] = project["split"]
+        row["frozen_order_index"] = position
         row["parallel_shard_index"] = args.shard_index
         row["parallel_shard_count"] = args.shard_count
         rows.append(row)
         print(json.dumps({k: row.get(k) for k in (
-            "project", "bug_id", "rank", "classification", "stage"
+            "project", "bug_id", "rank", "frozen_order_index", "classification", "stage"
         )}), flush=True)
         if row["classification"] == "qualified":
-            selected.append({key: row[key] for key in (
+            item = {key: row[key] for key in (
                 "project", "split", "bug_id", "rank", "buggy_commit",
                 "fixed_commit", "test_file", "repository"
-            )})
+            )}
+            item["frozen_order_index"] = position
+            selected.append(item)
             break
 
     summary = {
@@ -72,7 +87,7 @@ def main() -> None:
         "upstream_commit": UPSTREAM_COMMIT,
         "split_requested": "all",
         "project": "pandas",
-        "parallelization": "rank_modulo_only_execution_scheduling",
+        "parallelization": "frozen_candidate_order_position_modulo_only",
         "parallel_shard_index": args.shard_index,
         "parallel_shard_count": args.shard_count,
         "attempt_count": len(rows),
