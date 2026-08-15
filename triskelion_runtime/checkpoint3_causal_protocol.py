@@ -9,6 +9,8 @@ PROTOCOL_ID = "TRISKELION_BUGSINPY_CHECKPOINT3_CAUSAL_V1"
 QUALIFICATION_PROTOCOL_ID = "TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_V1"
 EXPECTED_ARMS = ("cold", "raw_memory", "always_on", "verified")
 EXPECTED_PRIMARY_ENDPOINT = "protected_repair_success_rate"
+EXPECTED_MODEL = "Qwen/Qwen3.5-9B"
+EXPECTED_PROVIDER = "river"
 
 
 @dataclass(frozen=True)
@@ -46,6 +48,8 @@ def validate_protocol(data: Mapping[str, Any]) -> Checkpoint3CausalProtocol:
     protocol = _require_string(data.get("protocol"), "protocol")
     if protocol != PROTOCOL_ID:
         raise ValueError(f"unexpected protocol: {protocol}")
+    if data.get("protocol_status") != "closed_before_protected_evaluation":
+        raise ValueError("protocol_status must close V1 before protected evaluation")
 
     qualification_protocol = _require_string(
         data.get("qualification_protocol"), "qualification_protocol"
@@ -57,6 +61,20 @@ def validate_protocol(data: Mapping[str, Any]) -> Checkpoint3CausalProtocol:
     _require_true(
         data.get("frozen_before_protected_evaluation"),
         "frozen_before_protected_evaluation",
+    )
+
+    model = _require_mapping(data.get("model_policy"), "model_policy")
+    if model.get("provider") != EXPECTED_PROVIDER or model.get("model") != EXPECTED_MODEL:
+        raise ValueError("model_policy provider/model drift")
+    if model.get("temperature") != 0.0:
+        raise ValueError("model_policy.temperature must be 0.0")
+    if model.get("max_model_calls_per_case_arm") != 2:
+        raise ValueError("model_policy.max_model_calls_per_case_arm must be 2")
+    if model.get("max_tokens_per_call") != 2048:
+        raise ValueError("model_policy.max_tokens_per_call must be 2048")
+    _require_true(
+        model.get("same_seed_for_matching_case_attempt_across_arms"),
+        "model_policy.same_seed_for_matching_case_attempt_across_arms",
     )
 
     arms_value = data.get("arms")
@@ -73,10 +91,22 @@ def validate_protocol(data: Mapping[str, Any]) -> Checkpoint3CausalProtocol:
         raise ValueError("protected source access must be forbidden during capability building")
     if acquisition.get("protected_outcome_access") != "forbidden":
         raise ValueError("protected outcome access must be forbidden during capability building")
+    _require_true(
+        acquisition.get("single_frozen_capability_artifact_before_protected_evaluation"),
+        "acquisition_policy.single_frozen_capability_artifact_before_protected_evaluation",
+    )
+    _require_true(
+        acquisition.get("capability_artifact_hash_required"),
+        "acquisition_policy.capability_artifact_hash_required",
+    )
 
     evaluation = _require_mapping(data.get("evaluation_policy"), "evaluation_policy")
     if evaluation.get("source_split") != "protected":
         raise ValueError("evaluation_policy.source_split must be protected")
+    if evaluation.get("protected_fixed_source_access") != "forbidden":
+        raise ValueError("protected fixed source access must be forbidden")
+    if evaluation.get("protected_gold_patch_access") != "forbidden":
+        raise ValueError("protected gold patch access must be forbidden")
     for field in (
         "gold_patch_hidden",
         "same_model_across_arms",
