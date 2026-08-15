@@ -1,6 +1,10 @@
 name: Checkpoint 3 protected four-arm evaluation
 
 on:
+  push:
+    branches: [triskelion-runtime-cp1]
+    paths:
+      - .github/workflows/checkpoint3-protected-eval.yml
   workflow_run:
     workflows: ["Checkpoint 3 build acquisition capability"]
     types: [completed]
@@ -18,18 +22,18 @@ permissions:
 env:
   RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
   PYTHONDONTWRITEBYTECODE: "1"
-  CAPABILITY_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.capability_run_id }}
+  CAPABILITY_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || github.event_name == 'workflow_dispatch' && inputs.capability_run_id || '31878373257' }}
 
 jobs:
   evaluate:
-    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'triskelion-runtime-cp1')
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'triskelion-runtime-cp1')
     runs-on: ubuntu-22.04
     timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Confirm frozen provider binding
         run: test -n "$RIVER_API_KEY" || { echo 'RIVER_API_KEY is not bound to this repository'; exit 78; }
