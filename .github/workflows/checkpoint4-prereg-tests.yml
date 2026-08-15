@@ -1,0 +1,40 @@
+name: Checkpoint 4 preregistration contract tests
+
+on:
+  push:
+    branches: [triskelion-runtime-cp1]
+    paths:
+      - triskelion_runtime/CHECKPOINT4_SCOPE_GENERALIZATION_PREREG.md
+      - triskelion_runtime/CHECKPOINT4_TRANSFER_FAMILY_PROTOCOL_V1.json
+      - triskelion_runtime/checkpoint4_capability_v2.py
+      - triskelion_runtime/checkpoint4_group_transfer_families.py
+      - triskelion_runtime/test_checkpoint4_group_transfer_families.py
+      - .github/workflows/checkpoint4-prereg-tests.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run CP4 grouping tests
+        run: python -m pytest -q triskelion_runtime/test_checkpoint4_group_transfer_families.py
+      - name: Verify frozen protocol marker
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('triskelion_runtime/CHECKPOINT4_TRANSFER_FAMILY_PROTOCOL_V1.json').read_text())
+          assert p['protocol'] == 'TRISKELION_BUGSINPY_CHECKPOINT4_TRANSFER_FAMILY_V1'
+          assert p['status'] == 'FROZEN_BEFORE_FRESH_CASE_GROUPING'
+          assert p['similarity']['edge_threshold'] == 0.60
+          assert p['family_construction']['minimum_members'] == 2
+          assert p['family_construction']['maximum_members'] == 4
+          print('CP4 preregistration contract frozen')
+          PY
