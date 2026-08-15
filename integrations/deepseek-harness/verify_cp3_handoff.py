@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -25,17 +26,16 @@ def load(path: Path) -> Any:
 def canonical_capability_id(capability: Mapping[str, Any]) -> str:
     unsigned = dict(capability)
     unsigned.pop("capability_id", None)
-    encoded = json.dumps(
-        unsigned,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-    ).encode()
+    encoded = json.dumps(unsigned, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
     return hashlib.sha256(encoded).hexdigest()
 
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def current_commit() -> str:
+    return subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
 
 
 def main() -> None:
@@ -103,6 +103,8 @@ def main() -> None:
     require(receipt.get("result") == "PASS", "Harness lifecycle receipt is not PASS")
     require(receipt.get("harness_commit") == EXPECTED_HARNESS_COMMIT, "Harness commit drift")
     require(receipt.get("lifecycle") == EXPECTED_LIFECYCLE, "Harness lifecycle drift")
+    handoff_commit = current_commit()
+    require(receipt.get("handoff_code_commit") == handoff_commit, "handoff code commit mismatch")
     receipt_demo = receipt.get("demo_case")
     require(isinstance(receipt_demo, Mapping), "receipt demo pointer missing")
     require(str(receipt_demo.get("project")) == str(selected.get("project")), "receipt project mismatch")
@@ -122,6 +124,7 @@ def main() -> None:
         "admitted_rule_count": int(build["admitted_rule_count"]),
         "protected_case_count": protected_count,
         "protected_row_count": row_count,
+        "handoff_code_commit": handoff_commit,
         "harness_commit": EXPECTED_HARNESS_COMMIT,
         "lifecycle": EXPECTED_LIFECYCLE,
         "demo_case": {
