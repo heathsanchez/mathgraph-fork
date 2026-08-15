@@ -1,0 +1,183 @@
+name: Checkpoint 4 fresh qualification and grouping
+
+on:
+  push:
+    branches: [triskelion-runtime-cp1]
+    paths:
+      - .github/workflows/checkpoint4-fresh-qualification.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  CP3_FINAL_RUN_ID: '31878237851'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        project: [PySnooper, ansible, black, cookiecutter, fastapi, httpie, keras, luigi, matplotlib, pandas, sanic, scrapy, spacy, thefuck, tornado, tqdm, youtube-dl]
+        python_minor: ['3.6', '3.7', '3.8']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download immutable CP3 qualification evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-qualification-final
+          path: prior
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.CP3_FINAL_RUN_ID }}
+      - name: Checkout pinned BugsInPy
+        run: |
+          git init BugsInPy
+          git -C BugsInPy remote add origin https://github.com/soarsmu/BugsInPy.git
+          git -C BugsInPy fetch --depth=1 origin 11c5f1eea954a42132cfd06bf257766a7963e0fd
+          git -C BugsInPy checkout --detach FETCH_HEAD
+          test "$(git -C BugsInPy rev-parse HEAD)" = 11c5f1eea954a42132cfd06bf257766a7963e0fd
+      - name: Derive frozen shard without opening outcomes
+        id: plan
+        env:
+          PROJECT: ${{ matrix.project }}
+          PYMINOR: ${{ matrix.python_minor }}
+        run: |
+          python triskelion_runtime/checkpoint4_fresh_qualify.py \
+            --bugsinpy BugsInPy \
+            --lock triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json \
+            --prior-attempts prior/QUALIFICATION_ATTEMPTS.json \
+            --project "$PROJECT" --python-minor "$PYMINOR" \
+            --out unused --plan-only > shard-plan.json
+          count=$(python -c "import json; print(json.load(open('shard-plan.json'))['candidate_count'])")
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+          cat shard-plan.json
+      - name: Qualify complete frozen shard in declared Python family
+        if: steps.plan.outputs.count != '0'
+        env:
+          PROJECT: ${{ matrix.project }}
+          PYMINOR: ${{ matrix.python_minor }}
+        run: |
+          case "$PYMINOR" in
+            3.6) image='python:3.6.15-buster'; archive=1 ;;
+            3.7) image='python:3.7.17-buster'; archive=1 ;;
+            3.8) image='python:3.8.20-bullseye'; archive=0 ;;
+            *) exit 2 ;;
+          esac
+          cat > /tmp/cp4-run.sh <<'SH'
+          set -e
+          if [ "$ARCHIVE" = 1 ]; then
+            sed -i 's|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g; /buster-updates/d' /etc/apt/sources.list
+            apt-get -o Acquire::Check-Valid-Until=false update
+          else
+            apt-get update
+          fi
+          apt-get install -y --no-install-recommends build-essential git libffi-dev libjpeg-dev libxml2-dev libxslt1-dev zlib1g-dev
+          git config --global --add safe.directory /work/BugsInPy
+          cd /work
+          python triskelion_runtime/checkpoint4_fresh_qualify.py \
+            --bugsinpy BugsInPy \
+            --lock triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json \
+            --prior-attempts prior/QUALIFICATION_ATTEMPTS.json \
+            --project "$PROJECT" --python-minor "$PYMINOR" \
+            --out "cp4-fresh-${PROJECT}-py${PYMINOR}" --timeout 900
+          SH
+          docker run --rm \
+            -e PROJECT="$PROJECT" -e PYMINOR="$PYMINOR" -e ARCHIVE="$archive" \
+            -v "$PWD:/work" -v /tmp/cp4-run.sh:/cp4-run.sh:ro \
+            "$image" bash /cp4-run.sh
+      - name: Upload fresh shard evidence
+        if: steps.plan.outputs.count != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cp4-fresh-${{ matrix.project }}-py${{ matrix.python_minor }}
+          path: cp4-fresh-${{ matrix.project }}-py${{ matrix.python_minor }}
+          if-no-files-found: error
+          retention-days: 90
+
+  merge_and_group:
+    needs: qualify
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download immutable CP3 qualification evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-qualification-final
+          path: prior
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.CP3_FINAL_RUN_ID }}
+      - name: Download immutable CP3 causal exclusion set
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-causal-corpus-v1
+          path: cp3-causal
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.CP3_FINAL_RUN_ID }}
+      - name: Download every nonempty fresh shard
+        uses: actions/download-artifact@v4
+        with:
+          pattern: cp4-fresh-*
+          path: fresh-shards
+      - name: Enforce complete all-remaining universe and merge
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          lock=json.loads(Path('triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json').read_text())
+          prior=json.loads(Path('prior/QUALIFICATION_ATTEMPTS.json').read_text())
+          old={(str(r['project']),str(r['bug_id'])) for r in prior}
+          expected=[]
+          for p in lock['projects']:
+              for c in p['candidate_order']:
+                  k=(p['project'],str(c['bug_id']))
+                  if k not in old: expected.append(k)
+          rows=[]
+          for path in sorted(Path('fresh-shards').glob('**/ATTEMPTS.json')):
+              rows.extend(json.loads(path.read_text()))
+          got=[(str(r['project']),str(r['bug_id'])) for r in rows]
+          if len(got)!=len(set(got)): raise SystemExit('duplicate fresh attempt')
+          if set(got)!=set(expected):
+              missing=sorted(set(expected)-set(got))[:10]
+              extra=sorted(set(got)-set(expected))[:10]
+              raise SystemExit(f'incomplete fresh universe expected={len(expected)} got={len(got)} missing={missing} extra={extra}')
+          order={k:i for i,k in enumerate(expected)}
+          rows.sort(key=lambda r: order[(str(r['project']),str(r['bug_id']))])
+          Path('checkpoint4-fresh-qualified').mkdir()
+          Path('checkpoint4-fresh-qualified/ATTEMPTS.json').write_text(json.dumps(rows,indent=2,sort_keys=True)+'\n')
+          summary={'protocol':'TRISKELION_BUGSINPY_CHECKPOINT4_FRESH_QUALIFICATION_V1','attempt_count':len(rows),'qualified_count':sum(r.get('classification')=='qualified' for r in rows),'infrastructure_negative_count':sum(r.get('classification')=='infrastructure_negative' for r in rows)}
+          Path('checkpoint4-fresh-qualified/SUMMARY.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          PY
+      - name: Deterministically group buggy-visible qualified cases
+        run: |
+          set +e
+          python triskelion_runtime/checkpoint4_group_transfer_families.py \
+            --attempts checkpoint4-fresh-qualified/ATTEMPTS.json \
+            --lock triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json \
+            --checkpoint3-causal cp3-causal/CHECKPOINT3_CAUSAL_CORPUS_V1.json \
+            --out checkpoint4-transfer-family
+          rc=$?
+          if [ "$rc" = 3 ]; then
+            echo 'Scientific terminal: NO_MATCHED_TRANSFER_FAMILY'
+            exit 0
+          fi
+          exit "$rc"
+      - name: Upload complete fresh qualification
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint4-fresh-qualification-v1
+          path: checkpoint4-fresh-qualified
+          retention-days: 90
+      - name: Upload frozen transfer-family decision
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint4-transfer-family-v1
+          path: checkpoint4-transfer-family
+          retention-days: 90
