@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: checkpoint3-bugsinpy-qualification
+  group: checkpoint3-bugsinpy-qualification-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:
