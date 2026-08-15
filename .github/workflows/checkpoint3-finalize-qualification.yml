@@ -1,6 +1,9 @@
 name: Checkpoint 3 finalize qualification
 
 on:
+  workflow_run:
+    workflows: ["Checkpoint 3 BugsInPy qualification"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       main_run_id:
@@ -20,8 +23,12 @@ permissions:
 
 jobs:
   finalize:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.id == 31854063331
     runs-on: ubuntu-22.04
     timeout-minutes: 20
+    env:
+      MAIN_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.main_run_id }}
+      PY36_RUN_ID: ${{ inputs.python36_run_id || '31853292021' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,7 +42,7 @@ jobs:
           path: sources/main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ inputs.main_run_id }}
+          run-id: ${{ env.MAIN_RUN_ID }}
 
       - name: Download Python 3.6 ansible recovery
         uses: actions/download-artifact@v4
@@ -44,7 +51,7 @@ jobs:
           path: sources/ansible
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ inputs.python36_run_id }}
+          run-id: ${{ env.PY36_RUN_ID }}
 
       - name: Download Python 3.6 cookiecutter recovery
         uses: actions/download-artifact@v4
@@ -53,7 +60,7 @@ jobs:
           path: sources/cookiecutter
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ inputs.python36_run_id }}
+          run-id: ${{ env.PY36_RUN_ID }}
 
       - name: Download Python 3.6 tqdm recovery
         uses: actions/download-artifact@v4
@@ -62,7 +69,7 @@ jobs:
           path: sources/tqdm
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          run-id: ${{ inputs.python36_run_id }}
+          run-id: ${{ env.PY36_RUN_ID }}
 
       - name: Merge qualification evidence in frozen project order
         run: |
@@ -78,8 +85,7 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          path = Path('finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json')
-          data = json.loads(path.read_text())
+          data = json.loads(Path('finalized/checkpoint3-qualification-final/QUALIFIED_CORPUS.json').read_text())
           if data['frozen_project_count'] != 17:
               raise SystemExit(f"unexpected frozen project count: {data['frozen_project_count']}")
           if data['projects_with_evidence'] != 17 or data['projects_missing_evidence']:
