@@ -10,6 +10,10 @@ dist/
 build/
 *.egg-info/
 
+# Local Triskelion runtime state and external harness checkout
+.triskelion/
+.external/
+
 # Generated artifacts and experiment outputs
 _incoming_colab_backup/
 *_incoming_colab_backup/
