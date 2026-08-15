@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install test dependency
+        run: python -m pip install pytest
       - name: Run CP4 grouping tests
         run: python -m pytest -q triskelion_runtime/test_checkpoint4_group_transfer_families.py
       - name: Verify frozen protocol marker
