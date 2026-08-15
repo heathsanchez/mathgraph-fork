@@ -33,11 +33,13 @@
     "verified": "Frozen model with the same acquisition-derived executable capability, activated only through scoped runtime applicability checks and verifier gates."
   },
   "primary_endpoint": "protected_repair_success_rate",
+  "primary_endpoint_denominator": "all protected case-arm evaluations with a competence outcome; infrastructure errors are excluded from the repair denominator and reported separately as coverage/infrastructure error rate",
   "secondary_endpoints": [
     "false_activation_rate",
     "misapplication_rate",
     "activation_rate",
-    "infrastructure_error_rate"
+    "infrastructure_error_rate",
+    "evaluable_coverage"
   ],
   "repair_success_rule": "The candidate patch must make the frozen BugsInPy regression test pass on the pinned buggy commit under the task environment. Infrastructure errors are not repair failures.",
   "false_activation_rule": "An activation is false when an arm applies acquisition-derived capability to a protected task outside its frozen applicability contract or when the verifier rejects the resulting intervention as inapplicable.",
@@ -47,6 +49,7 @@
     "report_all_arms": true,
     "report_per_case_outcomes": true,
     "report_primary_endpoint_before_secondary": true,
+    "report_evaluable_coverage_with_primary_endpoint": true,
     "no_posthoc_exclusions": true,
     "no_posthoc_protocol_changes": true,
     "no_protected_tuning": true
