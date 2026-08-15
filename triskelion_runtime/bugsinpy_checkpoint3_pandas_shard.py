@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from triskelion_runtime.bugsinpy_checkpoint3_qualify_v2 import (
+from bugsinpy_checkpoint3_qualify_v2 import (
     HARNESS_REVISION,
     PROTOCOL,
     UPSTREAM_COMMIT,
@@ -42,10 +42,6 @@ def main() -> None:
         raise SystemExit("pandas lock invariant failed")
     project = projects[0]
 
-    # Preserve the frozen total order exactly. Sharding changes only execution scheduling:
-    # each shard receives ranks congruent to its index and scans them in increasing rank.
-    # The reducer later selects the minimum qualified rank globally, which is identical to
-    # the first success of a sequential scan under the same per-candidate evaluator/timeout.
     candidates = [
         c for c in project["candidate_order"]
         if (int(c["rank"]) - 1) % args.shard_count == args.shard_index
