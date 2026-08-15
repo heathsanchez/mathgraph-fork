@@ -2,7 +2,15 @@ import argparse
 import hashlib
 import json
 import subprocess
+import sys
 from pathlib import Path
+
+# When this file is executed directly (``python triskelion_runtime/...py``),
+# Python places the package directory itself on sys.path rather than the repo
+# root. Add the repo root so package imports are identical to ``python -m``.
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 from triskelion_runtime.bugsinpy_checkpoint3_qualify_v2 import provision, relevant_tests
 
