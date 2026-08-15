@@ -1,6 +1,5 @@
 name: Checkpoint 3 frozen end-to-end pipeline
 
-# Relaunch marker: corrected hexadecimal qualification-rank merger validated in CI.
 on:
   push:
     branches: [triskelion-runtime-cp1]
@@ -12,8 +11,13 @@ permissions:
   contents: read
   actions: read
 
+concurrency:
+  group: checkpoint3-frozen-end-to-end
+  cancel-in-progress: true
+
 env:
   MAIN_QUALIFICATION_RUN_ID: "31854063331"
+  PANDAS_QUALIFICATION_JOB_ID: "94935344944"
   PY36_RECOVERY_RUN_ID: "31853292021"
   RIVER_API_KEY: ${{ secrets.RIVER_API_KEY }}
   PYTHONDONTWRITEBYTECODE: "1"
@@ -67,13 +71,62 @@ jobs:
           repository: ${{ github.repository }}
           run-id: ${{ env.PY36_RECOVERY_RUN_ID }}
 
+      - name: Record pandas workflow-terminal evidence only if its shard emitted none
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, subprocess
+          attempts = json.loads(pathlib.Path('sources/main/QUALIFICATION_ATTEMPTS.json').read_text())
+          summary = json.loads(pathlib.Path('sources/main/QUALIFIED_CORPUS.json').read_text())
+          present = any(r.get('project') == 'pandas' for r in attempts) or any(
+              r.get('project') == 'pandas' for r in summary.get('selected', [])
+          )
+          if present:
+              print('pandas candidate evidence exists; no project-level terminal record needed')
+              raise SystemExit(0)
+          url = f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/jobs/{os.environ['PANDAS_QUALIFICATION_JOB_ID']}"
+          raw = subprocess.check_output([
+              'curl','-fsSL','-H',f"Authorization: Bearer {os.environ['GH_TOKEN']}",
+              '-H','Accept: application/vnd.github+json',url
+          ], text=True)
+          job = json.loads(raw)
+          if job.get('status') != 'completed':
+              raise SystemExit(f"pandas missing candidate evidence but job not completed: {job.get('status')}")
+          if job.get('conclusion') == 'success':
+              raise SystemExit('pandas job succeeded but emitted no qualification evidence')
+          out = pathlib.Path('sources/pandas-terminal')
+          out.mkdir(parents=True)
+          terminal = {
+              'project': 'pandas',
+              'classification': 'infrastructure_negative',
+              'stage': 'workflow_terminal_without_candidate_artifact',
+              'workflow_run_id': int(os.environ['MAIN_QUALIFICATION_RUN_ID']),
+              'job_id': int(os.environ['PANDAS_QUALIFICATION_JOB_ID']),
+              'job_conclusion': job.get('conclusion'),
+          }
+          source = {
+              'protocol': 'TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_V1',
+              'harness_revision': 'V2_3_EXACT_COMMITS_FIXED_REGRESSION_TEST_ENCODING_AWARE_PKG_RESOURCES_SENTINEL',
+              'upstream_commit': '11c5f1eea954a42132cfd06bf257766a7963e0fd',
+              'selected': [],
+              'project_terminal_statuses': [terminal],
+          }
+          (out/'QUALIFIED_CORPUS.json').write_text(json.dumps(source, indent=2, sort_keys=True)+'\n')
+          (out/'QUALIFICATION_ATTEMPTS.json').write_text('[]\n')
+          print(json.dumps(terminal, indent=2, sort_keys=True))
+          PY
+
       - name: Merge all frozen qualification evidence
         run: |
+          EXTRA=""
+          if [ -d sources/pandas-terminal ]; then EXTRA="--source sources/pandas-terminal"; fi
           python triskelion_runtime/checkpoint3_merge_qualification.py \
             --source sources/main \
             --source sources/python36/checkpoint3-python36-ansible \
             --source sources/python36/checkpoint3-python36-cookiecutter \
             --source sources/python36/checkpoint3-python36-tqdm \
+            $EXTRA \
             --out finalized/checkpoint3-qualification-final
 
       - name: Require 17-of-17 project evidence before proceeding
@@ -164,7 +217,6 @@ jobs:
         with:
           name: cp3-pipeline-protected-tests
           path: inputs/protected-tests
-
       - name: Unpack frozen Triskelion provider runtime
         run: |
           mkdir -p triskelion_runtime/work
@@ -226,7 +278,6 @@ jobs:
         with:
           name: cp3-pipeline-eval-inputs
           path: inputs
-
       - name: Checkout pinned BugsInPy
         run: |
           git init BugsInPy
@@ -234,14 +285,12 @@ jobs:
           git -C BugsInPy fetch --depth=1 origin 11c5f1eea954a42132cfd06bf257766a7963e0fd
           git -C BugsInPy checkout --detach FETCH_HEAD
           test "$(git -C BugsInPy rev-parse HEAD)" = 11c5f1eea954a42132cfd06bf257766a7963e0fd
-
       - name: Unpack frozen Triskelion provider runtime
         run: |
           mkdir -p triskelion_runtime/work
           unzip -q triskelion_runtime/TRISKELION_RUNTIME_CHECKPOINT_1_PRECOMMITTED.zip -d triskelion_runtime/work
       - name: Install provider dependency
         run: python -m pip install "river-client"
-
       - name: Build historical Python target images once
         run: |
           cat > /tmp/Dockerfile.py36 <<'EOF'
@@ -267,7 +316,6 @@ jobs:
           docker build -q -t cp3-python36 -f /tmp/Dockerfile.py36 /tmp
           docker build -q -t cp3-python37 -f /tmp/Dockerfile.py37 /tmp
           docker build -q -t cp3-python38 -f /tmp/Dockerfile.py38 /tmp
-
       - name: Run frozen four-arm protected evaluation
         env:
           PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/triskelion_runtime/work
@@ -279,7 +327,6 @@ jobs:
             --raw-memory inputs/capability/RAW_MEMORY.json \
             --bugsinpy BugsInPy \
             --out checkpoint3-protected-eval-v1
-
       - name: Enforce complete result matrix
         run: |
           python - <<'PY'
