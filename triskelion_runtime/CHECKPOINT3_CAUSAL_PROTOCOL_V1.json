@@ -3,6 +3,16 @@
   "qualification_protocol": "TRISKELION_BUGSINPY_CHECKPOINT3_QUALIFICATION_V1",
   "upstream_commit": "11c5f1eea954a42132cfd06bf257766a7963e0fd",
   "frozen_before_protected_evaluation": true,
+  "protocol_status": "closed_before_protected_evaluation",
+  "model_policy": {
+    "provider": "river",
+    "model": "Qwen/Qwen3.5-9B",
+    "temperature": 0.0,
+    "seed_base": 20260818,
+    "max_model_calls_per_case_arm": 2,
+    "max_tokens_per_call": 2048,
+    "same_seed_for_matching_case_attempt_across_arms": true
+  },
   "arms": [
     "cold",
     "raw_memory",
@@ -13,10 +23,19 @@
     "source_split": "acquisition",
     "capability_building": "qualified_acquisition_cases_only",
     "protected_source_access": "forbidden",
-    "protected_outcome_access": "forbidden"
+    "protected_outcome_access": "forbidden",
+    "acquisition_buggy_source_access": "allowed",
+    "acquisition_fixed_source_and_diff_access": "allowed",
+    "single_frozen_capability_artifact_before_protected_evaluation": true,
+    "capability_artifact_hash_required": true
   },
   "evaluation_policy": {
     "source_split": "protected",
+    "protected_buggy_source_access": "allowed",
+    "protected_regression_failure_access": "allowed",
+    "protected_test_file_access": "allowed",
+    "protected_fixed_source_access": "forbidden",
+    "protected_gold_patch_access": "forbidden",
     "gold_patch_hidden": true,
     "same_model_across_arms": true,
     "same_task_order_across_arms": true,
