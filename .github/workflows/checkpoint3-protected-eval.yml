@@ -6,6 +6,7 @@ on:
     branches: [triskelion-runtime-cp1]
     paths:
       - .github/workflows/checkpoint3-protected-eval.yml
+      - triskelion_runtime/checkpoint3_target_runner.py
   workflow_run:
     workflows: ["Checkpoint 3 build acquisition capability"]
     types: [completed]
