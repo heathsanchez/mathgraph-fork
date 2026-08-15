@@ -12,11 +12,13 @@ on:
       - triskelion_runtime/checkpoint3_merge_qualification.py
       - triskelion_runtime/checkpoint3_freeze_causal_corpus.py
       - triskelion_runtime/checkpoint3_capability.py
+      - triskelion_runtime/checkpoint3_build_capability.py
       - triskelion_runtime/checkpoint3_causal_results.py
       - tests/test_checkpoint3_causal_protocol.py
       - tests/test_checkpoint3_merge_qualification.py
       - tests/test_checkpoint3_freeze_causal_corpus.py
       - tests/test_checkpoint3_capability.py
+      - tests/test_checkpoint3_build_capability.py
       - tests/test_checkpoint3_causal_results.py
 
 permissions:
@@ -39,4 +41,5 @@ jobs:
             tests/test_checkpoint3_merge_qualification.py \
             tests/test_checkpoint3_freeze_causal_corpus.py \
             tests/test_checkpoint3_capability.py \
+            tests/test_checkpoint3_build_capability.py \
             tests/test_checkpoint3_causal_results.py
