@@ -48,6 +48,15 @@ jobs:
           repository: ${{ github.repository }}
           run-id: ${{ env.SOURCE_RUN_ID }}
 
+      - name: Download frozen protected evaluation
+        uses: actions/download-artifact@v4
+        with:
+          name: cp3-pipeline-protected-eval
+          path: .triskelion/imports/cp3-eval
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SOURCE_RUN_ID }}
+
       - name: Prove artifact is a real CP3 capability build
         run: |
           python - <<'PY'
@@ -80,6 +89,15 @@ jobs:
           python integrations/deepseek-harness/accept_capability.py \
             .triskelion/imports/cp3/CAPABILITY.json
 
+      - name: Deterministically select a causal demo case
+        run: |
+          mkdir -p harness-acceptance
+          python integrations/deepseek-harness/select_cp3_demo_case.py \
+            --rows .triskelion/imports/cp3-eval/ROWS.json \
+            --results .triskelion/imports/cp3-eval/RESULTS.json \
+            --capability .triskelion/imports/cp3/CAPABILITY.json \
+            --out harness-acceptance/DEMO_CASE.json
+
       - name: Checkout pinned DeepSeek Harness
         run: |
           git clone --quiet https://github.com/deepseek-ai/deepseek-harness.git /tmp/deepseek-harness
@@ -103,12 +121,12 @@ jobs:
 
       - name: Emit durable acceptance receipt
         run: |
-          mkdir -p harness-acceptance
           python - <<'PY'
           import hashlib, json, os
           from pathlib import Path
           cap = Path('.triskelion/imports/cp3/CAPABILITY.json')
           payload = json.loads(cap.read_text())
+          demo = json.loads(Path('harness-acceptance/DEMO_CASE.json').read_text())
           receipt = {
               'protocol': 'TRISKELION_DEEPSEEK_HARNESS_CP3_ACCEPTANCE_V1',
               'source_pipeline_run_id': os.environ['SOURCE_RUN_ID'],
@@ -117,7 +135,12 @@ jobs:
               'harness_commit': '47f943859bef60e4160492346772ded9b24f765a',
               'lifecycle': ['install', 'disable', 'enable', 'uninstall'],
               'result': 'PASS',
-              'scientific_scope': 'host/lifecycle acceptance only; competence remains decided by the frozen protected evaluator',
+              'demo_case': {
+                  'project': demo['selected']['project'],
+                  'bug_id': demo['selected']['bug_id'],
+                  'frozen_case_index': demo['selected']['frozen_case_index'],
+              },
+              'scientific_scope': 'host/lifecycle acceptance plus deterministic visualization selection; aggregate frozen protected evaluation remains authoritative',
           }
           Path('harness-acceptance/RECEIPT.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
           print(json.dumps(receipt, indent=2, sort_keys=True))
