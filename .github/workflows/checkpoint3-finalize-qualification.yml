@@ -2,12 +2,16 @@ name: Checkpoint 3 finalize qualification
 
 on:
   workflow_run:
-    workflows: ["Checkpoint 3 BugsInPy qualification"]
+    workflows: ["Checkpoint 3 pandas qualification rescue"]
     types: [completed]
   workflow_dispatch:
     inputs:
+      pandas_rescue_run_id:
+        description: "Completed pandas rescue workflow run ID"
+        required: true
+        type: string
       main_run_id:
-        description: "Completed 17-project qualification workflow run ID"
+        description: "Original qualification workflow run containing completed non-pandas shards"
         required: true
         default: "31854063331"
         type: string
@@ -23,26 +27,36 @@ permissions:
 
 jobs:
   finalize:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.id == 31854063331
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'triskelion-runtime-cp1')
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
-      MAIN_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.main_run_id }}
+      MAIN_RUN_ID: ${{ inputs.main_run_id || '31854063331' }}
       PY36_RUN_ID: ${{ inputs.python36_run_id || '31853292021' }}
+      PANDAS_RESCUE_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || inputs.pandas_rescue_run_id }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Download main qualification aggregate
+      - name: Download completed non-pandas shards from original frozen run
         uses: actions/download-artifact@v4
         with:
-          name: checkpoint3-qualification-all
-          path: sources/main
+          pattern: checkpoint3-qualification-*
+          path: sources/main-shards
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           run-id: ${{ env.MAIN_RUN_ID }}
+
+      - name: Download reduced pandas rescue evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: checkpoint3-qualification-pandas-rescue
+          path: sources/pandas
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.PANDAS_RESCUE_RUN_ID }}
 
       - name: Download Python 3.6 ansible recovery
         uses: actions/download-artifact@v4
@@ -73,11 +87,24 @@ jobs:
 
       - name: Merge qualification evidence in frozen project order
         run: |
+          set -euo pipefail
+          args=()
+          # The original run already emitted immutable artifacts for every completed
+          # non-pandas, non-Python-3.6 project. It need not reach workflow completion.
+          for d in sources/main-shards/checkpoint3-qualification-*; do
+            [ -d "$d" ] || continue
+            base="$(basename "$d")"
+            case "$base" in
+              checkpoint3-qualification-pandas|checkpoint3-qualification-ansible|checkpoint3-qualification-cookiecutter|checkpoint3-qualification-tqdm|checkpoint3-qualification-all)
+                continue
+                ;;
+            esac
+            [ -f "$d/QUALIFIED_CORPUS.json" ] && args+=(--source "$d")
+          done
+          args+=(--source sources/pandas --source sources/ansible --source sources/cookiecutter --source sources/tqdm)
+          echo "qualification source count=$(( ${#args[@]} / 2 ))"
           python triskelion_runtime/checkpoint3_merge_qualification.py \
-            --source sources/main \
-            --source sources/ansible \
-            --source sources/cookiecutter \
-            --source sources/tqdm \
+            "${args[@]}" \
             --out finalized/checkpoint3-qualification-final
 
       - name: Require evidence for all frozen projects
