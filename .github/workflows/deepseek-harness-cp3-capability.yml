@@ -27,14 +27,18 @@ jobs:
     env:
       SOURCE_RUN_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.run_id || github.event.workflow_run.id }}
       TRISKELION_REPO_ROOT: ${{ github.workspace }}
+      HANDOFF_CODE_COMMIT: "613943a2cdb65a9904f9b2463185d4e45b30745c"
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: triskelion-runtime-cp1
+          ref: ${{ env.HANDOFF_CODE_COMMIT }}
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Assert pinned handoff revision
+        run: test "$(git rev-parse HEAD)" = "$HANDOFF_CODE_COMMIT"
 
       - name: Install Triskelion test/runtime dependencies
         run: python -m pip install -e '.[dev]'
@@ -130,6 +134,7 @@ jobs:
           receipt = {
               'protocol': 'TRISKELION_DEEPSEEK_HARNESS_CP3_ACCEPTANCE_V1',
               'source_pipeline_run_id': os.environ['SOURCE_RUN_ID'],
+              'handoff_code_commit': os.environ['HANDOFF_CODE_COMMIT'],
               'capability_id': payload['capability_id'],
               'capability_file_sha256': hashlib.sha256(cap.read_bytes()).hexdigest(),
               'harness_commit': '47f943859bef60e4160492346772ded9b24f765a',
