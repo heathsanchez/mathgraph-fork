@@ -47,7 +47,7 @@ jobs:
           PROJECT: ${{ matrix.project }}
           PYMINOR: ${{ matrix.python_minor }}
         run: |
-          python triskelion_runtime/checkpoint4_fresh_qualify.py \
+          python -m triskelion_runtime.checkpoint4_fresh_qualify \
             --bugsinpy BugsInPy \
             --lock triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json \
             --prior-attempts prior/QUALIFICATION_ATTEMPTS.json \
@@ -79,7 +79,7 @@ jobs:
           apt-get install -y --no-install-recommends build-essential git libffi-dev libjpeg-dev libxml2-dev libxslt1-dev zlib1g-dev
           git config --global --add safe.directory /work/BugsInPy
           cd /work
-          python triskelion_runtime/checkpoint4_fresh_qualify.py \
+          python -m triskelion_runtime.checkpoint4_fresh_qualify \
             --bugsinpy BugsInPy \
             --lock triskelion_runtime/BUGSINPY_CORPUS_LOCK_V1.json \
             --prior-attempts prior/QUALIFICATION_ATTEMPTS.json \
