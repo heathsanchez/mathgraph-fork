@@ -1,12 +1,10 @@
-from __future__ import annotations
-
 import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, List, Mapping
 
-from bugsinpy_checkpoint3_qualify_v2 import (
+from triskelion_runtime.bugsinpy_checkpoint3_qualify_v2 import (
     UPSTREAM_COMMIT,
     attempt,
     parse_assignments,
@@ -23,7 +21,7 @@ def project_entry(lock: Mapping[str, Any], project: str) -> Mapping[str, Any]:
     return rows[0]
 
 
-def selected_candidates(*, bugsinpy: Path, lock: Mapping[str, Any], prior: list[Mapping[str, Any]], project: str, python_minor: str):
+def selected_candidates(*, bugsinpy: Path, lock: Mapping[str, Any], prior: List[Mapping[str, Any]], project: str, python_minor: str):
     attempted = {(str(r.get("project")), str(r.get("bug_id"))) for r in prior if isinstance(r, Mapping)}
     selected = []
     for frozen_index, candidate in enumerate(project_entry(lock, project).get("candidate_order", [])):
