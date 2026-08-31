@@ -11,6 +11,7 @@ permissions:
   contents: read
   actions: read
 
+# Harness-only repair revision: package import + Python 3.6 controller compatibility.
 env:
   CP3_FINAL_RUN_ID: '31878237851'
 
