@@ -1,0 +1,3142 @@
+{
+  "schema": "mathgraph/gap-conditional-v1",
+  "experimental_scope": "Reduced independently motivated source-interface fixtures. Finite row coverage pertains only to the frozen fixture set, not full upstream software or real-world intent.",
+  "license": "Research-only; no automatic code write, deployment or owner authority",
+  "original_research_files": [
+    "https://github.com/heathsanchez/Minimal-Sufficient-Interface/blob/main/consequential_core.py",
+    "https://github.com/metalogiclabs/mathgraph/blob/main/mathgraph_check/warrant_resolution.py"
+  ],
+  "baseline_model": "gpt-5.6-sol",
+  "reasoning_effort": "low",
+  "max_output_tokens": 300,
+  "seed": 20261117,
+  "cases": [
+    {
+      "id": "nul-ffi",
+      "source_ref": "https://github.com/nasa-jpl/L4YAML/pull/290",
+      "authority": "declared",
+      "complete": true,
+      "contract": "Mapping-key identity requires exact Unicode source key, including characters after embedded NUL; the result must retain precisely the distinctions between different complete keys.",
+      "old_description": "A legacy C-style string boundary displays only the prefix before the first NUL.",
+      "fields": "key: UTF-8/Unicode string",
+      "rows": [
+        {
+          "input": {
+            "key": "a"
+          },
+          "old_image": "a",
+          "target": "a"
+        },
+        {
+          "input": {
+            "key": "a\u0000b"
+          },
+          "old_image": "a",
+          "target": "a\u0000b"
+        },
+        {
+          "input": {
+            "key": "a\u0000c"
+          },
+          "old_image": "a",
+          "target": "a\u0000c"
+        },
+        {
+          "input": {
+            "key": "b"
+          },
+          "old_image": "b",
+          "target": "b"
+        },
+        {
+          "input": {
+            "key": "b\u0000c"
+          },
+          "old_image": "b",
+          "target": "b\u0000c"
+        },
+        {
+          "input": {
+            "key": ""
+          },
+          "old_image": "",
+          "target": ""
+        },
+        {
+          "input": {
+            "key": "ñ"
+          },
+          "old_image": "ñ",
+          "target": "ñ"
+        },
+        {
+          "input": {
+            "key": "x\u0000y"
+          },
+          "old_image": "x",
+          "target": "x\u0000y"
+        },
+        {
+          "input": {
+            "key": "x"
+          },
+          "old_image": "x",
+          "target": "x"
+        },
+        {
+          "input": {
+            "key": "alpha"
+          },
+          "old_image": "alpha",
+          "target": "alpha"
+        },
+        {
+          "input": {
+            "key": "alpha\u0000beta"
+          },
+          "old_image": "alpha",
+          "target": "alpha\u0000beta"
+        },
+        {
+          "input": {
+            "key": "beta"
+          },
+          "old_image": "beta",
+          "target": "beta"
+        }
+      ],
+      "notes": "Finite reduced model of the observed L4YAML FFI loss; not a rerun of the upstream parser."
+    },
+    {
+      "id": "frame-metadata",
+      "source_ref": "https://github.com/nyx-space/nyx/pull/615",
+      "authority": "declared",
+      "complete": true,
+      "contract": "An exported row's meaningful state identity includes its coordinate frame as well as the ordered numeric coordinates. Retain exactly frame-plus-coordinates identity, not an incidental row ID.",
+      "old_description": "Old exported representation keeps coordinates but omits frame context.",
+      "fields": "coords: 3 finite numeric components; frame: string",
+      "rows": [
+        {
+          "input": {
+            "coords": [
+              1,
+              2,
+              3
+            ],
+            "frame": "ITRF"
+          },
+          "old_image": [
+            1,
+            2,
+            3
+          ],
+          "target": [
+            "ITRF",
+            [
+              1,
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              1,
+              2,
+              3
+            ],
+            "frame": "EME2000"
+          },
+          "old_image": [
+            1,
+            2,
+            3
+          ],
+          "target": [
+            "EME2000",
+            [
+              1,
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              1,
+              2,
+              3
+            ],
+            "frame": "Moon Fixed"
+          },
+          "old_image": [
+            1,
+            2,
+            3
+          ],
+          "target": [
+            "Moon Fixed",
+            [
+              1,
+              2,
+              3
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              0,
+              0,
+              0
+            ],
+            "frame": "ITRF"
+          },
+          "old_image": [
+            0,
+            0,
+            0
+          ],
+          "target": [
+            "ITRF",
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              0,
+              0,
+              0
+            ],
+            "frame": "EME2000"
+          },
+          "old_image": [
+            0,
+            0,
+            0
+          ],
+          "target": [
+            "EME2000",
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              0,
+              0,
+              0
+            ],
+            "frame": "Moon Fixed"
+          },
+          "old_image": [
+            0,
+            0,
+            0
+          ],
+          "target": [
+            "Moon Fixed",
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              2,
+              0,
+              -1
+            ],
+            "frame": "ITRF"
+          },
+          "old_image": [
+            2,
+            0,
+            -1
+          ],
+          "target": [
+            "ITRF",
+            [
+              2,
+              0,
+              -1
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              2,
+              0,
+              -1
+            ],
+            "frame": "EME2000"
+          },
+          "old_image": [
+            2,
+            0,
+            -1
+          ],
+          "target": [
+            "EME2000",
+            [
+              2,
+              0,
+              -1
+            ]
+          ]
+        },
+        {
+          "input": {
+            "coords": [
+              2,
+              0,
+              -1
+            ],
+            "frame": "Moon Fixed"
+          },
+          "old_image": [
+            2,
+            0,
+            -1
+          ],
+          "target": [
+            "Moon Fixed",
+            [
+              2,
+              0,
+              -1
+            ]
+          ]
+        }
+      ],
+      "notes": "Finite abstract frame-metadata model, not native Nyx serialization."
+    },
+    {
+      "id": "same-cell-history",
+      "source_ref": "https://temporallogic.org/research/CySat-NFM22/Specifications_And_Signals.pdf",
+      "authority": "declared",
+      "complete": true,
+      "contract": "The protected Boolean alert is true exactly if the absolute temperature change against the prior reading of the same cell exceeds 5 units. Changes to other cells' history must not affect this alert.",
+      "old_description": "Old observer compares current cell value against an unrelated other-cell prior reading.",
+      "fields": "current: integer; previous_same_cell: integer; previous_other_cell: integer",
+      "rows": [
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 12,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 12,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 12,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 14,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 14,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 14,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 15,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 15,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 15,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 19,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 19,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 19,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 20,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 20,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 20,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 21,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 21,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 21,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 25,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 25,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 25,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 26,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 26,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 26,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 28,
+            "previous_other_cell": 12
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 28,
+            "previous_other_cell": 20
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 20,
+            "previous_same_cell": 28,
+            "previous_other_cell": 28
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 22,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 22,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 22,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 24,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 24,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 24,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 25,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 25,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 25,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 29,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 29,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 29,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 30,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 30,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 30,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 31,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 31,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 31,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 35,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 35,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 35,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 36,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 36,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 36,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 38,
+            "previous_other_cell": 22
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 38,
+            "previous_other_cell": 30
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 30,
+            "previous_same_cell": 38,
+            "previous_other_cell": 38
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 32,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 32,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 32,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 34,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 34,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 34,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 35,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 35,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 35,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 39,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 39,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 39,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 40,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 40,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 40,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 41,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 41,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 41,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 45,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 45,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 45,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 46,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 46,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 46,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 48,
+            "previous_other_cell": 32
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 48,
+            "previous_other_cell": 40
+          },
+          "old_image": false,
+          "target": true
+        },
+        {
+          "input": {
+            "current": 40,
+            "previous_same_cell": 48,
+            "previous_other_cell": 48
+          },
+          "old_image": true,
+          "target": true
+        }
+      ],
+      "notes": "Finite modeled adaptation of CySat published same-cell requirement; not a reproduced source-native C2PO run."
+    },
+    {
+      "id": "typed-temperature",
+      "source_ref": "https://github.com/metalogiclabs/ogma/actions/runs/44026486415",
+      "authority": "declared",
+      "complete": true,
+      "contract": "From the stated numeric requirement, the alarm is true exactly when temperature < 120 OR temperature > 180, interpreted mathematically before numeric narrowing. Source field is a signed 8-bit integer in [-128,127].",
+      "old_description": "Original typed-C demonstration effectively compares the upper bound with wrapped signed Int8 value -76 instead of 180.",
+      "fields": "temperature: signed Int8 integer",
+      "rows": [
+        {
+          "input": {
+            "temperature": -128
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -127
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -126
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -125
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -124
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -123
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -122
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -121
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -120
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -119
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -118
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -117
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -116
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -115
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -114
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -113
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -112
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -111
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -110
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -109
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -108
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -107
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -106
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -105
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -104
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -103
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -102
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -101
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -100
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -99
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -98
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -97
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -96
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -95
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -94
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -93
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -92
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -91
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -90
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -89
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -88
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -87
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -86
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -85
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -84
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -83
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -82
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -81
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -80
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -79
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -78
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -77
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -76
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -75
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -74
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -73
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -72
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -71
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -70
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -69
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -68
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -67
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -66
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -65
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -64
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -63
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -62
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -61
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -60
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -59
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -58
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -57
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -56
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -55
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -54
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -53
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -52
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -51
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -50
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -49
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -48
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -47
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -46
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -45
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -44
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -43
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -42
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -41
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -40
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -39
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -38
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -37
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -36
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -35
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -34
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -33
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -32
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -31
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -30
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -29
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -28
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -27
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -26
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -25
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -24
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -23
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -22
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -21
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -20
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -19
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -18
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -17
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -16
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -15
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -14
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -13
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -12
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -11
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -10
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -9
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -8
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -7
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -6
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -5
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -4
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -3
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -2
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": -1
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 0
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 1
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 2
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 3
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 4
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 5
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 6
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 7
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 8
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 9
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 10
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 11
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 12
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 13
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 14
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 15
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 16
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 17
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 18
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 19
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 20
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 21
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 22
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 23
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 24
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 25
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 26
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 27
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 28
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 29
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 30
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 31
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 32
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 33
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 34
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 35
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 36
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 37
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 38
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 39
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 40
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 41
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 42
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 43
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 44
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 45
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 46
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 47
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 48
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 49
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 50
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 51
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 52
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 53
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 54
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 55
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 56
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 57
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 58
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 59
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 60
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 61
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 62
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 63
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 64
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 65
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 66
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 67
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 68
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 69
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 70
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 71
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 72
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 73
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 74
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 75
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 76
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 77
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 78
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 79
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 80
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 81
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 82
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 83
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 84
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 85
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 86
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 87
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 88
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 89
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 90
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 91
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 92
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 93
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 94
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 95
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 96
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 97
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 98
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 99
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 100
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 101
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 102
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 103
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 104
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 105
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 106
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 107
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 108
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 109
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 110
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 111
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 112
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 113
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 114
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 115
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 116
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 117
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 118
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 119
+          },
+          "old_image": true,
+          "target": true
+        },
+        {
+          "input": {
+            "temperature": 120
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "temperature": 121
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "temperature": 122
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "temperature": 123
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "temperature": 124
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "temperature": 125
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "temperature": 126
+          },
+          "old_image": true,
+          "target": false
+        },
+        {
+          "input": {
+            "temperature": 127
+          },
+          "old_image": true,
+          "target": false
+        }
+      ],
+      "notes": "Faithful finite arithmetic abstraction of a source-pinned Ogma demo mismatch; not a flight requirement."
+    },
+    {
+      "id": "unicode-normalization",
+      "source_ref": "https://docs.python.org/3/library/stdtypes.html#str.casefold",
+      "authority": "declared",
+      "complete": true,
+      "contract": "Identity is Python Unicode casefold equivalence (not lowercase and not ASCII diacritic-stripping). Different casefold values must remain distinct, while equal casefold values must merge.",
+      "old_description": "Old observation strips non-ASCII diacritics and non-ASCII characters and lowercases, thereby collapsing some distinct casefold values.",
+      "fields": "word: Unicode string",
+      "rows": [
+        {
+          "input": {
+            "word": "café"
+          },
+          "old_image": "cafe",
+          "target": "café"
+        },
+        {
+          "input": {
+            "word": "cafe"
+          },
+          "old_image": "cafe",
+          "target": "cafe"
+        },
+        {
+          "input": {
+            "word": "CAFÉ"
+          },
+          "old_image": "cafe",
+          "target": "café"
+        },
+        {
+          "input": {
+            "word": "Straße"
+          },
+          "old_image": "strae",
+          "target": "strasse"
+        },
+        {
+          "input": {
+            "word": "STRASSE"
+          },
+          "old_image": "strasse",
+          "target": "strasse"
+        },
+        {
+          "input": {
+            "word": "strasse"
+          },
+          "old_image": "strasse",
+          "target": "strasse"
+        },
+        {
+          "input": {
+            "word": "ẞ"
+          },
+          "old_image": "",
+          "target": "ss"
+        },
+        {
+          "input": {
+            "word": "ss"
+          },
+          "old_image": "ss",
+          "target": "ss"
+        },
+        {
+          "input": {
+            "word": "FoO"
+          },
+          "old_image": "foo",
+          "target": "foo"
+        },
+        {
+          "input": {
+            "word": "foo"
+          },
+          "old_image": "foo",
+          "target": "foo"
+        },
+        {
+          "input": {
+            "word": "cÅfe"
+          },
+          "old_image": "cafe",
+          "target": "cåfe"
+        },
+        {
+          "input": {
+            "word": "cAfe"
+          },
+          "old_image": "cafe",
+          "target": "cafe"
+        }
+      ],
+      "notes": "Intentional out-of-grammar challenge: the safe finite interpreter does not expose Unicode casefold or string methods."
+    },
+    {
+      "id": "closed-parity",
+      "source_ref": "https://github.com/heathsanchez/Minimal-Sufficient-Interface/blob/main/KERNEL.md",
+      "authority": "declared",
+      "complete": true,
+      "contract": "Protect only parity of x in the complete declared finite domain {0..7}.",
+      "old_description": "Existing observation already exposes parity.",
+      "fields": "x: integer 0..7",
+      "rows": [
+        {
+          "input": {
+            "x": 0
+          },
+          "old_image": 0,
+          "target": 0
+        },
+        {
+          "input": {
+            "x": 1
+          },
+          "old_image": 1,
+          "target": 1
+        },
+        {
+          "input": {
+            "x": 2
+          },
+          "old_image": 0,
+          "target": 0
+        },
+        {
+          "input": {
+            "x": 3
+          },
+          "old_image": 1,
+          "target": 1
+        },
+        {
+          "input": {
+            "x": 4
+          },
+          "old_image": 0,
+          "target": 0
+        },
+        {
+          "input": {
+            "x": 5
+          },
+          "old_image": 1,
+          "target": 1
+        },
+        {
+          "input": {
+            "x": 6
+          },
+          "old_image": 0,
+          "target": 0
+        },
+        {
+          "input": {
+            "x": 7
+          },
+          "old_image": 1,
+          "target": 1
+        }
+      ],
+      "notes": "Structural positive control: no LLM needed."
+    },
+    {
+      "id": "incomplete-coverage",
+      "source_ref": "https://github.com/heathsanchez/Minimal-Sufficient-Interface/blob/main/KERNEL.md",
+      "authority": "declared",
+      "complete": false,
+      "contract": "Protect full integer identity on an unbounded domain; only three distinct states have been inspected.",
+      "old_description": "Observed identity agrees on the sampled states, without complete domain coverage.",
+      "fields": "x: arbitrary integer",
+      "rows": [
+        {
+          "input": {
+            "x": 0
+          },
+          "old_image": 0,
+          "target": 0
+        },
+        {
+          "input": {
+            "x": 1
+          },
+          "old_image": 1,
+          "target": 1
+        },
+        {
+          "input": {
+            "x": 2
+          },
+          "old_image": 2,
+          "target": 2
+        }
+      ],
+      "notes": "UNKNOWN control: no observed collision does not imply sufficiency on an unbounded domain."
+    },
+    {
+      "id": "unratified-header",
+      "source_ref": "https://github.com/R2U2/r2u2",
+      "authority": "unknown_owner_contract",
+      "complete": false,
+      "contract": "A positional signal monitor receives columns after a runtime header reorder, but no owner-authored policy says whether reorders must be rejected, remapped or forbidden.",
+      "old_description": "Old monitor uses compile-time positional signal indices.",
+      "fields": "header: list of signal names; samples: list of values",
+      "rows": [
+        {
+          "input": {
+            "header": [
+              "batteryA",
+              "batteryB"
+            ],
+            "samples": [
+              42,
+              21
+            ]
+          },
+          "old_image": [
+            42,
+            21
+          ]
+        },
+        {
+          "input": {
+            "header": [
+              "batteryB",
+              "batteryA"
+            ],
+            "samples": [
+              42,
+              21
+            ]
+          },
+          "old_image": [
+            42,
+            21
+          ]
+        }
+      ],
+      "notes": "Authority control: do not manufacture a semantic oracle."
+    },
+    {
+      "id": "unobservable-owner-state",
+      "source_ref": "https://app.notion.com/p/4063e523d7ab81d7925ef4feb1dbc5aa",
+      "authority": "declared",
+      "complete": true,
+      "contract": "An intended permission decision depends on hidden owner intent not present in any available source field. The same public evidence can correspond to opposite owner decisions.",
+      "old_description": "Only available source field is an identical public packet, with no owner decision channel.",
+      "fields": "packet: the only available public value",
+      "rows": [
+        {
+          "input": {
+            "packet": "same"
+          },
+          "old_image": "same",
+          "target": false
+        },
+        {
+          "input": {
+            "packet": "same"
+          },
+          "old_image": "same",
+          "target": true
+        }
+      ],
+      "notes": "Information-theoretic no-go: no lawful source-only expression can resolve the collision."
+    }
+  ]
+}
