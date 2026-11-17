@@ -1,0 +1,86 @@
+name: Distinction-guided LLM repair selection (bounded pilot)
+
+on:
+  push:
+    branches:
+      - research/distinction-guided-repair-selection-20261117
+    paths:
+      - .github/workflows/distinction-guided-repair-pilot.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: distinction-guided-repair-pilot-20261117
+  cancel-in-progress: false
+
+jobs:
+  inference:
+    name: Fixed 30-call OpenAI paired experiment
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Static test and independent task freeze preflight
+        run: |
+          python -m py_compile research/repair_selection_pilot/run.py research/repair_selection_pilot/score.py
+          python - <<'PY'
+          import json, hashlib
+          from pathlib import Path
+          p=Path('research/repair_selection_pilot/cases.json')
+          b=p.read_bytes(); d=json.loads(b)
+          assert len(d['cases']) == 10
+          assert sum(x['category']=='external_merged' for x in d['cases']) == 8
+          assert sum(x['category']=='contract_unknown' for x in d['cases']) == 2
+          assert all(set(x['choices'])==set('ABCDE') and x['correct'] in 'ABCDE' for x in d['cases'])
+          assert all(x['correct']=='E' for x in d['cases'] if x['category']=='contract_unknown')
+          print('FROZEN_INPUTS_OK SHA256='+hashlib.sha256(b).hexdigest())
+          PY
+      - name: Install pinned OpenAI client
+        run: python -m pip install --quiet 'openai==2.9.0'
+      - name: Run strictly bounded model inference (no generated code execution)
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python research/repair_selection_pilot/run.py
+      - name: Preserve exact model replies and API usage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repair-selection-api-results
+          path: research/repair_selection_pilot/results.json
+          retention-days: 30
+          if-no-files-found: warn
+
+  independent-scoring:
+    name: Score with no API secret
+    if: always()
+    needs: inference
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: repair-selection-api-results
+          path: research/repair_selection_pilot
+      - name: Score frozen choices and abstentions
+        run: python research/repair_selection_pilot/score.py
+      - name: Preserve complete report and raw paired outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repair-selection-scored-results
+          path: |
+            research/repair_selection_pilot/summary.json
+            research/repair_selection_pilot/results.json
+            research/repair_selection_pilot/cases.json
+          retention-days: 30
+          if-no-files-found: warn
