@@ -1,0 +1,48 @@
+name: Gap-conditional Cell strict rescore (zero model calls)
+
+on:
+  push:
+    branches:
+      - research/gap-conditional-cell-20261117
+    paths:
+      - .github/workflows/gap-conditional-rescore.yml
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      GAP_RESCORE_ORIGINAL_SOURCE_SHA: 7c66e67ee3ba0e2c6ef9da8cac5041cf489b6a63
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Obtain original, untouched model responses by original run identity
+        uses: actions/download-artifact@v4
+        with:
+          name: gap-conditional-raw-proposals
+          run-id: 44067908479
+          github-token: ${{ github.token }}
+          path: research/gap_conditional_cell
+      - name: Requalify all original model responses under fail-closed coverage policy
+        run: |
+          python research/gap_conditional_cell/structural.py
+          python research/gap_conditional_cell/score.py
+      - name: Preserve corrected analysis without further LLM inference
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gap-conditional-strict-rescore
+          path: |
+            research/gap_conditional_cell/cases.json
+            research/gap_conditional_cell/proposals.json
+            research/gap_conditional_cell/summary.json
+          retention-days: 30
+          if-no-files-found: warn
