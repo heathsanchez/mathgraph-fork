@@ -1,0 +1,173 @@
+{
+  "schema": "mathgraph_repair_selection_pilot_v1",
+  "freeze_note": "10 predeclared cases: 8 merged external upstream repairs, 2 owner-contract-unknown controls; all choice keys fixed before calls; model never receives correct/source/merge_sha/category.",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "low",
+  "max_output_tokens": 220,
+  "arms": [
+    "RAW",
+    "GENERAL",
+    "DISTINCTION"
+  ],
+  "seed": 20261117,
+  "cases": [
+    {
+      "id": "L4-NUL",
+      "category": "external_merged",
+      "source": "https://github.com/nasa-jpl/L4YAML/pull/290",
+      "merge_sha": "171aa7a34917ce318f13a3c79f71fe675ad1cfbe",
+      "observation": "A YAML parser retains distinct mapping keys represented by bytes a and a\\x00b. A Python accessor retrieves the value for a when asked for a\\x00b through a C interface; ordinary Unicode keys still work.",
+      "choices": {
+        "A": "Remove embedded zero bytes from keys before entering C, then use normal string lookup.",
+        "B": "Use a length-aware UTF-8 key interface and preserve the full byte sequence through the lookup.",
+        "C": "Treat duplicate Python dictionary values as an error after conversion.",
+        "D": "Increase the C string buffer by one byte and keep the existing null-terminated lookup.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "B",
+      "diagnosis": "Two distinct source identities collapse to one prefix at the C-string boundary. Preserve the identity-bearing bytes rather than changing the source keys."
+    },
+    {
+      "id": "NYX-BRENT",
+      "category": "external_merged",
+      "source": "https://github.com/nyx-space/nyx/pull/613",
+      "merge_sha": "09ab47dd4233ad3b80efc64479bf5339739b5570",
+      "observation": "An event detector brackets a valid longitude-zero crossing when a caller requests an Earth-fixed frame, but subsequent Brent root refinement returns event-not-found. Changing only the requested frame changes the outcome.",
+      "choices": {
+        "A": "Increase the root solver's iteration and numerical tolerance limits.",
+        "B": "Transform only the final refined event state after convergence.",
+        "C": "Fall back to a previously seen sign change without refining the root.",
+        "D": "Evaluate the same event function in the requested frame during both crossing detection and root refinement.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "D",
+      "diagnosis": "Bracketing and refinement use different coordinate frames for what should be one scalar event function; preserve that physical function through the refinement stage."
+    },
+    {
+      "id": "ONNX-HARDMAX",
+      "category": "external_merged",
+      "source": "https://github.com/onnx/onnx/pull/8791",
+      "merge_sha": "366620ca097ed2dff8f76b50f264dd592d9edc9b",
+      "observation": "A structurally valid Hardmax model changes numerical outputs when automatically converted from opset 12 to opset 13. A rank-three tensor differs, even though model validation succeeds before and after conversion.",
+      "choices": {
+        "A": "Implement the legacy flatten-at-axis behavior explicitly around the newer Hardmax operator, restoring output shape afterward.",
+        "B": "Rely on structural model validation; mark the numerical difference acceptable.",
+        "C": "Replace the old axis with the last axis, without flattening or reshaping.",
+        "D": "Change the output tolerance to ignore wrong one-hot positions.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "A",
+      "diagnosis": "The same operator name denotes different axis semantics across versions; preserve the original value-level transformation, not merely valid syntax."
+    },
+    {
+      "id": "OPENMDAO-INDEX",
+      "category": "external_merged",
+      "source": "https://github.com/OpenMDAO/OpenMDAO/pull/3848",
+      "merge_sha": "a3209e27dddbfe4eaaeba580163294f042097b04",
+      "observation": "With a negative source index and an assembled Jacobian, total derivatives can differ from those obtained with the equivalent positive source index. The direct solver otherwise operates normally.",
+      "choices": {
+        "A": "Reject all negative source indices globally.",
+        "B": "Allow the negative index to wrap across the assembled Jacobian width.",
+        "C": "Resolve negative indices relative to the source variable's own width before mapping to global Jacobian columns.",
+        "D": "Switch off all assembled Jacobian optimizations, regardless of index sign.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "C",
+      "diagnosis": "An index is being interpreted in a global coordinate system when its meaning is relative to the source variable; normalize locally before transporting its location."
+    },
+    {
+      "id": "JSBSIM-AXIS",
+      "category": "external_merged",
+      "source": "https://github.com/JSBSim-Team/jsbsim/pull/1543",
+      "merge_sha": "3f153c18a2518f8472e37c89e70444b1c671b700",
+      "observation": "An XML table lookup label with a very large numeric axis suffix can cause a native crash; labels with trailing junk can be accepted. Well-formed axis labels interpolate correctly.",
+      "choices": {
+        "A": "Grow table-axis storage to accommodate any integer token before checking its bounds.",
+        "B": "Parse the entire decimal suffix with checked overflow and bounds validation before allocating or indexing.",
+        "C": "Truncate the suffix to fit the native index type, keeping the current permissive parser.",
+        "D": "Ignore all characters after the first digit and continue the old behavior.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "B",
+      "diagnosis": "Permissive parsing and narrowing conflate malformed identifiers with valid indices before bounds checks. The full identifier must be validated at the admission boundary."
+    },
+    {
+      "id": "BRAHE-DIR",
+      "category": "external_merged",
+      "source": "https://github.com/duncaneddy/brahe/pull/608",
+      "merge_sha": "166e876d2ee4d0cbcb99f2436d5be13775407511",
+      "observation": "An event detector configured for one crossing direction can report an arrival from the opposite side when the propagation step ends within the event's tolerance. The normal sign-crossing path respects direction.",
+      "choices": {
+        "A": "Apply the requested approach-direction filter even on the near-target tolerance path; retain unrestricted Any handling.",
+        "B": "Remove all endpoint tolerance handling and only accept exact zero crossings.",
+        "C": "Let near-target tolerance override the direction filter and call the difference insignificant.",
+        "D": "Increase the event tolerance until opposite-side events disappear.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "A",
+      "diagnosis": "Two admission paths apply different policy: the tolerance path drops a protected direction requirement. Restore the same directional predicate on both paths."
+    },
+    {
+      "id": "NYX-PARQUET",
+      "category": "external_merged",
+      "source": "https://github.com/nyx-space/nyx/pull/615",
+      "merge_sha": "71e31c137bfe2fea641a21455febb84c936fc409",
+      "observation": "A trajectory export selects a subset of spacecraft states into a Parquet table with a single frame metadata field. Import can then assign an incorrect physical frame to some selected rows, especially when the first original state was excluded or frames differ.",
+      "choices": {
+        "A": "Always use the very first source-trajectory frame as table metadata.",
+        "B": "Silently convert all rows to the inertial frame and keep their numerical coordinates unchanged.",
+        "C": "Leave the frame field empty when several selected frames are present.",
+        "D": "Derive metadata from the exported rows; reject incompatible mixed-frame and empty selections.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "D",
+      "diagnosis": "The metadata purports to identify the selected exported rows, but was derived from a different population. Preserve row-to-frame identity or refuse to encode an ambiguous table."
+    },
+    {
+      "id": "CYCLONE-LEAK",
+      "category": "external_merged",
+      "source": "https://github.com/ros2/rmw_cyclonedds/pull/634",
+      "merge_sha": "5530efc58dc1c4426ecdeeb54ff5328178217a63",
+      "observation": "Repeating deserialization into initialized C sequence fields increases resident memory over many calls. Some nested-message sequences using a different helper do not show this growth. Valid message values decode correctly.",
+      "choices": {
+        "A": "Increase the allocation growth factor to reduce reallocations without changing initialization logic.",
+        "B": "Reinitialize every C sequence unconditionally and leave existing storage to the allocator.",
+        "C": "Reuse the introspection resize callback that finalizes or resizes an already initialized sequence before new content.",
+        "D": "Disable C sequence deserialization entirely to prevent memory growth.",
+        "E": "Cannot select a repair without additional governing requirements."
+      },
+      "correct": "C",
+      "diagnosis": "The code crosses an object-lifetime boundary: initializing a live sequence again discards storage ownership. Use the existing lifecycle-preserving resize operation."
+    },
+    {
+      "id": "R2U2-POLICY",
+      "category": "contract_unknown",
+      "source": "https://github.com/R2U2/r2u2",
+      "observation": "An offline C monitor compiles named sensor signals to positional indices using one CSV header. At runtime, a new CSV header swaps two columns; the monitor reads positional values and produces a different verdict for the same named signals. No owner-approved contract specifying runtime header behavior is supplied.",
+      "choices": {
+        "A": "Mandate rejection of all reordered runtime headers as a confirmed defect.",
+        "B": "Always remap compiled positional indices from runtime header names.",
+        "C": "Document that runtime names are irrelevant without consulting project requirements.",
+        "D": "Silently sort numeric rows into lexical signal-name order.",
+        "E": "Withhold a defect verdict and select the required behavior only after the owner establishes the input-binding policy."
+      },
+      "correct": "E",
+      "diagnosis": "The observation-to-signal association differs, but the governing requirement for runtime header matching is not established. More runtime traces cannot supply missing policy authority."
+    },
+    {
+      "id": "OGMA-INTENT",
+      "category": "contract_unknown",
+      "source": "https://github.com/nasa/ogma",
+      "observation": "A natural-language temperature requirement is translated externally into a syntactically valid temporal formula. Two candidate formulas differ at the threshold value, but the owner has not specified units, sampling rules or whether the threshold is strict. No authoritative requirement interpretation is available.",
+      "choices": {
+        "A": "Choose the strict inequality because it is more conservative.",
+        "B": "Choose the inclusive inequality because it accepts more values.",
+        "C": "Accept whichever formula yields a green monitor regression.",
+        "D": "Delete the threshold condition to avoid disagreement.",
+        "E": "Preserve ambiguity and ask for authoritative threshold, unit and time semantics before asserting adequacy or repairing the formula."
+      },
+      "correct": "E",
+      "diagnosis": "The apparent formula difference cannot establish which representation matches intent; an external normative reference is missing, so no technical preference can legitimately select the answer."
+    }
+  ]
+}
