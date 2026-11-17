@@ -145,7 +145,9 @@ def compile_expression(expr):
 
 
 def verify_expression(case,expr):
-    """Exact target-kernel preservation on every *frozen finite* row."""
+    """Check target-kernel preservation; never promote incomplete coverage."""
+    if case["authority"] != "declared":
+        return {"status":"UNKNOWN_AUTHORITY","reason":"UNRATIFIED_REQUIREMENT"}
     try:
         tree=compile_expression(expr)
         values=[]
@@ -160,7 +162,8 @@ def verify_expression(case,expr):
                             "first_pair":[i,j],
                             "error":"OVER_SPLIT" if targets[i]==targets[j] else "UNDER_SPLIT",
                             "checked_rows":len(values)}
-        return {"status":"WARRANTED_FROZEN_FINITE_KERNEL",
+        return {"status":("WARRANTED_FROZEN_FINITE_KERNEL" if case["complete"]
+                          else "CONSISTENT_SAMPLES_ONLY"),
                 "checked_rows":len(values),
                 "distinct_target_classes":len(set(targets)),
                 "distinct_output_classes":len(set(values))}
