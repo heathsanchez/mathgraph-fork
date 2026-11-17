@@ -17,8 +17,9 @@ def main():
     raw=json.loads((HERE/"proposals.json").read_text())
     assert raw["schema"]=="mathgraph/gap-conditional-api-proposals-v1"
     assert raw["cases_sha256"]==source_digest(),"SOURCE_DATA_CHANGED_AFTER_MODEL_CALL"
-    if os.environ.get("GITHUB_SHA"):
-        assert raw["source_sha"]==os.environ["GITHUB_SHA"],"RUN_SOURCE_SHA_DRIFT"
+    if os.environ.get("GITHUB_SHA") and raw["source_sha"] != os.environ["GITHUB_SHA"]:
+        assert os.environ.get("GAP_RESCORE_ORIGINAL_SOURCE_SHA") == raw["source_sha"], "UNAUTHORIZED_REQUALIFICATION"
+        assert raw["source_sha"] == "7c66e67ee3ba0e2c6ef9da8cac5041cf489b6a63", "UNEXPECTED_ORIGINAL_SOURCE"
     pairs=[(r["arm"],r["case_id"]) for r in raw["calls"]]
     assert len(pairs)==len(set(pairs))==14,"DUPLICATE_OR_MISSING_CALL"
     assert all(a in ("ALWAYS","GAP_ONLY") and k in by_id for a,k in pairs),"FOREIGN_CASE"
@@ -69,6 +70,9 @@ def main():
                 and x["structural_gate"]!="ELIGIBLE_GAP"
                 for x in sub
             ),
+            "sample_only_agreements":sum(
+                x["verifier"]["status"]=="CONSISTENT_SAMPLES_ONLY" for x in sub
+            ),
             "unsupported_code_executed":0,
         }
     total_usage={"input_tokens":0,"output_tokens":0,"total_tokens":0}
@@ -83,6 +87,10 @@ def main():
         "schema":"mathgraph/gap-conditional-scored-v1",
         "status":"WARRANTED_LOCAL_FINITE_PILOT",
         "source_sha":raw["source_sha"],
+        "verifier_commit":os.environ.get("GITHUB_SHA",""),
+        "requalification_of_original":(
+            os.environ.get("GITHUB_SHA","")!=raw["source_sha"]
+        ),
         "cases_sha256":raw["cases_sha256"],
         "model":data["baseline_model"],
         "structure":{c["id"]:assess(c)["status"] for c in cases},
@@ -96,6 +104,7 @@ def main():
           "This asks the LLM to propose source expressions; it does not synthesize arbitrary executable programs or new instrument types.",
           "The safe interpreter is a deliberately supplied finite expression language; a required unknown primitive remains UNKNOWN.",
           "A finite target-kernel match does not prove correctness outside the declared fixture domain or future actions.",
+          "An earlier scorer labeled a sample-only match as a finite warrant: corrected to CONSISTENT_SAMPLES_ONLY without rerunning any model.",
           "A model proposal is not a signed/authenticated Unit or a deployed MathGraph Cell.",
           "Historical source examples and requirement descriptions may be present in training data.",
           "A single response per case is not evidence of general-model performance or superior economic impact.",
