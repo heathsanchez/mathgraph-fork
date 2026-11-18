@@ -1,0 +1,54 @@
+name: Six-question assurance gate (source-pinned, no model calls)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/six-question-gate-20261118
+    paths:
+      - .github/workflows/assurance-six-gate.yml
+      - research/gap_conditional_cell/six_questions.py
+      - research/gap_conditional_cell/openmct_replay.mjs
+      - tests/test_six_questions.py
+      - tests/test_openmct_source_replay.py
+
+permissions:
+  contents: read
+
+jobs:
+  source-bound-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Retrieve exact public Open MCT source (read only)
+        uses: actions/checkout@v4
+        with:
+          repository: nasa/openmct
+          ref: e09bfaf47856b2b7ae2ea74334800b26fd27a41e
+          persist-credentials: false
+          path: openmct-pinned
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            src/api/telemetry/TelemetryAPI.js
+            src/api/objects/object-utils.js
+            example/generator/StateGeneratorProvider.js
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install minimal research test dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Source-bound original-class replay and negative controls
+        env:
+          OPENMCT_PINNED_CHECKOUT: ${{ github.workspace }}/openmct-pinned
+        run: python -m pytest -q tests/test_six_questions.py tests/test_openmct_source_replay.py
+      - name: Immutable fixture identity and auditable JSON report
+        run: |
+          sha256sum research/gap_conditional_cell/cases.json
+          python -m research.gap_conditional_cell.six_questions --frozen > /tmp/six-question-audit.json
+          python -m json.tool /tmp/six-question-audit.json > /dev/null
