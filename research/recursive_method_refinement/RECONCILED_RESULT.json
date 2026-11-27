@@ -1,0 +1,669 @@
+{
+  "source_sha": "336d1e8fd9662b7e238952754a47bf000c98d357",
+  "run_id": 45922403408,
+  "verification_boundary": "Recorded hosted job logs; no new model calls, no independent artifact-byte rehash or fresh oracle replay in this reconciliation.",
+  "history": [
+    {
+      "job_id": 140256052783,
+      "score": {
+        "calls": [
+          {
+            "arm": "recursive",
+            "model": "gpt-5.6-sol",
+            "prompt_chars": 2351,
+            "prompt_sha256": "144bbeaa09eeca44d87dac59fb7015bc662c16492e216158b2019194e27c1c30",
+            "proposal": {
+              "arity": 2,
+              "expression": "abs(F0-F1)"
+            },
+            "response_sha256": "8557f48617b2bedc7d7908d0420fc0857cd45c8c0ef8abee4a8b36ca36b90ed3",
+            "seconds": 2.77,
+            "status": "RESPONSE",
+            "usage": {
+              "input_tokens": 1018,
+              "input_tokens_details": {
+                "cache_write_tokens": 0,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 0
+                },
+                "cached_tokens": 0
+              },
+              "output_tokens": 18,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 1036
+            }
+          },
+          {
+            "arm": "standalone",
+            "model": "gpt-5.6-sol",
+            "prompt_chars": 2353,
+            "prompt_sha256": "f8185c49a2d6f3e25f0c13d3758c32dc0ea0e6bc5f134da56573285a649651fa",
+            "proposal": {
+              "arity": 2,
+              "expression": "abs(F0-F1)"
+            },
+            "response_sha256": "8557f48617b2bedc7d7908d0420fc0857cd45c8c0ef8abee4a8b36ca36b90ed3",
+            "seconds": 1.711,
+            "status": "RESPONSE",
+            "usage": {
+              "input_tokens": 1013,
+              "input_tokens_details": {
+                "cache_write_tokens": 0,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 0
+                },
+                "cached_tokens": 0
+              },
+              "output_tokens": 18,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 1031
+            }
+          }
+        ],
+        "frontier": {
+          "projection": {
+            "calibration_checks": 5,
+            "candidates": 3,
+            "fit": false,
+            "heldout_rows": 0,
+            "wrong": null
+          }
+        },
+        "proposal_status": "COMPLETE",
+        "recursive": {
+          "dependencies": [],
+          "development": {
+            "binding": [
+              "d0",
+              "d1"
+            ],
+            "calibration_checks": 40,
+            "candidates": 1,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 85,
+            "wrong": 0
+          },
+          "expanded": "abs(F0 - F1)",
+          "proposal": {
+            "arity": 2,
+            "expression": "abs(F0-F1)"
+          },
+          "qualified": true,
+          "status": "WARRANTED_BOUNDED_FINITE_TEMPLATE",
+          "transfer": {
+            "binding": [
+              "t0",
+              "t2"
+            ],
+            "calibration_checks": 41,
+            "candidates": 2,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 85,
+            "wrong": 0
+          },
+          "unrolled_semantic_control": [
+            {
+              "binding": [
+                "d0",
+                "d1"
+              ],
+              "calibration_checks": 40,
+              "candidates": 1,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 85,
+              "wrong": 0
+            },
+            {
+              "binding": [
+                "t0",
+                "t2"
+              ],
+              "calibration_checks": 41,
+              "candidates": 2,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 85,
+              "wrong": 0
+            }
+          ],
+          "withdrawal": {}
+        },
+        "stage": 1,
+        "standalone": {
+          "dependencies": [],
+          "development": {
+            "binding": [
+              "d0",
+              "d1"
+            ],
+            "calibration_checks": 40,
+            "candidates": 1,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 85,
+            "wrong": 0
+          },
+          "expanded": "abs(F0 - F1)",
+          "proposal": {
+            "arity": 2,
+            "expression": "abs(F0-F1)"
+          },
+          "qualified": true,
+          "status": "WARRANTED_BOUNDED_FINITE_TEMPLATE",
+          "transfer": {
+            "binding": [
+              "t0",
+              "t2"
+            ],
+            "calibration_checks": 41,
+            "candidates": 2,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 85,
+            "wrong": 0
+          },
+          "unrolled_semantic_control": [
+            {
+              "binding": [
+                "d0",
+                "d1"
+              ],
+              "calibration_checks": 40,
+              "candidates": 1,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 85,
+              "wrong": 0
+            },
+            {
+              "binding": [
+                "t0",
+                "t2"
+              ],
+              "calibration_checks": 41,
+              "candidates": 2,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 85,
+              "wrong": 0
+            }
+          ],
+          "withdrawal": {}
+        }
+      },
+      "chain": "False STRICT_G2_G3_UNKNOWN"
+    },
+    {
+      "job_id": 140256270572,
+      "score": {
+        "calls": [
+          {
+            "arm": "standalone",
+            "model": "gpt-5.6-sol",
+            "prompt_chars": 2821,
+            "prompt_sha256": "acdd8f7cc7531410dbcee51360e3447dfb999f6a0257621c66ccff6556ab6ef8",
+            "proposal": {
+              "arity": 3,
+              "expression": "abs(F0-F1)+abs(F1-F2)"
+            },
+            "response_sha256": "04ecb9a0fa50fa357c483997392f64b4e6a920b51888a1af37377847de9a4630",
+            "seconds": 3.035,
+            "status": "RESPONSE",
+            "usage": {
+              "input_tokens": 1291,
+              "input_tokens_details": {
+                "cache_write_tokens": 1288,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 1288
+                },
+                "cached_tokens": 0
+              },
+              "output_tokens": 74,
+              "output_tokens_details": {
+                "reasoning_tokens": 48
+              },
+              "total_tokens": 1365
+            }
+          },
+          {
+            "arm": "recursive",
+            "model": "gpt-5.6-sol",
+            "prompt_chars": 2819,
+            "prompt_sha256": "9a4c6edf4043506275ee9d5237cb15aa98ffbb3093c122ce944781af7589e0d3",
+            "proposal": {
+              "arity": 3,
+              "expression": "O1(F0,F1)+O1(F1,F2)"
+            },
+            "response_sha256": "fbc7592450b7255b6481fe8b3e0efcf7e6ad0275081895be984434c40ecaf0ee",
+            "seconds": 3.262,
+            "status": "RESPONSE",
+            "usage": {
+              "input_tokens": 1296,
+              "input_tokens_details": {
+                "cache_write_tokens": 1293,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 1293
+                },
+                "cached_tokens": 0
+              },
+              "output_tokens": 114,
+              "output_tokens_details": {
+                "reasoning_tokens": 86
+              },
+              "total_tokens": 1410
+            }
+          }
+        ],
+        "frontier": {
+          "O1": {
+            "calibration_checks": 12,
+            "candidates": 12,
+            "fit": false,
+            "heldout_rows": 0,
+            "wrong": null
+          },
+          "projection": {
+            "calibration_checks": 4,
+            "candidates": 4,
+            "fit": false,
+            "heldout_rows": 0,
+            "wrong": null
+          }
+        },
+        "proposal_status": "COMPLETE",
+        "recursive": {
+          "dependencies": [
+            "O1"
+          ],
+          "development": {
+            "binding": [
+              "d1",
+              "d2",
+              "d3"
+            ],
+            "calibration_checks": 52,
+            "candidates": 10,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 585,
+            "wrong": 0
+          },
+          "expanded": "abs(F0 - F1) + abs(F1 - F2)",
+          "proposal": {
+            "arity": 3,
+            "expression": "O1(F0,F1)+O1(F1,F2)"
+          },
+          "qualified": true,
+          "status": "WARRANTED_BOUNDED_FINITE_TEMPLATE",
+          "transfer": {
+            "binding": [
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "calibration_checks": 53,
+            "candidates": 10,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 585,
+            "wrong": 0
+          },
+          "unrolled_semantic_control": [
+            {
+              "binding": [
+                "d1",
+                "d2",
+                "d3"
+              ],
+              "calibration_checks": 52,
+              "candidates": 10,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 585,
+              "wrong": 0
+            },
+            {
+              "binding": [
+                "t1",
+                "t2",
+                "t3"
+              ],
+              "calibration_checks": 53,
+              "candidates": 10,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 585,
+              "wrong": 0
+            }
+          ],
+          "withdrawal": {
+            "O1": "REFERENCE_INVALIDATED"
+          }
+        },
+        "stage": 2,
+        "standalone": {
+          "dependencies": [],
+          "development": {
+            "binding": [
+              "d1",
+              "d2",
+              "d3"
+            ],
+            "calibration_checks": 52,
+            "candidates": 10,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 585,
+            "wrong": 0
+          },
+          "expanded": "abs(F0 - F1) + abs(F1 - F2)",
+          "proposal": {
+            "arity": 3,
+            "expression": "abs(F0-F1)+abs(F1-F2)"
+          },
+          "qualified": true,
+          "status": "WARRANTED_BOUNDED_FINITE_TEMPLATE",
+          "transfer": {
+            "binding": [
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "calibration_checks": 53,
+            "candidates": 10,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 585,
+            "wrong": 0
+          },
+          "unrolled_semantic_control": [
+            {
+              "binding": [
+                "d1",
+                "d2",
+                "d3"
+              ],
+              "calibration_checks": 52,
+              "candidates": 10,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 585,
+              "wrong": 0
+            },
+            {
+              "binding": [
+                "t1",
+                "t2",
+                "t3"
+              ],
+              "calibration_checks": 53,
+              "candidates": 10,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 585,
+              "wrong": 0
+            }
+          ],
+          "withdrawal": {}
+        }
+      },
+      "chain": "False STRICT_G2_G3_UNKNOWN"
+    },
+    {
+      "job_id": 140256407189,
+      "score": {
+        "calls": [
+          {
+            "arm": "recursive",
+            "model": "gpt-5.6-sol",
+            "prompt_chars": 3332,
+            "prompt_sha256": "f1566af7a35725cffc0d39bba9ae847c1a34eb919d4d37aaa75cd75b53b2d14b",
+            "proposal": {
+              "arity": 4,
+              "expression": "abs(O2(F0,F1,F2) - O2(F1,F2,F3))"
+            },
+            "response_sha256": "c2de81c6d305089f7717e0b5b55b5a46b9c8085bfdea64ed6b36a00f84ad76f3",
+            "seconds": 2.64,
+            "status": "RESPONSE",
+            "usage": {
+              "input_tokens": 1576,
+              "input_tokens_details": {
+                "cache_write_tokens": 1573,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 1573
+                },
+                "cached_tokens": 0
+              },
+              "output_tokens": 137,
+              "output_tokens_details": {
+                "reasoning_tokens": 103
+              },
+              "total_tokens": 1713
+            }
+          },
+          {
+            "arm": "standalone",
+            "model": "gpt-5.6-sol",
+            "prompt_chars": 3334,
+            "prompt_sha256": "8ce26f3c1b115916b355664df830315cc921a94219b37b7b3f7ed6c2a5a4a950",
+            "proposal": {
+              "arity": 4,
+              "expression": "abs(abs(F0 - F1) - abs(F2 - F3))"
+            },
+            "response_sha256": "f697dc97a871c105740c31c98d780aeb16a5a111eac97b4203422ef294257003",
+            "seconds": 2.275,
+            "status": "RESPONSE",
+            "usage": {
+              "input_tokens": 1571,
+              "input_tokens_details": {
+                "cache_write_tokens": 1568,
+                "cache_write_tokens_details": {
+                  "ttl_12h_tokens": 0,
+                  "ttl_30m_tokens": 1568
+                },
+                "cached_tokens": 0
+              },
+              "output_tokens": 102,
+              "output_tokens_details": {
+                "reasoning_tokens": 72
+              },
+              "total_tokens": 1673
+            }
+          }
+        ],
+        "frontier": {
+          "O1": {
+            "calibration_checks": 28,
+            "candidates": 20,
+            "fit": false,
+            "heldout_rows": 0,
+            "wrong": null
+          },
+          "O2": {
+            "calibration_checks": 60,
+            "candidates": 60,
+            "fit": false,
+            "heldout_rows": 0,
+            "wrong": null
+          },
+          "projection": {
+            "calibration_checks": 6,
+            "candidates": 5,
+            "fit": false,
+            "heldout_rows": 0,
+            "wrong": null
+          }
+        },
+        "proposal_status": "COMPLETE",
+        "recursive": {
+          "dependencies": [
+            "O2"
+          ],
+          "development": {
+            "binding": [
+              "d1",
+              "d3",
+              "d2",
+              "d4"
+            ],
+            "calibration_checks": 97,
+            "candidates": 40,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 3085,
+            "wrong": 0
+          },
+          "expanded": "abs(abs(F0 - F1) + abs(F1 - F2) - (abs(F1 - F2) + abs(F2 - F3)))",
+          "proposal": {
+            "arity": 4,
+            "expression": "abs(O2(F0,F1,F2) - O2(F1,F2,F3))"
+          },
+          "qualified": true,
+          "status": "WARRANTED_BOUNDED_FINITE_TEMPLATE",
+          "transfer": {
+            "binding": [
+              "t0",
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "calibration_checks": 40,
+            "candidates": 1,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 3085,
+            "wrong": 0
+          },
+          "unrolled_semantic_control": [
+            {
+              "binding": [
+                "d1",
+                "d3",
+                "d2",
+                "d4"
+              ],
+              "calibration_checks": 97,
+              "candidates": 40,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 3085,
+              "wrong": 0
+            },
+            {
+              "binding": [
+                "t0",
+                "t1",
+                "t2",
+                "t3"
+              ],
+              "calibration_checks": 40,
+              "candidates": 1,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 3085,
+              "wrong": 0
+            }
+          ],
+          "withdrawal": {
+            "O2": "REFERENCE_INVALIDATED"
+          }
+        },
+        "stage": 3,
+        "standalone": {
+          "dependencies": [],
+          "development": {
+            "binding": [
+              "d1",
+              "d3",
+              "d2",
+              "d4"
+            ],
+            "calibration_checks": 97,
+            "candidates": 40,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 3085,
+            "wrong": 0
+          },
+          "expanded": "abs(abs(F0 - F1) - abs(F2 - F3))",
+          "proposal": {
+            "arity": 4,
+            "expression": "abs(abs(F0 - F1) - abs(F2 - F3))"
+          },
+          "qualified": true,
+          "status": "WARRANTED_BOUNDED_FINITE_TEMPLATE",
+          "transfer": {
+            "binding": [
+              "t0",
+              "t1",
+              "t2",
+              "t3"
+            ],
+            "calibration_checks": 40,
+            "candidates": 1,
+            "first_wrong": null,
+            "fit": true,
+            "heldout_rows": 3085,
+            "wrong": 0
+          },
+          "unrolled_semantic_control": [
+            {
+              "binding": [
+                "d1",
+                "d3",
+                "d2",
+                "d4"
+              ],
+              "calibration_checks": 97,
+              "candidates": 40,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 3085,
+              "wrong": 0
+            },
+            {
+              "binding": [
+                "t0",
+                "t1",
+                "t2",
+                "t3"
+              ],
+              "calibration_checks": 40,
+              "candidates": 1,
+              "first_wrong": null,
+              "fit": true,
+              "heldout_rows": 3085,
+              "wrong": 0
+            }
+          ],
+          "withdrawal": {}
+        }
+      },
+      "chain": "True STRICT_G2_G3_UNKNOWN"
+    }
+  ],
+  "conclusion": {
+    "named_chain": "WARRANTED_BOUNDED_FINITE_COMPOSITION",
+    "heldout_checks_per_arm": 7510,
+    "full_domain_rows_per_arm": 7750,
+    "model_calls_per_arm": 3,
+    "recursive_tokens": 4159,
+    "standalone_tokens": 4069,
+    "accuracy": "TIE",
+    "strict_G2_G3": "UNKNOWN",
+    "causal_invention_advantage": "NOT_DEMONSTRATED",
+    "reason": "Named references fail after removal but expanded semantic controls and equally informed standalone solver qualify. Stage 3 standalone simplifies shared term cancellation. This is not a demonstration of improving the discovery algorithm itself."
+  }
+}
