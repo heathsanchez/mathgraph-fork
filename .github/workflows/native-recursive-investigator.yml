@@ -1,0 +1,392 @@
+name: Native recursive investigator — real upstream defects
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/native-recursive-investigator-20261127]
+    paths: ['.github/workflows/native-recursive-investigator.yml']
+permissions:
+  contents: read
+jobs:
+  admit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preflight safe method grammar
+        run: python research/native_recursive_investigator/loop.py preflight
+      - name: Admit real upstream defects before model inference
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python research/native_recursive_investigator/admit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: admission-ledger
+          path: research/native_recursive_investigator/admission/admission.json
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rejected-native-admissions
+          path: research/native_recursive_investigator/admission/rejected/
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-1
+          path: research/native_recursive_investigator/admission/public-1/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: private-1
+          path: research/native_recursive_investigator/admission/private-1/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-2
+          path: research/native_recursive_investigator/admission/public-2/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: private-2
+          path: research/native_recursive_investigator/admission/private-2/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public-3
+          path: research/native_recursive_investigator/admission/public-3/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: private-3
+          path: research/native_recursive_investigator/admission/private-3/
+          if-no-files-found: error
+          retention-days: 30
+  propose_1:
+    needs: admit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: public-1
+          path: research/native_recursive_investigator/stage/public
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Model proposes bounded repairs, no code execution
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/native_recursive_investigator/loop.py propose 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: proposals-1
+          path: research/native_recursive_investigator/stage/proposals.json
+          if-no-files-found: error
+          retention-days: 30
+
+  verify_1:
+    needs: propose_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: public-1
+          path: research/native_recursive_investigator/stage/public
+      - uses: actions/download-artifact@v4
+        with:
+          name: private-1
+          path: research/native_recursive_investigator/stage/private
+      - uses: actions/download-artifact@v4
+        with:
+          name: proposals-1
+          path: research/native_recursive_investigator/stage
+      - name: Independent native regression replay and qualification
+        run: python research/native_recursive_investigator/loop.py verify 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: receipt-1
+          path: research/native_recursive_investigator/stage/receipt.json
+          if-no-files-found: error
+          retention-days: 30
+  learn_1:
+    needs: verify_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-1
+          path: research/native_recursive_investigator/stage/prior
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Invent an improved investigation method from past native evidence only
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/native_recursive_investigator/loop.py learn 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: method-raw-1
+          path: research/native_recursive_investigator/stage/method_raw.json
+          if-no-files-found: error
+          retention-days: 30
+
+  qualify_method_1:
+    needs: learn_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-1
+          path: research/native_recursive_investigator/stage/prior
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-raw-1
+          path: research/native_recursive_investigator/stage
+      - name: Qualify executable method outside model job
+        run: python research/native_recursive_investigator/loop.py qualify_method 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: method-1
+          path: research/native_recursive_investigator/stage/method.json
+          if-no-files-found: error
+          retention-days: 30
+  propose_2:
+    needs: qualify_method_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: public-2
+          path: research/native_recursive_investigator/stage/public
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-1
+          path: research/native_recursive_investigator/stage/prior
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-1
+          path: research/native_recursive_investigator/stage/method
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Model proposes bounded repairs, no code execution
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/native_recursive_investigator/loop.py propose 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: proposals-2
+          path: research/native_recursive_investigator/stage/proposals.json
+          if-no-files-found: error
+          retention-days: 30
+
+  verify_2:
+    needs: propose_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: public-2
+          path: research/native_recursive_investigator/stage/public
+      - uses: actions/download-artifact@v4
+        with:
+          name: private-2
+          path: research/native_recursive_investigator/stage/private
+      - uses: actions/download-artifact@v4
+        with:
+          name: proposals-2
+          path: research/native_recursive_investigator/stage
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-1
+          path: research/native_recursive_investigator/stage/prior
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-1
+          path: research/native_recursive_investigator/stage/method
+      - name: Independent native regression replay and qualification
+        run: python research/native_recursive_investigator/loop.py verify 2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: receipt-2
+          path: research/native_recursive_investigator/stage/receipt.json
+          if-no-files-found: error
+          retention-days: 30
+  learn_2:
+    needs: verify_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-2
+          path: research/native_recursive_investigator/stage/prior
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Invent an improved investigation method from past native evidence only
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/native_recursive_investigator/loop.py learn 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: method-raw-2
+          path: research/native_recursive_investigator/stage/method_raw.json
+          if-no-files-found: error
+          retention-days: 30
+
+  qualify_method_2:
+    needs: learn_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-2
+          path: research/native_recursive_investigator/stage/prior
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-raw-2
+          path: research/native_recursive_investigator/stage
+      - name: Qualify executable method outside model job
+        run: python research/native_recursive_investigator/loop.py qualify_method 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: method-2
+          path: research/native_recursive_investigator/stage/method.json
+          if-no-files-found: error
+          retention-days: 30
+  propose_3:
+    needs: qualify_method_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: public-3
+          path: research/native_recursive_investigator/stage/public
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-2
+          path: research/native_recursive_investigator/stage/prior
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-2
+          path: research/native_recursive_investigator/stage/method
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Model proposes bounded repairs, no code execution
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/native_recursive_investigator/loop.py propose 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: proposals-3
+          path: research/native_recursive_investigator/stage/proposals.json
+          if-no-files-found: error
+          retention-days: 30
+
+  verify_3:
+    needs: propose_3
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: public-3
+          path: research/native_recursive_investigator/stage/public
+      - uses: actions/download-artifact@v4
+        with:
+          name: private-3
+          path: research/native_recursive_investigator/stage/private
+      - uses: actions/download-artifact@v4
+        with:
+          name: proposals-3
+          path: research/native_recursive_investigator/stage
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-2
+          path: research/native_recursive_investigator/stage/prior
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-2
+          path: research/native_recursive_investigator/stage/method
+      - name: Independent native regression replay and qualification
+        run: python research/native_recursive_investigator/loop.py verify 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: receipt-3
+          path: research/native_recursive_investigator/stage/receipt.json
+          if-no-files-found: error
+          retention-days: 30
