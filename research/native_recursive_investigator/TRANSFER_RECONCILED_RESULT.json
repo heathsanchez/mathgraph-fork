@@ -1,0 +1,92 @@
+{
+  "run": 45937233936,
+  "source": "58359fd6d16874ca1229404be8e86fd49424710b",
+  "evidence": {
+    "receipt_artifact": 15170942610,
+    "sha256": "53066b8658bbac0ac456dab45be61fe34327be2d4d24da98a615b6e8d28ebc10",
+    "independent_archive_check": "SHA-256 matches GitHub digest; ZIP CRC passes; JSON inspected; native execution not rerun",
+    "verify_job": 140304385626
+  },
+  "admitted": 8,
+  "selected": 4,
+  "api_calls": 7,
+  "api_tokens": 85442,
+  "unique_native_candidate_runs": 5,
+  "arms": {
+    "fixed": {
+      "repairs": 3,
+      "top_two": 3,
+      "tokens": 45798
+    },
+    "conventional": {
+      "repairs": 3,
+      "top_two": 2,
+      "tokens": 44520
+    },
+    "O1": {
+      "repairs": 3,
+      "top_two": 2,
+      "tokens": 44520
+    },
+    "O2": {
+      "repairs": 3,
+      "top_two": 2,
+      "tokens": 44234
+    }
+  },
+  "cases": [
+    {
+      "repo": "pallets/jinja",
+      "pr": 1984,
+      "base": "131 pass, 1 fail",
+      "all_arms": "132 pass",
+      "unique_candidates": 1
+    },
+    {
+      "repo": "pallets/click",
+      "pr": 3884,
+      "base": "667 pass, 9 fail",
+      "fixed": "672 pass, 4 fail",
+      "other_arms": "UNKNOWN_DECLINED_OR_INVALID_EDIT: bad edit count; no native candidate",
+      "author_locations": [
+        "Option.get_error_hint@3271",
+        "Option.get_help_extra@3436"
+      ],
+      "fixed_ranks": [
+        2,
+        16
+      ],
+      "O1_ranks": [
+        7,
+        19
+      ],
+      "O2_ranks": [
+        7,
+        19
+      ]
+    },
+    {
+      "repo": "pypa/wheel",
+      "pr": 686,
+      "base": "20 pass, 1 fail",
+      "all_arms": "21 pass",
+      "unique_candidates": 1
+    },
+    {
+      "repo": "dateutil/dateutil",
+      "pr": 1583,
+      "base": "90 pass, 2 fail",
+      "all_arms": "92 pass",
+      "unique_candidates": 2,
+      "observation": "learned and conventional arms repair via alternative selected functions even though author location ranked fourth"
+    }
+  ],
+  "verdict": {
+    "native": "WARRANTED_BOUNDED: three distinct selected author-test-file repairs per arm",
+    "comparative": "TIE in repair outcomes; fixed leads on author top-two localization; no demonstrated learned ranking advantage",
+    "ablation": "O2 ranks identical with O1 score zeroed on every case; no predecessor dependency",
+    "recursion": "UNKNOWN_NO_PREDECESSOR_DEPENDENCY",
+    "limits": "four frozen selected cases; same responses shared for identical prompts; no full-repository correctness, no guaranteed model-training nonexposure; costs attributed across arms overlap",
+    "next": "CANDIDATE: diagnose Click as a now-exposed development residual; compare failure-triggered dependency-aware context acquisition against fixed ranking with equal source/repair budget. Freeze independent future cases before evaluating any learned change. Do not retune or rescore these cases as held-out."
+  }
+}
