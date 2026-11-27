@@ -1,3 +1,4 @@
 FROM python:3.12-slim
 RUN python -m pip install --no-cache-dir pytest==8.3.5 hypothesis==6.131.9 pytest-mock==3.14.0 pytest-cov==6.0.0 pretend==1.0.9 six==1.17.0 attrs==25.3.0 rpds-py==0.24.0 referencing==0.36.2 jsonschema-specifications==2025.4.1 python-dateutil==2.9.0.post0 pytz==2025.2 more-itertools==10.7.0 tomli==2.2.1 toml==0.10.2 requests==2.32.3 packaging==24.2 typing_extensions==4.13.2
+RUN python -m pip install --no-cache-dir click==8.1.8 MarkupSafe==3.0.2 platformdirs==4.3.7 pathspec==0.12.1 colorama==0.4.6 importlib-metadata==8.6.1 zipp==3.21.0 importlib-resources==6.5.2 tzdata==2025.2 mdurl==0.1.2 markdown-it-py==3.0.0 docutils==0.21.2 lxml==5.3.2 beautifulsoup4==4.13.4 PyYAML==6.0.2 trio==0.29.0 sniffio==1.3.1 anyio==4.9.0 rich==14.0.0 pytest-asyncio==0.26.0 freezegun==1.5.1 defusedxml==0.7.1 pyparsing==3.2.3 decorator==5.2.1 Jinja2==3.1.6 tomli-w==1.2.0
 COPY trace_plugin.py /harness/trace_plugin.py
