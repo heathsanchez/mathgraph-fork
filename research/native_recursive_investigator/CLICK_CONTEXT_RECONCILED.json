@@ -1,0 +1,75 @@
+{
+  "status": "WARRANTED_BOUNDED_EXPOSED_DEVELOPMENT",
+  "parent_run": 45937233936,
+  "source": "58359fd6d16874ca1229404be8e86fd49424710b",
+  "case": "case-102",
+  "repo": "pallets/click",
+  "pr": 3884,
+  "parent": "bb695aaecdef95832d167fc1d508921745aa824e",
+  "merge": "8c73ff134480f436faa0d041bd19aaf949aac22c",
+  "test_sha256": "fd2b86d088d3e5956a1272a5a3e27e5b35bb873c3383fe2fd3b4a77321d75513",
+  "context": {
+    "candidates": 142,
+    "initial": [
+      "Parameter.value_is_missing@2632",
+      "Option.get_error_hint@3271"
+    ],
+    "missing": "Option.get_help_extra@3436",
+    "remaining_failures": 4,
+    "resolved_failures": 5,
+    "initial_frontier_residual_coverage": 0,
+    "missing_rank": {
+      "fixed": 14,
+      "residual_only": 10,
+      "conventional_with_dependency": 1,
+      "conventional_without_dependency": 10
+    },
+    "conventional_acquired": [
+      "Option.get_help_extra@3436",
+      "Option.get_help_record@3411"
+    ],
+    "ablation_acquired": [
+      "Command.format_help@1263",
+      "Command.format_options@1300"
+    ],
+    "dependency_relation": "same class; shared self.envvar and self.show_envvar; no direct call edge; association not proof of dynamic call"
+  },
+  "native": {
+    "environment": "Python 3.13.5, pytest 9.0.2; local environment differs from original Python 3.12.16 and pytest 8.3.5",
+    "source_intervention": "In Option.get_help_extra, change envvar is None to not envvar and envvar is not None to envvar. Preserve the exact retained error-hint candidate.",
+    "arms": [
+      {
+        "name": "base",
+        "pass": 667,
+        "fail": 9,
+        "sha256": "2d6eaa280cc69b34f6570471620aa2bec47c439b99847486a74c54d0cb550310"
+      },
+      {
+        "name": "retained_error_hint",
+        "pass": 672,
+        "fail": 4,
+        "sha256": "f122be426ac9a3eeff43b2e7ef638754e9f8e950c0e1cb0d763082eda1c8a198"
+      },
+      {
+        "name": "help_only",
+        "pass": 671,
+        "fail": 5,
+        "sha256": "2d668133e9dbd2d7f783b5c54aa6f4506385b85aea52f92db1daccc530a41b5d"
+      },
+      {
+        "name": "combined",
+        "pass": 676,
+        "fail": 0,
+        "sha256": "077a2640b359ccd2eb05bfea4ea72bfe8122574cf7855b8e90ad8ee2670ab7a8"
+      }
+    ],
+    "checks": "Exact 676 test identities across all arms; base and retained candidate outcome maps match original hosted results; original 667 passing controls preserved in all arms; both component withdrawals restore their respective failures."
+  },
+  "archive": {
+    "filename": "click_context_evidence.zip",
+    "sha256": "379f50e0fc537211dc1920cf77ce72ebc594d394fb406881b8dee9bbff831098",
+    "size": 36205,
+    "manifest_entries": 4
+  },
+  "limitations": "Independent local feature reconstruction and investigator-authored second edit on exposed development evidence. Committed acquisition harness not executed. Conventional dependency expansion already selects correct missing context, so no learned-method superiority or causal recursion shown. No new model API calls, no upstream changes. Held-out cases remain unexposed in this reconciliation."
+}
