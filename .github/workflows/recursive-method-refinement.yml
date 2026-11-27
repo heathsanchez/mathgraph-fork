@@ -1,0 +1,166 @@
+name: Recursive method refinement pilot
+on:
+  push:
+    branches: [research/recursive-method-refinement-20261127]
+    paths:
+      - '.github/workflows/recursive-method-refinement.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python research/recursive_method_refinement/experiment.py preflight
+  propose_1:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Bounded model proposals
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/recursive_method_refinement/experiment.py propose 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recursive-proposals-1
+          path: research/recursive_method_refinement/proposals.json
+          if-no-files-found: error
+  verify_1:
+    needs: propose_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recursive-proposals-1
+          path: research/recursive_method_refinement
+      - name: Independent credential-free qualification
+        run: python research/recursive_method_refinement/experiment.py verify 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recursive-receipt-1
+          path: research/recursive_method_refinement/receipt.json
+          if-no-files-found: error
+  propose_2:
+    needs: verify_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recursive-receipt-1
+          path: research/recursive_method_refinement
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Bounded model proposals
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/recursive_method_refinement/experiment.py propose 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recursive-proposals-2
+          path: research/recursive_method_refinement/proposals.json
+          if-no-files-found: error
+  verify_2:
+    needs: propose_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recursive-receipt-1
+          path: research/recursive_method_refinement
+      - uses: actions/download-artifact@v4
+        with:
+          name: recursive-proposals-2
+          path: research/recursive_method_refinement
+      - name: Independent credential-free qualification
+        run: python research/recursive_method_refinement/experiment.py verify 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recursive-receipt-2
+          path: research/recursive_method_refinement/receipt.json
+          if-no-files-found: error
+  propose_3:
+    needs: verify_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recursive-receipt-2
+          path: research/recursive_method_refinement
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Bounded model proposals
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/recursive_method_refinement/experiment.py propose 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recursive-proposals-3
+          path: research/recursive_method_refinement/proposals.json
+          if-no-files-found: error
+  verify_3:
+    needs: propose_3
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: recursive-receipt-2
+          path: research/recursive_method_refinement
+      - uses: actions/download-artifact@v4
+        with:
+          name: recursive-proposals-3
+          path: research/recursive_method_refinement
+      - name: Independent credential-free qualification
+        run: python research/recursive_method_refinement/experiment.py verify 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recursive-receipt-3
+          path: research/recursive_method_refinement/receipt.json
+          if-no-files-found: error
