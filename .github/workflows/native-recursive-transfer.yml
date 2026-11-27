@@ -1,0 +1,179 @@
+name: Native recursive transfer — four-case admission gate
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/native-recursive-transfer-20261127]
+    paths: ['.github/workflows/native-recursive-transfer.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: native-recursive-transfer-20261127
+  cancel-in-progress: false
+jobs:
+  admit:
+    name: Admit shard ${{ matrix.shard }}
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify harness syntax and original safe method grammar
+        run: |
+          python -m py_compile research/native_recursive_investigator/admit_transfer.py research/native_recursive_investigator/freeze_transfer.py research/native_recursive_investigator/transfer.py
+          python research/native_recursive_investigator/loop.py preflight
+      - name: Qualify real author-test red-to-green cases; no model calls
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TRANSFER_SHARD: ${{ matrix.shard }}
+        run: python research/native_recursive_investigator/admit_transfer.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-transfer-admit-${{ matrix.shard }}
+          path: research/native_recursive_investigator/transfer-admission/
+          if-no-files-found: error
+          retention-days: 30
+
+  freeze:
+    needs: admit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      ready: ${{ steps.freeze.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: native-transfer-admit-*
+          path: research/native_recursive_investigator/transfer-stage/shards
+          merge-multiple: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-1
+          path: research/native_recursive_investigator/transfer-stage/old/receipt-1
+          run-id: 45935059870
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: receipt-2
+          path: research/native_recursive_investigator/transfer-stage/old/receipt-2
+          run-id: 45935059870
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-1
+          path: research/native_recursive_investigator/transfer-stage/old/method-1
+          run-id: 45935059870
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: method-2
+          path: research/native_recursive_investigator/transfer-stage/old/method-2
+          run-id: 45935059870
+          github-token: ${{ github.token }}
+      - name: Freeze four independent real cases and retained method provenance
+        id: freeze
+        run: python research/native_recursive_investigator/freeze_transfer.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-transfer-gate
+          path: research/native_recursive_investigator/transfer-stage/frozen/gate.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: steps.freeze.outputs.ready == 'true'
+        with:
+          name: native-transfer-public
+          path: |
+            research/native_recursive_investigator/transfer-stage/frozen/common.json
+            research/native_recursive_investigator/transfer-stage/frozen/public/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: steps.freeze.outputs.ready == 'true'
+        with:
+          name: native-transfer-private
+          path: research/native_recursive_investigator/transfer-stage/frozen/private/
+          if-no-files-found: error
+          retention-days: 30
+
+  propose:
+    needs: freeze
+    if: needs.freeze.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-transfer-public
+          path: research/native_recursive_investigator/transfer-stage/frozen
+      - run: python -m pip install 'openai==2.9.0'
+      - name: Matched fixed and frozen-method proposals, at most 16 calls
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/native_recursive_investigator/transfer.py propose
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-transfer-proposals
+          path: research/native_recursive_investigator/transfer-stage/proposals.json
+          if-no-files-found: error
+          retention-days: 30
+
+  verify:
+    needs: propose
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-transfer-public
+          path: research/native_recursive_investigator/transfer-stage/frozen
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-transfer-private
+          path: research/native_recursive_investigator/transfer-stage/frozen/private
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-transfer-gate
+          path: research/native_recursive_investigator/transfer-stage/frozen
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-transfer-proposals
+          path: research/native_recursive_investigator/transfer-stage
+      - name: Independent real-source repair qualification, no model key
+        run: python research/native_recursive_investigator/transfer.py verify
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-transfer-receipt
+          path: research/native_recursive_investigator/transfer-stage/transfer-receipt.json
+          if-no-files-found: error
+          retention-days: 30
+
