@@ -1,0 +1,118 @@
+{
+  "source": "fa24f0dd2a8e5bd37531a671c19dd171ad34d6f7",
+  "run": 45935059870,
+  "evidence_boundary": "Direct hosted job-log reconciliation; artifact provider metadata inspected, no independent archive rehash or fresh native replay.",
+  "logs": [
+    {
+      "job": 140296244184,
+      "lines": [
+        "2026-11-27T03:35:50.5149064Z ADMISSION mahmoud/boltons 513 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:35:52.2241579Z ADMISSION pypa/packaging 1555 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:10.3926816Z ADMISSION pypa/packaging 1531 ADMITTED",
+        "2026-11-27T03:36:12.7863051Z ADMISSION python/typing_extensions 760 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:15.2619274Z ADMISSION python/typing_extensions 680 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:15.7898295Z ADMISSION python/typing_extensions 677 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:16.3636052Z ADMISSION python/typing_extensions 673 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:18.4933914Z ADMISSION SethMMorton/natsort 185 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:23.5028319Z ADMISSION jaraco/zipp 162 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:23.8965258Z ADMISSION jaraco/zipp 149 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:24.9457147Z ADMISSION jaraco/zipp 105 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:28.5399662Z ADMISSION python-jsonschema/jsonschema 1300 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:31.1948551Z ADMISSION python-babel/babel 1483 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:33.8638526Z ADMISSION python-babel/babel 1428 UNKNOWN_NATIVE_AUTHORITY",
+        "2026-11-27T03:36:34.5082636Z ADMISSION python-babel/babel 1288 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:35.1309003Z ADMISSION python-babel/babel 1282 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:36:36.6370005Z ADMISSION python-babel/babel 1275 UNKNOWN_NATIVE_AUTHORITY",
+        "2026-11-27T03:36:39.8852556Z ADMISSION pyparsing/pyparsing 725 UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION",
+        "2026-11-27T03:41:41.7856692Z ADMISSION pyparsing/pyparsing 696 UNKNOWN_NATIVE_AUTHORITY",
+        "2026-11-27T03:45:10.8798179Z ADMISSION pyparsing/pyparsing 653 ADMITTED",
+        "2026-11-27T03:45:10.8803238Z ADMITTED_REAL_NATIVE_CASES [{\"case\": \"case-01\", \"fails\": 4, \"merge\": \"5a7d3386d2777180a381eb947f21293124ce8df5\", \"parent\": \"a00861f4cb12f5705a95e277862cdcd7387abfde\", \"passes\": 5407, \"pr\": 1531, \"repo\": \"pypa/packaging\", \"skips\": 1, \"source_path\": \"src/packaging/_parser.py\", \"test_path\": \"tests/test_requirements.py\"}, {\"case\": \"case-02\", \"fails\": 2, \"merge\": \"efd56db4e59f36b1673ce0eb0823e3afaa9d1201\", \"parent\": \"038ff39cbc29b77a74ac21674206d5bf170ca769\", \"passes\": 1932, \"pr\": 653, \"repo\": \"pyparsing/pyparsing\", \"skips\": 6, \"source_path\": \"pyparsing/helpers.py\", \"test_path\": \"tests/test_unit.py\"}]",
+        "2026-11-27T03:45:10.8807569Z ADMISSION_COUNTS 2 {'UNKNOWN_NOT_SINGLE_BOUNDED_FUNCTION': 15, 'UNKNOWN_LIST': 1, 'INELIGIBLE_METADATA': 39, 'ADMITTED': 2, 'UNKNOWN_NATIVE_AUTHORITY': 3}"
+      ]
+    },
+    {
+      "job": 140299216941,
+      "lines": [
+        "2026-11-27T03:46:18.4003566Z PROPOSE 1 case-01 fixed RESPONSE",
+        "2026-11-27T03:46:31.2486828Z PROPOSE 1 case-02 fixed RESPONSE"
+      ]
+    },
+    {
+      "job": 140299602786,
+      "lines": [
+        "2026-11-27T03:47:14.7269745Z NATIVE_SCORE 1 case-01 fixed REJECTED_NATIVE_REGRESSION {'pass': 5408, 'failure': 3, 'skipped': 1} AUTHOR_RANK 8",
+        "2026-11-27T03:49:58.4925892Z NATIVE_SCORE 1 case-02 fixed WARRANTED_BOUNDED_NATIVE_REPAIR {'pass': 1934, 'skipped': 6} AUTHOR_RANK 1",
+        "2026-11-27T03:49:59.0980216Z REAL_NATIVE_TOTALS {\"1\": {\"fixed\": {\"calls\": 2, \"cases\": 2, \"native_attempts\": 2, \"repairs\": 1, \"tokens\": 16910, \"top_two\": 1}}} STRICT_G2_G3_UNKNOWN"
+      ]
+    },
+    {
+      "job": 140300619953,
+      "lines": [
+        "2026-11-27T03:50:20.5780112Z LEARN_METHOD 1 RESPONSE"
+      ]
+    },
+    {
+      "job": 140300721498,
+      "lines": [
+        "2026-11-27T03:50:32.8228032Z METHOD_CANDIDATE 1 {\"after_stage\": 1, \"expression\": \"20*s[\\\"ochiai\\\"]+s[\\\"fail_rate\\\"]-s[\\\"pass_rate\\\"]+s[\\\"test_overlap\\\"]+0.25*s[\\\"trace_match\\\"]\", \"prior_digest\": \"14840481c9e69f2dd6c435e8a0583e2c000860b8b776d59ad54c28d4d37a25cd\", \"source_sha\": \"fa24f0dd2a8e5bd37531a671c19dd171ad34d6f7\", \"status\": \"QUALIFIED_EXECUTABLE_CANDIDATE\", \"training\": [{\"author_rank\": 2, \"id\": \"case-01\"}, {\"author_rank\": 1, \"id\": \"case-02\"}], \"uses_predecessor\": false}"
+      ]
+    },
+    {
+      "job": 140300870951,
+      "lines": [
+        "2026-11-27T03:51:01.5494737Z REAL_NATIVE_TOTALS {\"1\": {\"fixed\": {\"calls\": 2, \"cases\": 2, \"native_attempts\": 2, \"repairs\": 1, \"tokens\": 16910, \"top_two\": 1}}, \"2\": {\"O1\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}, \"fixed\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}}} STRICT_G2_G3_UNKNOWN"
+      ]
+    },
+    {
+      "job": 140300920289,
+      "lines": [
+        "2026-11-27T03:51:23.2024679Z LEARN_METHOD 2 RESPONSE"
+      ]
+    },
+    {
+      "job": 140301029570,
+      "lines": [
+        "2026-11-27T03:51:37.0677830Z METHOD_CANDIDATE 2 {\"after_stage\": 2, \"expression\": \"100*s[\\\"ochiai\\\"]+s[\\\"fail_rate\\\"]-s[\\\"pass_rate\\\"]+s[\\\"test_overlap\\\"]\", \"prior_digest\": \"cf29a2733cd4041d2aa0fd324ecd028d18881da7217acffcb677019a6ce62bb9\", \"source_sha\": \"fa24f0dd2a8e5bd37531a671c19dd171ad34d6f7\", \"status\": \"QUALIFIED_EXECUTABLE_CANDIDATE\", \"training\": [{\"author_rank\": 1, \"id\": \"case-01\"}, {\"author_rank\": 1, \"id\": \"case-02\"}], \"uses_predecessor\": false}"
+      ]
+    },
+    {
+      "job": 140301167517,
+      "lines": [
+        "2026-11-27T03:52:10.6496946Z REAL_NATIVE_TOTALS {\"1\": {\"fixed\": {\"calls\": 2, \"cases\": 2, \"native_attempts\": 2, \"repairs\": 1, \"tokens\": 16910, \"top_two\": 1}}, \"2\": {\"O1\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}, \"fixed\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}}, \"3\": {\"O1\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}, \"O2\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}, \"O2_without_O1\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}, \"fixed\": {\"calls\": 0, \"cases\": 0, \"native_attempts\": 0, \"repairs\": 0, \"tokens\": 0, \"top_two\": 0}}} STRICT_G2_G3_UNKNOWN"
+      ]
+    }
+  ],
+  "verdict": {
+    "admitted": 2,
+    "required": 6,
+    "api_responses": 4,
+    "training_repairs": "1/2 fully qualified; Packaging 1 of 4 original failures eliminated, 3 remain",
+    "training_ranks": {
+      "packaging": [
+        8,
+        2,
+        1
+      ],
+      "pyparsing": [
+        1,
+        1,
+        1
+      ]
+    },
+    "stage2_cases": 0,
+    "stage3_cases": 0,
+    "O2_references_O1_score": false,
+    "strict_G2_G3": "UNKNOWN_INSUFFICIENT_ADMISSION",
+    "next": "Retain these two cases as exposed development evidence. Freeze a fresh repository pool and native admission pipeline before inference, require at least four independent admitted future defects, halt without spending on learning when a future cohort is empty; use unchanged O1/O2 and original controls. Separate fresh training for O2 from post-hoc reranking. No rerun on these two as held-out."
+  },
+  "artifact_metadata": {
+    "admission": {
+      "id": 15171195112,
+      "digest": "sha256:81726d7bc7f2b70fee1fe8b9cd654796946d74283b59707facba7f5264328fd2"
+    },
+    "terminal_receipt": {
+      "id": 15171160854,
+      "digest": "sha256:5ff7c57fe3b86c7c6c23b8f50ad1f989778584e42f03e911f4352538cf02a10d"
+    }
+  }
+}
