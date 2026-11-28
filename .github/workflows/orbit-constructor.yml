@@ -1,0 +1,67 @@
+name: Closed-orbit constructor acquisition gate
+on:
+  push:
+    branches: [research/p6-sequential-transfer-20261128]
+    paths: [.github/workflows/orbit-constructor.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: orbit-constructor-20261128
+  cancel-in-progress: false
+jobs:
+  native-acquisition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test isolation and native callback boundary
+        run: python -m unittest discover -s research/orbit_constructor -p test_boundaries.py -v
+      - name: Freeze exact source and exposed development corpus
+        run: python research/orbit_constructor/pipeline.py prepare
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Replay actual obstruction and independent author
+        run: python research/orbit_constructor/pipeline.py initial
+      - name: Install model transport
+        run: python -m pip install 'openai==2.9.0'
+      - name: Construct new executable investigation method
+        run: python research/orbit_constructor/pipeline.py learn1
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Qualify capability and measure new acquisition observations
+        run: python research/orbit_constructor/pipeline.py qualify1
+      - name: Independent retained and removal successor acquisition
+        run: python research/orbit_constructor/pipeline.py learn2
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Common native successor acceptance and exact ledger replay
+        run: python research/orbit_constructor/pipeline.py qualify2
+      - name: Report actual gate, controls and full costs
+        run: python research/orbit_constructor/pipeline.py report
+      - name: Fresh-directory native replay without model
+        run: |
+          python - <<'PY'
+          import pathlib, shutil, subprocess, tempfile
+          original=pathlib.Path('research/orbit_constructor')
+          with tempfile.TemporaryDirectory(prefix='orbit-cold-') as d:
+              root=pathlib.Path(d)/'orbit_constructor'
+              shutil.copytree(original,root,ignore=shutil.ignore_patterns('__pycache__','evidence.zip'))
+              subprocess.run(['python',str(root/'pipeline.py'),'replay'],check=True)
+              shutil.copy2(root/'cold_replay.json',original/'cold_replay.json')
+          PY
+      - name: Preserve positive and negative evidence
+        if: always()
+        run: python research/orbit_constructor/pipeline.py bundle
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: orbit-constructor-native-evidence
+          path: research/orbit_constructor/evidence.zip
+          if-no-files-found: error
+          retention-days: 90

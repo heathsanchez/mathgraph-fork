@@ -1,0 +1,29 @@
+{
+  "terminal_form": "FINITE_COUNTERMODEL",
+  "claim": "No iterate of this observed deterministic operation from this seed reaches the independent intended output.",
+  "scope": "The actual retained repeat-only executor and its closure under iteration. Not the entire permitted Python program language or all possible repairs.",
+  "native_bridge_assumption": "Pinned ftfy operation is deterministic for these pure string calls in the recorded native environment. Ground transition equalities are recorded in the native receipt.",
+  "source_sha": "27047e15101a136f2ae67516f52c99b6a025c8ca",
+  "run_id": 46105804259,
+  "seed": "Merci de bien vouloir activiter le Javascript dans votre navigateur web afin d'en profiter\u201a\u00c4\u00b6",
+  "intended": "Merci de bien vouloir activiter le Javascript dans votre navigateur web afin d'en profiter\u2026",
+  "states": [
+    "Merci de bien vouloir activiter le Javascript dans votre navigateur web afin d'en profiter\u201a\u00c4\u00b6",
+    "Merci de bien vouloir activiter le Javascript dans votre navigateur web afin d'en profiter'\u00c4\u00b6",
+    "Merci de bien vouloir activiter le Javascript dans votre navigateur web afin d'en profiter'\u0136"
+  ],
+  "successor": [
+    1,
+    2,
+    2
+  ],
+  "native_observation_receipt_sha256": "91815f6a17794c081ee9d9f729a0dfb56d4049f4abe8576185dd5afc1a499074",
+  "verification": {
+    "seed_in_closed_set": true,
+    "all_states_have_recorded_successor": true,
+    "all_successors_in_set": true,
+    "intended_not_in_set": true,
+    "nondeterministic_observations": false
+  },
+  "proof": "Induction on n: the seed belongs to S; recorded successor closure keeps every iterate in S. The intended output is outside S. Therefore no number of repeats can reach it."
+}
