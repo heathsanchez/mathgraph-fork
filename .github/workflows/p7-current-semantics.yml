@@ -1,0 +1,82 @@
+name: P7 current-source research and acquired semantic checker
+'on':
+  push:
+    branches:
+    - research/p6-sequential-transfer-20261128
+    paths:
+    - .github/workflows/p7-current-semantics.yml
+  workflow_dispatch: null
+permissions:
+  contents: read
+concurrency:
+  group: p7-current-semantics-20261128
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Boundary and observer-effect checks
+      run: python -m unittest discover -s research/current_semantics -p test_boundaries.py -v
+    - name: Freeze current sources and independent corpus
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: python research/current_semantics/acquire.py
+    - name: Independent initial observation and project baselines
+      run: python research/current_semantics/pipeline.py initial
+    - name: Install API client
+      run: python -m pip install 'openai==2.9.0'
+    - name: P7 model
+      run: python research/current_semantics/pipeline.py model
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: P7 learn1
+      run: python research/current_semantics/pipeline.py learn1
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: P7 qualify1
+      run: python research/current_semantics/pipeline.py qualify1
+    - name: P7 learn2
+      run: python research/current_semantics/pipeline.py learn2
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: P7 qualify2
+      run: python research/current_semantics/pipeline.py qualify2
+    - name: P7 audits
+      run: python research/current_semantics/pipeline.py audits
+    - name: P7 propose1
+      run: python research/current_semantics/pipeline.py propose1
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: P7 verify1
+      run: python research/current_semantics/pipeline.py verify1
+    - name: P7 propose2
+      run: python research/current_semantics/pipeline.py propose2
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: P7 verify2
+      run: python research/current_semantics/pipeline.py verify2
+    - name: P7 final
+      run: python research/current_semantics/pipeline.py final
+    - name: Fresh-directory native replay
+      run: "python - <<'PY'\nfrom pathlib import Path\nimport tempfile,shutil,subprocess\nsource=Path('research')\n\
+        with tempfile.TemporaryDirectory(prefix='p7-cold-') as d:\n root=Path(d)\n shutil.copytree(source/'current_semantics',root/'current_semantics',ignore=shutil.ignore_patterns('__pycache__','evidence.zip'))\n\
+        \ shutil.copytree(source/'applicability_transfer',root/'applicability_transfer',ignore=shutil.ignore_patterns('__pycache__','data','work','evidence*'))\n\
+        \ subprocess.run(['python',str(root/'current_semantics/pipeline.py'),'replay'],check=True)\n shutil.copy2(root/'current_semantics/cold_replay.json',source/'current_semantics/cold_replay.json')\n\
+        PY"
+    - name: Preserve all evidence including failures
+      if: always()
+      run: python research/current_semantics/pipeline.py bundle
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: p7-current-source-evidence
+        path: research/current_semantics/evidence.zip
+        if-no-files-found: error
+        retention-days: 90
