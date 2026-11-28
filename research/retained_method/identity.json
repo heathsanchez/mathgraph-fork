@@ -1,0 +1,786 @@
+{
+  "base": "40011cc3b9344d2c4e6ad2e3cff54b41ac7015f7",
+  "base_commit": {
+    "parents": [
+      {
+        "html_url": "https://github.com/Suor/funcy/commit/7cfb9465fe7535fac3617475b84987f500d235c0",
+        "sha": "7cfb9465fe7535fac3617475b84987f500d235c0",
+        "url": "https://api.github.com/repos/Suor/funcy/git/commits/7cfb9465fe7535fac3617475b84987f500d235c0"
+      }
+    ],
+    "sha": "40011cc3b9344d2c4e6ad2e3cff54b41ac7015f7",
+    "tree": {
+      "sha": "b733c624993b94afa4ba22739514ba331ef2ee00",
+      "url": "https://api.github.com/repos/Suor/funcy/git/trees/b733c624993b94afa4ba22739514ba331ef2ee00"
+    }
+  },
+  "base_entries": [
+    {
+      "path": ".github",
+      "sha": "778d30ac1eca274b84ae19eced93197d483f0281",
+      "type": "tree"
+    },
+    {
+      "path": ".github/workflows",
+      "sha": "0ae22087192a84709ae7a60fcf5ec0feaa485c77",
+      "type": "tree"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "sha": "82ae8d2c809a2c7841dae9bd6faec5ffbbb7bbc8",
+      "type": "blob"
+    },
+    {
+      "path": ".gitignore",
+      "sha": "9738c1c02edb15f5239bf8485d3f44602c0d5bf9",
+      "type": "blob"
+    },
+    {
+      "path": ".readthedocs.yaml",
+      "sha": "a634975cb0123a140288debc53cfdb4080b5db79",
+      "type": "blob"
+    },
+    {
+      "path": "CHANGELOG",
+      "sha": "d5b7da8d580c85cf7b6c606f08d46ab9cd5f4277",
+      "type": "blob"
+    },
+    {
+      "path": "LICENSE",
+      "sha": "fb0bfd47e06ec972182b8b2aff31e8e9341d4035",
+      "type": "blob"
+    },
+    {
+      "path": "MANIFEST.in",
+      "sha": "f890985ae81100ce765b7802fbfac7e1ba96eef8",
+      "type": "blob"
+    },
+    {
+      "path": "README.rst",
+      "sha": "d15c2b870b35a7c2d870124d8f4d9a3c256ffb14",
+      "type": "blob"
+    },
+    {
+      "path": "TODO.rst",
+      "sha": "a9662f22b2b7888de02cc504883a126afa0d9b21",
+      "type": "blob"
+    },
+    {
+      "path": "VERSION",
+      "sha": "879b416e609a820dafeff67d679a7e3849fe8a09",
+      "type": "blob"
+    },
+    {
+      "path": "docs",
+      "sha": "956ee0d798ef180630826aca13d445d5ee66cbfa",
+      "type": "tree"
+    },
+    {
+      "path": "docs/Makefile",
+      "sha": "5ef682701019edc95d89b8d215926e6d2d40d6b9",
+      "type": "blob"
+    },
+    {
+      "path": "docs/_static",
+      "sha": "2456233389371db0bfbbbf4d6bc0436a66fbd3f6",
+      "type": "tree"
+    },
+    {
+      "path": "docs/_static/nhpup_1.1.js",
+      "sha": "d07b2dd3cd2bf50e347123abe5898002891aec7c",
+      "type": "blob"
+    },
+    {
+      "path": "docs/_static/overrides.css",
+      "sha": "398fc1d62be10cb68771116118bcd8f2f5ba2a20",
+      "type": "blob"
+    },
+    {
+      "path": "docs/calc.rst",
+      "sha": "753f20602bebe965c9945ee04a79cdaadf561ae3",
+      "type": "blob"
+    },
+    {
+      "path": "docs/cheatsheet.rst",
+      "sha": "2eff470cda0776ed9a510f5bf98c83303b8b4b61",
+      "type": "blob"
+    },
+    {
+      "path": "docs/colls.rst",
+      "sha": "cb00e1a2840b2de0f0c6878c4042a9ebd42b09ff",
+      "type": "blob"
+    },
+    {
+      "path": "docs/conf.py",
+      "sha": "7c1420e8c0273053580977edb848466a73016f68",
+      "type": "blob"
+    },
+    {
+      "path": "docs/debug.rst",
+      "sha": "9b504fb09202135d153915eb2b832944179f8782",
+      "type": "blob"
+    },
+    {
+      "path": "docs/decorators.rst",
+      "sha": "18da43f55b4053ffeef28b85a52fa8b7f597819a",
+      "type": "blob"
+    },
+    {
+      "path": "docs/descriptions.html",
+      "sha": "6f4365959df6dadba6f8e586e8205c6972c7f20f",
+      "type": "blob"
+    },
+    {
+      "path": "docs/extended_fns.rst",
+      "sha": "3bbea87c5ff1175e7aa268d4d364cd2ff16353e1",
+      "type": "blob"
+    },
+    {
+      "path": "docs/flow.rst",
+      "sha": "b14b68922c2dbe135568ef72078baa1c08906a20",
+      "type": "blob"
+    },
+    {
+      "path": "docs/funcs.rst",
+      "sha": "83097203edd6f7762e9c761f0536234a3d8625c6",
+      "type": "blob"
+    },
+    {
+      "path": "docs/index.rst",
+      "sha": "89edbaf51058efc65f03d1c121255d6e5a802075",
+      "type": "blob"
+    },
+    {
+      "path": "docs/objects.rst",
+      "sha": "eabb9114197000a8c7e4d6f5f4766dc1f59f94ea",
+      "type": "blob"
+    },
+    {
+      "path": "docs/overview.rst",
+      "sha": "e1285f9d05cfc96e6c6d3122b8b6f488d15cb782",
+      "type": "blob"
+    },
+    {
+      "path": "docs/primitives.rst",
+      "sha": "d15cecf59ef97bf79ecad209ad918db17c211a53",
+      "type": "blob"
+    },
+    {
+      "path": "docs/requirements.txt",
+      "sha": "61eec5ce2e12bd47efe653ae4801267f92cc1ca1",
+      "type": "blob"
+    },
+    {
+      "path": "docs/seqs.rst",
+      "sha": "490fcaea14aadef73560628ffc4b9029dd5d1541",
+      "type": "blob"
+    },
+    {
+      "path": "docs/strings.rst",
+      "sha": "e34ede42195fbe605292c842eaba1c9b6298cfbb",
+      "type": "blob"
+    },
+    {
+      "path": "docs/types.rst",
+      "sha": "f4f181ffdbeb71514b091b0e3ffa6ba3ced8a349",
+      "type": "blob"
+    },
+    {
+      "path": "funcy",
+      "sha": "e47f10f3cd63e7bb9d6a8df8d556403fa3e4ca15",
+      "type": "tree"
+    },
+    {
+      "path": "funcy/__init__.py",
+      "sha": "46dd43ec4b8f4e39f11c9cc11648e5b69bb97dd9",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/_inspect.py",
+      "sha": "cc2eae52f64be212abd37f5cd45708d312881922",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/calc.py",
+      "sha": "6e095d585a37d084fdb81165f7268ce7d784390b",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/colls.py",
+      "sha": "d427a4ca538b49469a4e04b590f2cdab6651a8d2",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/debug.py",
+      "sha": "62ef1bcff79c91f67e90070c85c8676cee4c8553",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/decorators.py",
+      "sha": "e001629f337c6d88263aa682ce3c0ba75b79d047",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/flow.py",
+      "sha": "eedee8ccc63b41a330b99c9e4b4b8abf793218a6",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/funcmakers.py",
+      "sha": "e636ea760c97e653f30c62edb98017a5c9d04709",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/funcolls.py",
+      "sha": "8b6eef8c281c49a743e587c25609c1eec0f8d688",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/funcs.py",
+      "sha": "0a235bb7090e226816730a6ce6a57c39883839b9",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/objects.py",
+      "sha": "d0ddefdbc16e717af32275e7c399156f0fbbb439",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/primitives.py",
+      "sha": "42f65ed2766068b350f3218671dac11335a1d293",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/seqs.py",
+      "sha": "5ea964c4f8c315c0fc4013b9d9e5e0bf52d944ff",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/strings.py",
+      "sha": "de98fbe571382d6dc7f4a4847af6ff670678a0c2",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/tree.py",
+      "sha": "0ceb70855df8ec2f980034037060904b5fd31ce1",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/types.py",
+      "sha": "98fd2927334196559c8c18981563f8434fd1b344",
+      "type": "blob"
+    },
+    {
+      "path": "publish.sh",
+      "sha": "54bab13c79c80256dfb5415752a5b94cc9c43c0a",
+      "type": "blob"
+    },
+    {
+      "path": "setup.cfg",
+      "sha": "0c9e0fc1447e98b7f63ae8c9eb552c2af7b83f45",
+      "type": "blob"
+    },
+    {
+      "path": "setup.py",
+      "sha": "5449269399eb052f9377cd70c2ce83b96328dc4a",
+      "type": "blob"
+    },
+    {
+      "path": "test_requirements.txt",
+      "sha": "fb072e025f794f6ca6b91ef72d8e610055cf6978",
+      "type": "blob"
+    },
+    {
+      "path": "tests",
+      "sha": "44739d37483e7c7a1d188d9a12b11b1d4568a9f8",
+      "type": "tree"
+    },
+    {
+      "path": "tests/__init__.py",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "type": "blob"
+    },
+    {
+      "path": "tests/py38_decorators.py",
+      "sha": "87bd06c9755c00c0ce0b679fe080a0d3471c9eb5",
+      "type": "blob"
+    },
+    {
+      "path": "tests/py38_funcs.py",
+      "sha": "785c29cf20466de3dc8f6892da5441a5c717a411",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_calc.py",
+      "sha": "1b96c8fdf3c5e31a757c59653ea878b2d243d548",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_colls.py",
+      "sha": "9049edf1d1564206daf90b0ba7e6d59ba51b0d64",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_debug.py",
+      "sha": "45b30c2488abb3ae25eaf48b8f3eda68b5ec36c9",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_decorators.py",
+      "sha": "661563f6e5079812e3361fd4b0324e699527bd66",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_flow.py",
+      "sha": "761d0ccb88d3d4183cca007a0814f74f6bf74afc",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_funcmakers.py",
+      "sha": "ac1b94457992ef5dfa990df8756eeff26b56dfca",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_funcolls.py",
+      "sha": "a55e76acc0b96b31653015a846d8c0e09f89bd26",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_funcs.py",
+      "sha": "7b20e11764a30d928c3e72dd469a04dddea6562c",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_interface.py",
+      "sha": "9b866ad9e14a88f593266829c5d6ae859b3cd06f",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_objects.py",
+      "sha": "606690cc42a83badc7ed5e721c7042822303a0ed",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_seqs.py",
+      "sha": "6b878328898f22d1e8fdbec33017ea083ba9a2ee",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_strings.py",
+      "sha": "59a588e3d2a9de45be11186f9f4ef134a62424b0",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_tree.py",
+      "sha": "6a4f4babe4069dab5dee7e3b00435b027429bcfa",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_types.py",
+      "sha": "06398f4442a65f95c9c67985fe134aeeb608f9bb",
+      "type": "blob"
+    },
+    {
+      "path": "tox.ini",
+      "sha": "1349352214e10aed98d0ee8d4fffe5f4bc7de3fb",
+      "type": "blob"
+    }
+  ],
+  "exposure": {
+    "investigator_author_fix_opened_after_selection_freeze": true,
+    "prior_exact_repo_mentions": 0,
+    "scope": "Canonical Research State and two-lane learning checkpoint fetched 2026-11-29; all content including failed qualification entries searched for repo",
+    "solvers_author_fix_exposed": false,
+    "strict_global_unopened": "UNKNOWN"
+  },
+  "head": "f48a4414a320d911e3a0bf9bcfd833e10fbb3c02",
+  "head_commit": {
+    "parents": [
+      {
+        "html_url": "https://github.com/Suor/funcy/commit/40011cc3b9344d2c4e6ad2e3cff54b41ac7015f7",
+        "sha": "40011cc3b9344d2c4e6ad2e3cff54b41ac7015f7",
+        "url": "https://api.github.com/repos/Suor/funcy/git/commits/40011cc3b9344d2c4e6ad2e3cff54b41ac7015f7"
+      }
+    ],
+    "sha": "f48a4414a320d911e3a0bf9bcfd833e10fbb3c02",
+    "tree": {
+      "sha": "7a05b86748eb7b9739635762436f45c60efc098d",
+      "url": "https://api.github.com/repos/Suor/funcy/git/trees/7a05b86748eb7b9739635762436f45c60efc098d"
+    }
+  },
+  "head_entries": [
+    {
+      "path": ".github",
+      "sha": "778d30ac1eca274b84ae19eced93197d483f0281",
+      "type": "tree"
+    },
+    {
+      "path": ".github/workflows",
+      "sha": "0ae22087192a84709ae7a60fcf5ec0feaa485c77",
+      "type": "tree"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "sha": "82ae8d2c809a2c7841dae9bd6faec5ffbbb7bbc8",
+      "type": "blob"
+    },
+    {
+      "path": ".gitignore",
+      "sha": "9738c1c02edb15f5239bf8485d3f44602c0d5bf9",
+      "type": "blob"
+    },
+    {
+      "path": ".readthedocs.yaml",
+      "sha": "a634975cb0123a140288debc53cfdb4080b5db79",
+      "type": "blob"
+    },
+    {
+      "path": "CHANGELOG",
+      "sha": "d5b7da8d580c85cf7b6c606f08d46ab9cd5f4277",
+      "type": "blob"
+    },
+    {
+      "path": "LICENSE",
+      "sha": "fb0bfd47e06ec972182b8b2aff31e8e9341d4035",
+      "type": "blob"
+    },
+    {
+      "path": "MANIFEST.in",
+      "sha": "f890985ae81100ce765b7802fbfac7e1ba96eef8",
+      "type": "blob"
+    },
+    {
+      "path": "README.rst",
+      "sha": "d15c2b870b35a7c2d870124d8f4d9a3c256ffb14",
+      "type": "blob"
+    },
+    {
+      "path": "TODO.rst",
+      "sha": "a9662f22b2b7888de02cc504883a126afa0d9b21",
+      "type": "blob"
+    },
+    {
+      "path": "VERSION",
+      "sha": "879b416e609a820dafeff67d679a7e3849fe8a09",
+      "type": "blob"
+    },
+    {
+      "path": "docs",
+      "sha": "956ee0d798ef180630826aca13d445d5ee66cbfa",
+      "type": "tree"
+    },
+    {
+      "path": "docs/Makefile",
+      "sha": "5ef682701019edc95d89b8d215926e6d2d40d6b9",
+      "type": "blob"
+    },
+    {
+      "path": "docs/_static",
+      "sha": "2456233389371db0bfbbbf4d6bc0436a66fbd3f6",
+      "type": "tree"
+    },
+    {
+      "path": "docs/_static/nhpup_1.1.js",
+      "sha": "d07b2dd3cd2bf50e347123abe5898002891aec7c",
+      "type": "blob"
+    },
+    {
+      "path": "docs/_static/overrides.css",
+      "sha": "398fc1d62be10cb68771116118bcd8f2f5ba2a20",
+      "type": "blob"
+    },
+    {
+      "path": "docs/calc.rst",
+      "sha": "753f20602bebe965c9945ee04a79cdaadf561ae3",
+      "type": "blob"
+    },
+    {
+      "path": "docs/cheatsheet.rst",
+      "sha": "2eff470cda0776ed9a510f5bf98c83303b8b4b61",
+      "type": "blob"
+    },
+    {
+      "path": "docs/colls.rst",
+      "sha": "cb00e1a2840b2de0f0c6878c4042a9ebd42b09ff",
+      "type": "blob"
+    },
+    {
+      "path": "docs/conf.py",
+      "sha": "7c1420e8c0273053580977edb848466a73016f68",
+      "type": "blob"
+    },
+    {
+      "path": "docs/debug.rst",
+      "sha": "9b504fb09202135d153915eb2b832944179f8782",
+      "type": "blob"
+    },
+    {
+      "path": "docs/decorators.rst",
+      "sha": "18da43f55b4053ffeef28b85a52fa8b7f597819a",
+      "type": "blob"
+    },
+    {
+      "path": "docs/descriptions.html",
+      "sha": "6f4365959df6dadba6f8e586e8205c6972c7f20f",
+      "type": "blob"
+    },
+    {
+      "path": "docs/extended_fns.rst",
+      "sha": "3bbea87c5ff1175e7aa268d4d364cd2ff16353e1",
+      "type": "blob"
+    },
+    {
+      "path": "docs/flow.rst",
+      "sha": "b14b68922c2dbe135568ef72078baa1c08906a20",
+      "type": "blob"
+    },
+    {
+      "path": "docs/funcs.rst",
+      "sha": "83097203edd6f7762e9c761f0536234a3d8625c6",
+      "type": "blob"
+    },
+    {
+      "path": "docs/index.rst",
+      "sha": "89edbaf51058efc65f03d1c121255d6e5a802075",
+      "type": "blob"
+    },
+    {
+      "path": "docs/objects.rst",
+      "sha": "eabb9114197000a8c7e4d6f5f4766dc1f59f94ea",
+      "type": "blob"
+    },
+    {
+      "path": "docs/overview.rst",
+      "sha": "e1285f9d05cfc96e6c6d3122b8b6f488d15cb782",
+      "type": "blob"
+    },
+    {
+      "path": "docs/primitives.rst",
+      "sha": "d15cecf59ef97bf79ecad209ad918db17c211a53",
+      "type": "blob"
+    },
+    {
+      "path": "docs/requirements.txt",
+      "sha": "61eec5ce2e12bd47efe653ae4801267f92cc1ca1",
+      "type": "blob"
+    },
+    {
+      "path": "docs/seqs.rst",
+      "sha": "490fcaea14aadef73560628ffc4b9029dd5d1541",
+      "type": "blob"
+    },
+    {
+      "path": "docs/strings.rst",
+      "sha": "e34ede42195fbe605292c842eaba1c9b6298cfbb",
+      "type": "blob"
+    },
+    {
+      "path": "docs/types.rst",
+      "sha": "f4f181ffdbeb71514b091b0e3ffa6ba3ced8a349",
+      "type": "blob"
+    },
+    {
+      "path": "funcy",
+      "sha": "221c3e222e2e15d8f96e32156f9950f033fa97d1",
+      "type": "tree"
+    },
+    {
+      "path": "funcy/__init__.py",
+      "sha": "46dd43ec4b8f4e39f11c9cc11648e5b69bb97dd9",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/_inspect.py",
+      "sha": "cc2eae52f64be212abd37f5cd45708d312881922",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/calc.py",
+      "sha": "6e095d585a37d084fdb81165f7268ce7d784390b",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/colls.py",
+      "sha": "d427a4ca538b49469a4e04b590f2cdab6651a8d2",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/debug.py",
+      "sha": "62ef1bcff79c91f67e90070c85c8676cee4c8553",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/decorators.py",
+      "sha": "14d84c90912d3575de926a590af6a19b2c79ccd8",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/flow.py",
+      "sha": "eedee8ccc63b41a330b99c9e4b4b8abf793218a6",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/funcmakers.py",
+      "sha": "e636ea760c97e653f30c62edb98017a5c9d04709",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/funcolls.py",
+      "sha": "8b6eef8c281c49a743e587c25609c1eec0f8d688",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/funcs.py",
+      "sha": "0a235bb7090e226816730a6ce6a57c39883839b9",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/objects.py",
+      "sha": "d0ddefdbc16e717af32275e7c399156f0fbbb439",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/primitives.py",
+      "sha": "42f65ed2766068b350f3218671dac11335a1d293",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/seqs.py",
+      "sha": "5ea964c4f8c315c0fc4013b9d9e5e0bf52d944ff",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/strings.py",
+      "sha": "de98fbe571382d6dc7f4a4847af6ff670678a0c2",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/tree.py",
+      "sha": "0ceb70855df8ec2f980034037060904b5fd31ce1",
+      "type": "blob"
+    },
+    {
+      "path": "funcy/types.py",
+      "sha": "98fd2927334196559c8c18981563f8434fd1b344",
+      "type": "blob"
+    },
+    {
+      "path": "publish.sh",
+      "sha": "54bab13c79c80256dfb5415752a5b94cc9c43c0a",
+      "type": "blob"
+    },
+    {
+      "path": "setup.cfg",
+      "sha": "0c9e0fc1447e98b7f63ae8c9eb552c2af7b83f45",
+      "type": "blob"
+    },
+    {
+      "path": "setup.py",
+      "sha": "5449269399eb052f9377cd70c2ce83b96328dc4a",
+      "type": "blob"
+    },
+    {
+      "path": "test_requirements.txt",
+      "sha": "fb072e025f794f6ca6b91ef72d8e610055cf6978",
+      "type": "blob"
+    },
+    {
+      "path": "tests",
+      "sha": "e580271c4be02ccccb17d2bb3c35417fc16bdbe8",
+      "type": "tree"
+    },
+    {
+      "path": "tests/__init__.py",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "type": "blob"
+    },
+    {
+      "path": "tests/py38_decorators.py",
+      "sha": "87bd06c9755c00c0ce0b679fe080a0d3471c9eb5",
+      "type": "blob"
+    },
+    {
+      "path": "tests/py38_funcs.py",
+      "sha": "785c29cf20466de3dc8f6892da5441a5c717a411",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_calc.py",
+      "sha": "1b96c8fdf3c5e31a757c59653ea878b2d243d548",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_colls.py",
+      "sha": "9049edf1d1564206daf90b0ba7e6d59ba51b0d64",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_debug.py",
+      "sha": "45b30c2488abb3ae25eaf48b8f3eda68b5ec36c9",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_decorators.py",
+      "sha": "ebb0ccef726d6d539ebd88148d0d79f9c6a37add",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_flow.py",
+      "sha": "761d0ccb88d3d4183cca007a0814f74f6bf74afc",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_funcmakers.py",
+      "sha": "ac1b94457992ef5dfa990df8756eeff26b56dfca",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_funcolls.py",
+      "sha": "a55e76acc0b96b31653015a846d8c0e09f89bd26",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_funcs.py",
+      "sha": "7b20e11764a30d928c3e72dd469a04dddea6562c",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_interface.py",
+      "sha": "9b866ad9e14a88f593266829c5d6ae859b3cd06f",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_objects.py",
+      "sha": "606690cc42a83badc7ed5e721c7042822303a0ed",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_seqs.py",
+      "sha": "6b878328898f22d1e8fdbec33017ea083ba9a2ee",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_strings.py",
+      "sha": "59a588e3d2a9de45be11186f9f4ef134a62424b0",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_tree.py",
+      "sha": "6a4f4babe4069dab5dee7e3b00435b027429bcfa",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_types.py",
+      "sha": "06398f4442a65f95c9c67985fe134aeeb608f9bb",
+      "type": "blob"
+    },
+    {
+      "path": "tox.ini",
+      "sha": "1349352214e10aed98d0ee8d4fffe5f4bc7de3fb",
+      "type": "blob"
+    }
+  ],
+  "pr": 211,
+  "repo": "Suor/funcy",
+  "selection": "first metadata candidate under independently fixed query; no native results inspected"
+}
