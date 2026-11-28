@@ -17,8 +17,13 @@ def target(spec):
         from markupsafe import Markup
         return lambda s:str(Markup(s).striptags())
     if spec['kind']=='ftfy':
-        from ftfy import fix_text
-        return fix_text
+        import ftfy
+        operation=getattr(ftfy,spec.get('function','fix_text'))
+        options=spec.get('options',{})
+        return lambda s:operation(s,**options)
+    if spec['kind']=='bleach':
+        from bleach import clean
+        return clean
     if spec['kind']=='w3lib':
         from w3lib import url
         return getattr(url,spec['function'])
@@ -56,6 +61,7 @@ def repair(observe, seed, contract):
 
 def run_one(ns,fn,seed,contract,scope_supported,expected=None,force_scope=False,disable_diagnostic=False,disable_repair=False):
     observed=[]
+    original_applies=ns.get('applies') if ns else None
     def observe(value):
         if not isinstance(value,str) or len(value)>16000:raise ValueError('observation domain')
         if len(observed)>=12:raise ValueError('observation budget')
@@ -68,6 +74,10 @@ def run_one(ns,fn,seed,contract,scope_supported,expected=None,force_scope=False,
         if not isinstance(once,str):raise ValueError('not string closed')
         active=bool(ns['applies'](contract)) if ns else False
         use=bool(ns) and (active or force_scope)
+        if ns and force_scope:
+            # Remove both host selection and the program's internal scope check.
+            # Restore the original before the next case to avoid cross-case state.
+            ns['applies']=lambda contract:True
         diagnostic=None;output=once;witness=None;status='INACTIVE'
         if use and not disable_diagnostic:
             diagnostic=ns['diagnose'](observe,seed,contract)
@@ -92,6 +102,8 @@ def run_one(ns,fn,seed,contract,scope_supported,expected=None,force_scope=False,
     except Exception as e:
         return {'seed':seed,'expected':expected,'status':'UNKNOWN_NATIVE_EXCEPTION','error_type':type(e).__name__,
           'error':str(e)[:400],'observations':observed,'original_matches_author':False,'result_matches_author':False}
+    finally:
+        if ns and force_scope:ns['applies']=original_applies
 
 def main():
     request=json.loads(Path('/work/request.json').read_text());fn=target(request['target'])
@@ -100,11 +112,11 @@ def main():
         out={'observations':[{'input':x['input'],'expected':x['expected'],'actual':fn(x['input'])} for x in request['cases']]}
     elif mode=='evaluate':
         programs=request['programs'];rows={}
-        for arm in ('retained','cold','conventional','without_critic','without_diagnostic','without_repair','ledger'):
+        for arm in ('retained','cold','conventional','previous','without_critic','without_diagnostic','without_repair','ledger'):
             if arm=='conventional':ns=conventional()
             elif arm=='without_critic':ns=None
             else:
-                key='cold' if arm=='cold' else 'retained'
+                key=arm if arm in ('cold','previous') else 'retained'
                 source=programs.get(key)
                 ns=module(source) if source else None
             rows[arm]=[run_one(ns,fn,c['input'],request['contract'],request['scope_supported'],c.get('expected'),

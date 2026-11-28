@@ -4,4 +4,5 @@ COPY trace_plugin.py /harness/trace_plugin.py
 COPY worker.py /harness/worker.py
 COPY core.py /harness/core.py
 RUN pip install setuptools==80.9.0
+RUN pip install wcwidth==0.2.13 html5lib==1.1 tinycss2==1.4.0
 

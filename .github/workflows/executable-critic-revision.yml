@@ -1,0 +1,182 @@
+name: Executable critic revision from verified scope failure V3
+'on':
+  workflow_dispatch: null
+  push:
+    branches:
+    - research/executable-critic-revision-20261128
+    paths:
+    - .github/workflows/executable-critic-revision.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: executable-critic-revision-20261128
+  cancel-in-progress: false
+jobs:
+  feedback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - run: python -m unittest discover -s research/critic_transfer_v2 -p 'test_*.py' -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-data-v2
+        path: research/critic_transfer_v2/data
+        run-id: 46105111733
+        github-token: ${{ github.token }}
+    - uses: actions/download-artifact@v4
+      with:
+        name: future-evidence-v2
+        path: research/critic_transfer_v2/previous
+        run-id: 46105111733
+        github-token: ${{ github.token }}
+    - name: feedback
+      run: python research/critic_transfer_v2/adapt.py feedback
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: training-data-v3
+        path: research/critic_transfer_v2/data
+        if-no-files-found: error
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: training-public-v3
+        path: research/critic_transfer_v2/data/training_public_v3.json
+        if-no-files-found: error
+        retention-days: 90
+  acquisition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - run: python -m unittest discover -s research/critic_transfer_v2 -p 'test_*.py' -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-public-v3
+        path: research/critic_transfer_v2/data
+    - run: python -m pip install openai==2.9.0
+    - name: learn
+      run: python research/critic_transfer_v2/adapt.py learn
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: raw-programs-v3
+        path: research/critic_transfer_v2/work/raw_programs.json
+        if-no-files-found: error
+        retention-days: 90
+    needs: feedback
+  qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - run: python -m unittest discover -s research/critic_transfer_v2 -p 'test_*.py' -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-data-v3
+        path: research/critic_transfer_v2/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: future-evidence-v2
+        path: research/critic_transfer_v2/previous
+        run-id: 46105111733
+        github-token: ${{ github.token }}
+    - uses: actions/download-artifact@v4
+      with:
+        name: raw-programs-v3
+        path: research/critic_transfer_v2/work
+    - name: qualify
+      run: python research/critic_transfer_v2/adapt.py qualify
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: qualification-v3
+        path: research/critic_transfer_v2/work
+        if-no-files-found: error
+        retention-days: 90
+    needs: acquisition
+  future:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - run: python -m unittest discover -s research/critic_transfer_v2 -p 'test_*.py' -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: qualification-v3
+        path: research/critic_transfer_v2/work
+    - name: future
+      run: python research/critic_transfer_v2/adapt.py future
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: future-evidence-v3
+        path: research/critic_transfer_v2
+        if-no-files-found: error
+        retention-days: 90
+    needs: qualification
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - run: python -m unittest discover -s research/critic_transfer_v2 -p 'test_*.py' -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: future-evidence-v3
+        path: research/critic_transfer_v2
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-data-v3
+        path: research/critic_transfer_v2/data
+    - name: report
+      run: python research/critic_transfer_v2/adapt.py report
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: complete-evidence-v3
+        path: research/critic_transfer_v2/evidence.zip
+        if-no-files-found: error
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: summary-v3
+        path: research/critic_transfer_v2/work/summary_v3.json
+        if-no-files-found: error
+        retention-days: 90
+    needs: future

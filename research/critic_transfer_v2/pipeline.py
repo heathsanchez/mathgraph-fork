@@ -234,7 +234,7 @@ def report():
     all_results={load(p)['label']:load(p) for p in sorted((WORK/'future').glob('*.json'))}
     def authority_key(label):
         if label.startswith('ftfy-'):return 'ftfy-author'
-        if label.startswith('w3lib-legacy-'):return label.replace('w3lib-legacy-','w3lib-author-',1)
+        if '-legacy' in label:return label.replace('-legacy','-author',1)
         return label
     authority={}
     for label,x in all_results.items():
@@ -267,6 +267,7 @@ def report():
     causal=correction_count>scores['without_diagnostic']['corrected'] and correction_count>scores['without_repair']['corrected']
     program_ok=qualified['qualification'].get('retained',{}).get('status')=='FINITE_QUALIFIED'
     summary={'source_sha':os.environ.get('GITHUB_SHA'),'run_id':os.environ.get('GITHUB_RUN_ID'),
+      'learning_step':qualified.get('learning_step',1),
       'status':'BOUNDED_EXECUTABLE_CRITIC_TRANSFER' if program_ok and reject_count and causal else 'UNKNOWN_OR_NO_CAUSAL_TRANSFER',
       'qualification':{a:{k:v for k,v in q.items() if k not in ('author','incomplete_candidate')} for a,q in qualified['qualification'].items()},
       'scores':{a:dict(c) for a,c in scores.items()},'groups':groups,'causal_component_effect_observed':causal,
