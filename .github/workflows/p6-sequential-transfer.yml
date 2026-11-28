@@ -1,0 +1,163 @@
+name: P6 sequential native research and matched memory
+'on':
+  push:
+    branches:
+    - research/p6-sequential-transfer-20261128
+    paths:
+    - .github/workflows/p6-sequential-transfer.yml
+  workflow_dispatch: null
+permissions:
+  contents: read
+concurrency:
+  group: p6-sequential-transfer-20261128
+  cancel-in-progress: false
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier boundaries
+      run: python -m unittest discover -s research/sequential_transfer -p test_core.py -v
+    - name: Freeze external cohort before inference
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: python research/sequential_transfer/acquire.py
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: p6-frozen-data
+        path: research/sequential_transfer/data
+        if-no-files-found: error
+        retention-days: 90
+    - name: Install existing API client
+      run: python -m pip install 'openai==2.9.0'
+    - name: Episode 1 probes
+      run: python research/sequential_transfer/run.py probes 0
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 1 probe_native
+      run: python research/sequential_transfer/run.py probe_native 0
+    - name: Episode 1 repair1
+      run: python research/sequential_transfer/run.py repair1 0
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 1 native1
+      run: python research/sequential_transfer/run.py native1 0
+    - name: Episode 1 repair2
+      run: python research/sequential_transfer/run.py repair2 0
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 1 native2
+      run: python research/sequential_transfer/run.py native2 0
+    - name: Episode 1 close
+      run: python research/sequential_transfer/run.py close 0
+    - name: Episode 1 learn
+      run: python research/sequential_transfer/run.py learn 0
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 2 probes
+      run: python research/sequential_transfer/run.py probes 1
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 2 probe_native
+      run: python research/sequential_transfer/run.py probe_native 1
+    - name: Episode 2 repair1
+      run: python research/sequential_transfer/run.py repair1 1
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 2 native1
+      run: python research/sequential_transfer/run.py native1 1
+    - name: Episode 2 repair2
+      run: python research/sequential_transfer/run.py repair2 1
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 2 native2
+      run: python research/sequential_transfer/run.py native2 1
+    - name: Episode 2 close
+      run: python research/sequential_transfer/run.py close 1
+    - name: Episode 2 learn
+      run: python research/sequential_transfer/run.py learn 1
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 3 probes
+      run: python research/sequential_transfer/run.py probes 2
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 3 probe_native
+      run: python research/sequential_transfer/run.py probe_native 2
+    - name: Episode 3 repair1
+      run: python research/sequential_transfer/run.py repair1 2
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 3 native1
+      run: python research/sequential_transfer/run.py native1 2
+    - name: Episode 3 repair2
+      run: python research/sequential_transfer/run.py repair2 2
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 3 native2
+      run: python research/sequential_transfer/run.py native2 2
+    - name: Episode 3 close
+      run: python research/sequential_transfer/run.py close 2
+    - name: Episode 3 learn
+      run: python research/sequential_transfer/run.py learn 2
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 4 probes
+      run: python research/sequential_transfer/run.py probes 3
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 4 probe_native
+      run: python research/sequential_transfer/run.py probe_native 3
+    - name: Episode 4 repair1
+      run: python research/sequential_transfer/run.py repair1 3
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 4 native1
+      run: python research/sequential_transfer/run.py native1 3
+    - name: Episode 4 repair2
+      run: python research/sequential_transfer/run.py repair2 3
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Episode 4 native2
+      run: python research/sequential_transfer/run.py native2 3
+    - name: Episode 4 close
+      run: python research/sequential_transfer/run.py close 3
+    - name: Episode 4 learn
+      run: python research/sequential_transfer/run.py learn 3
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - name: Preserve comparison and complete evidence
+      run: python research/sequential_transfer/run.py final
+    - name: Fresh extraction native replay
+      run: "python - <<'PY'\nfrom pathlib import Path\nimport tempfile, zipfile, subprocess, shutil\n\
+        base=Path('research/sequential_transfer')\nwith tempfile.TemporaryDirectory(prefix='p6-cold-')\
+        \ as d:\n with zipfile.ZipFile(base/'evidence.zip') as z: z.extractall(d)\n subprocess.run(['python',str(Path(d)/'sequential_transfer/replay.py')],check=True)\n\
+        \ shutil.copy2(Path(d)/'cold_replay_receipt.json',base/'cold_replay_receipt.json')\nPY"
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: p6-portable-evidence
+        path: research/sequential_transfer/evidence.zip
+        if-no-files-found: warn
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: p6-all-records
+        path: research/sequential_transfer/work
+        if-no-files-found: warn
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: p6-cold-replay
+        path: research/sequential_transfer/cold_replay_receipt.json
+        if-no-files-found: warn
+        retention-days: 90
