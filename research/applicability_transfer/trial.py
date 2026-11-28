@@ -221,11 +221,16 @@ def qualify():
 
 def proposal_prompt(arm,p,prior=None,healthy=False):
     ctx=context();s=load(WORK/'strategies.json')['strategies'][arm]
-    instruction={'adaptive':'Use ordinary adaptive reasoning; you may reconstruct any strategy from the evidence.',
-      'graph':'Use graph structure and failure information to diagnose and correct the plan. Edges are static potential calls, not causal provenance.',
-      'guard':'Apply the frozen guidance at matching functions. Outside the guard use ordinary adaptive reasoning; failure evidence alone does not authorize changing expected behavior.'}[arm]
     selected=[]
     if arm=='guard' and s['status']=='FINITE_QUALIFIED':selected=[f['id'] for f in features(p) if holds(s['strategy']['guard'],f)]
+    # Inactive or invalid advice is absent, rather than entrusted to the model
+    # to ignore. This branch has byte-identical context to ordinary reasoning.
+    active_arm=arm
+    if arm=='guard' and not selected:
+        active_arm='adaptive';s=load(WORK/'strategies.json')['strategies']['adaptive']
+    instruction={'adaptive':'Use ordinary adaptive reasoning; you may reconstruct any strategy from the evidence.',
+      'graph':'Use graph structure and failure information to diagnose and correct the plan. Edges are static potential calls, not causal provenance.',
+      'guard':'Apply the frozen guidance at matching functions. Outside the guard use ordinary adaptive reasoning; failure evidence alone does not authorize changing expected behavior.'}[active_arm]
     return (contract()+'\n'+instruction+'\nAll arms have the same raw training history and case evidence. '
       'Do not infer a candidate is correct from a dependency graph or passing partial tests.\n'+json.dumps({
       'raw_training_history':ctx,'frozen_strategy':s,'guard_matches':selected,'case':packet_view(p),'prior_attempt':receipt_view(prior),

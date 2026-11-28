@@ -1,0 +1,157 @@
+name: Executable critic acquisition and causal native transfer V2
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/executable-critic-transfer-20261128]
+    paths: ['.github/workflows/executable-critic-transfer.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: executable-critic-transfer-20261128
+  cancel-in-progress: false
+jobs:
+  training:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m unittest discover -s research/critic_transfer_v2 -p test_core.py -v
+      - run: python -m unittest discover -s research/applicability_transfer -p 'test_*.py' -v
+      - uses: actions/download-artifact@v4
+        with:
+          name: frozen-data
+          path: research/critic_transfer_v2/prior/frozen
+          run-id: 46103184004
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: proposals-1
+          path: research/critic_transfer_v2/prior/proposals
+          run-id: 46103184004
+          github-token: ${{ github.token }}
+      - name: Native exposed training replay
+        env: {GITHUB_TOKEN: '${{ github.token }}'}
+        run: python research/critic_transfer_v2/pipeline.py train
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: training-data-v2
+          path: research/critic_transfer_v2/data
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: training-public-v2
+          path: research/critic_transfer_v2/data/training_public.json
+          if-no-files-found: error
+          retention-days: 90
+  acquisition:
+    needs: training
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: training-public-v2
+          path: research/critic_transfer_v2/data
+      - run: python -m pip install openai==2.9.0
+      - name: Construct executable critics from exposed evidence only
+        env: {OPENAI_API_KEY: '${{ secrets.OPENAI_API_KEY }}'}
+        run: python research/critic_transfer_v2/pipeline.py learn
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: raw-programs-v2
+          path: research/critic_transfer_v2/work/raw_programs.json
+          if-no-files-found: error
+          retention-days: 90
+  qualification:
+    needs: acquisition
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: training-data-v2
+          path: research/critic_transfer_v2/data
+      - uses: actions/download-artifact@v4
+        with:
+          name: raw-programs-v2
+          path: research/critic_transfer_v2/work
+      - name: Independently execute qualification, then freeze programs
+        run: python research/critic_transfer_v2/pipeline.py qualify
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qualification-v2
+          path: research/critic_transfer_v2/work
+          if-no-files-found: error
+          retention-days: 90
+  future:
+    needs: qualification
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: qualification-v2
+          path: research/critic_transfer_v2/work
+      - name: Open external author fixtures only after program freeze
+        env: {GITHUB_TOKEN: '${{ github.token }}'}
+        run: python research/critic_transfer_v2/pipeline.py future
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: future-evidence-v2
+          path: research/critic_transfer_v2
+          if-no-files-found: error
+          retention-days: 90
+  report:
+    needs: future
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@v4
+        with:
+          name: future-evidence-v2
+          path: research/critic_transfer_v2
+      - uses: actions/download-artifact@v4
+        with:
+          name: training-data-v2
+          path: research/critic_transfer_v2/data
+      - name: Report mechanism, ablations, cold and conventional controls
+        run: python research/critic_transfer_v2/pipeline.py report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: complete-evidence-v2
+          path: research/critic_transfer_v2/evidence.zip
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: summary-v2
+          path: research/critic_transfer_v2/work/summary.json
+          if-no-files-found: error
+          retention-days: 90
