@@ -1,5 +1,5 @@
 import unittest
-from core import validate_program,choose_context,verified_rejection
+from core import validate_program,choose_context,verified_rejection,authorize_output
 
 class CriticBoundary(unittest.TestCase):
     def test_inactive_program_has_no_effect(self):
@@ -17,5 +17,11 @@ class CriticBoundary(unittest.TestCase):
         self.assertEqual(len(validate_program(valid)),64)
         for source in ('import os\n'+valid,valid.replace('return False','return open("secret")'),valid.replace('return None','return observe.__globals__')):
             with self.assertRaises(ValueError):validate_program(source)
+    def test_stable_wrong_output_is_never_authorized(self):
+        r={'status':'OBSERVED_REJECTION','original':'wrong','output':'wrong fixed point','expected':'intended'}
+        self.assertEqual(authorize_output(r,True),'REJECTED_SEMANTIC_MISMATCH')
+        good={**r,'output':'intended'}
+        self.assertEqual(authorize_output(good,True),'FINITE_CORRECTION_VERIFIED')
+        self.assertEqual(authorize_output(good,False),'UNKNOWN_NO_INDEPENDENT_ORACLE')
 
 if __name__=='__main__':unittest.main()

@@ -37,3 +37,17 @@ def verified_rejection(result):
     return (w.get('scope_supported') is True and isinstance(w.get('seed'),str)
             and isinstance(w.get('first'),str) and isinstance(w.get('second'),str)
             and w['first']!=w['second'] and w.get('replayed') is True)
+
+def authorize_output(record,oracle_verified):
+    """Encode the experiment's declared independent semantic acceptance rule.
+
+    Convergence is diagnostic evidence, never sufficient repair authority.
+    The independent author's exact expectation must have been reproduced first.
+    """
+    if not oracle_verified:return 'UNKNOWN_NO_INDEPENDENT_ORACLE'
+    if str(record.get('status','')).startswith('UNKNOWN_'):return 'UNKNOWN_NATIVE_EXECUTION'
+    expected=record.get('expected');output=record.get('output')
+    if not isinstance(expected,str):return 'UNKNOWN_NO_INDEPENDENT_ORACLE'
+    if output is None:return 'ABSTAIN_NO_VALIDATED_OUTPUT'
+    if output!=expected:return 'REJECTED_SEMANTIC_MISMATCH'
+    return 'FINITE_CORRECTION_VERIFIED' if record.get('original')!=expected else 'FINITE_PRESERVATION_VERIFIED'

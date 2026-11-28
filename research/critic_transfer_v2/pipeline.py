@@ -19,7 +19,7 @@ import time
 import zipfile
 import admit_legacy as git
 from native import HERE, IMAGE, build, dump, load, digest, stable
-from core import validate_program,choose_context,verified_rejection
+from core import validate_program,choose_context,verified_rejection,authorize_output
 
 DATA=HERE/'data';WORK=HERE/'work';PRIOR=HERE/'prior'
 MODEL='gpt-5.6-sol'
@@ -230,7 +230,7 @@ def future():
       'boundary':'Historical public independently authored fixtures; inference holdout only; legacy ftfy assessed under v3 contract as migration candidate, not a claim of a v2 violated promise.'})
 
 def report():
-    qualified=load(WORK/'qualified_programs.json');index=load(WORK/'future_index.json');scores=collections.defaultdict(collections.Counter);groups=[];witnesses=[]
+    qualified=load(WORK/'qualified_programs.json');index=load(WORK/'future_index.json');scores=collections.defaultdict(collections.Counter);groups=[];witnesses=[];authorizations=[]
     all_results={load(p)['label']:load(p) for p in sorted((WORK/'future').glob('*.json'))}
     def authority_key(label):
         if label.startswith('ftfy-'):return 'ftfy-author'
@@ -245,6 +245,8 @@ def report():
         for arm,rs in rows.items():
             count=collections.Counter()
             for r in rs:
+                decision=authorize_output(r,(r['seed'],r.get('expected')) in authority[label])
+                authorizations.append({'group':label,'arm':arm,'seed':r['seed'],'decision':decision})
                 if (r['seed'],r.get('expected')) not in authority[label]:
                     count['UNKNOWN_AUTHOR_ORACLE']+=1
                     continue
@@ -280,7 +282,7 @@ def report():
        'ftfy legacy version is an actual migration candidate under the newer author contract, not an allegation against its original contract.',
        'Single acquisition sample per generated program; resource comparison must include construction and qualification.',
        'A successful construction/reuse mechanism is distinct from outperforming equally informed reconstruction.']}
-    dump(WORK/'summary.json',summary);dump(WORK/'causal_witnesses.json',witnesses)
+    dump(WORK/'summary.json',summary);dump(WORK/'causal_witnesses.json',witnesses);dump(WORK/'output_authorization.json',authorizations)
     evidence=HERE/'evidence';evidence.mkdir(exist_ok=True)
     for root in (DATA,WORK):
         for p in root.rglob('*'):
