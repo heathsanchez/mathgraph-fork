@@ -1,0 +1,392 @@
+name: "Prospective applicability transfer \u2014 native author tests"
+'on':
+  workflow_dispatch: null
+  push:
+    branches:
+    - research/applicability-transfer-20261128
+    paths:
+    - .github/workflows/applicability-transfer.yml
+permissions:
+  contents: read
+concurrency:
+  group: applicability-transfer-20261128
+  cancel-in-progress: false
+jobs:
+  admit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - name: Freeze external native cohort before inference
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: python research/applicability_transfer/prepare.py
+    - name: Separate public training and future packets from author source
+      run: 'mkdir -p research/applicability_transfer/train_public/public/train research/applicability_transfer/future_public/public/future
+
+        cp research/applicability_transfer/data/admission.json research/applicability_transfer/train_public/admission.json
+
+        cp research/applicability_transfer/data/admission.json research/applicability_transfer/future_public/admission.json
+
+        cp -a research/applicability_transfer/data/public/train/. research/applicability_transfer/train_public/public/train/
+
+        cp -a research/applicability_transfer/data/public/train/. research/applicability_transfer/future_public/public/train/
+
+        cp -a research/applicability_transfer/data/public/future/. research/applicability_transfer/future_public/public/future/'
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: frozen-data
+        path: research/applicability_transfer/data
+        if-no-files-found: error
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: train-public
+        path: research/applicability_transfer/train_public
+        if-no-files-found: error
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: future-public
+        path: research/applicability_transfer/future_public
+        if-no-files-found: error
+        retention-days: 90
+  train_propose:
+    needs: admit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: train-public
+        path: research/applicability_transfer/data
+    - run: python -m pip install 'openai==2.9.0'
+    - name: train_propose
+      run: python research/applicability_transfer/trial.py train_propose
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: training-proposals
+        path: research/applicability_transfer/work/training_proposals.json
+        if-no-files-found: error
+        retention-days: 90
+  train_verify:
+    needs: train_propose
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: frozen-data
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-proposals
+        path: research/applicability_transfer/work
+    - name: train_verify
+      run: python research/applicability_transfer/trial.py train_verify
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: training-receipt
+        path: research/applicability_transfer/work/training_receipt.json
+        if-no-files-found: error
+        retention-days: 90
+  learn:
+    needs: train_verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: train-public
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-receipt
+        path: research/applicability_transfer/work
+    - run: python -m pip install 'openai==2.9.0'
+    - name: learn
+      run: python research/applicability_transfer/trial.py learn
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: strategies-raw
+        path: research/applicability_transfer/work/strategies_raw.json
+        if-no-files-found: error
+        retention-days: 90
+  qualify:
+    needs: learn
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: train-public
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-receipt
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: strategies-raw
+        path: research/applicability_transfer/work
+    - name: qualify
+      run: python research/applicability_transfer/trial.py qualify
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: strategies
+        path: research/applicability_transfer/work/strategies.json
+        if-no-files-found: error
+        retention-days: 90
+  propose_1:
+    needs: qualify
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: future-public
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-receipt
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: strategies
+        path: research/applicability_transfer/work
+    - run: python -m pip install 'openai==2.9.0'
+    - name: propose_1
+      run: python research/applicability_transfer/trial.py propose_1
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: proposals-1
+        path: research/applicability_transfer/work/proposals_1.json
+        if-no-files-found: error
+        retention-days: 90
+  verify_1:
+    needs: propose_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: frozen-data
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: proposals-1
+        path: research/applicability_transfer/work
+    - name: verify_1
+      run: python research/applicability_transfer/trial.py verify_1
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: receipt-1
+        path: research/applicability_transfer/work/receipt_1.json
+        if-no-files-found: error
+        retention-days: 90
+  propose_2:
+    needs: verify_1
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: future-public
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-receipt
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: strategies
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: receipt-1
+        path: research/applicability_transfer/work
+    - run: python -m pip install 'openai==2.9.0'
+    - name: propose_2
+      run: python research/applicability_transfer/trial.py propose_2
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: proposals-2
+        path: research/applicability_transfer/work/proposals_2.json
+        if-no-files-found: error
+        retention-days: 90
+  verify_2:
+    needs: propose_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: frozen-data
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: proposals-2
+        path: research/applicability_transfer/work
+    - name: verify_2
+      run: python research/applicability_transfer/trial.py verify_2
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: receipt-2
+        path: research/applicability_transfer/work/receipt_2.json
+        if-no-files-found: error
+        retention-days: 90
+  report:
+    needs: verify_2
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Verifier preflight
+      run: python -m unittest discover -s research/applicability_transfer -p test_trial.py -v
+    - uses: actions/download-artifact@v4
+      with:
+        name: frozen-data
+        path: research/applicability_transfer/data
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-proposals
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: training-receipt
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: strategies-raw
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: strategies
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: proposals-1
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: proposals-2
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: receipt-1
+        path: research/applicability_transfer/work
+    - uses: actions/download-artifact@v4
+      with:
+        name: receipt-2
+        path: research/applicability_transfer/work
+    - name: final
+      run: python research/applicability_transfer/trial.py final
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: portable-evidence
+        path: research/applicability_transfer/evidence.zip
+        if-no-files-found: error
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: summary
+        path: research/applicability_transfer/work/summary.json
+        if-no-files-found: error
+        retention-days: 90
