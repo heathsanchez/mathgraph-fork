@@ -1,0 +1,20 @@
+{
+  "conventional": {
+    "api_calls": 6,
+    "api_tokens": 16437,
+    "native_probes": 3,
+    "qualified": 3
+  },
+  "removed": {
+    "api_calls": 6,
+    "api_tokens": 15507,
+    "native_probes": 3,
+    "qualified": 3
+  },
+  "retained": {
+    "api_calls": 7,
+    "api_tokens": 21891,
+    "native_probes": 4,
+    "qualified": 3
+  }
+}

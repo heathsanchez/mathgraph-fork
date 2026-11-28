@@ -1,0 +1,34 @@
+{
+  "boundary": "Second-implementation semantic checks on altered copies, separately from all manifest checks; no original evidence modified.",
+  "controls": [
+    {
+      "control": "false_qualification",
+      "rejected": true
+    },
+    {
+      "control": "lost_author_test",
+      "rejected": true
+    },
+    {
+      "control": "wrong_arm_prompt",
+      "rejected": true
+    },
+    {
+      "control": "reused_response_identity",
+      "rejected": true
+    },
+    {
+      "control": "candidate_replaced_by_original",
+      "rejected": true
+    },
+    {
+      "control": "missing_baseline_test_pass",
+      "rejected": true
+    },
+    {
+      "control": "altered_native_observation",
+      "rejected": true
+    }
+  ],
+  "original_unchanged": true
+}

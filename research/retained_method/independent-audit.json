@@ -1,0 +1,93 @@
+{
+  "api_calls": 19,
+  "autonomous_acquisition": "NOT_TESTED",
+  "baseline_tests": 245,
+  "counts": {
+    "conventional": 3,
+    "removed": 3,
+    "retained": 3
+  },
+  "fresh_replays": 9,
+  "independent_git_blob_checks": 136,
+  "input_tokens": 45096,
+  "manifest_files": 300,
+  "native_actions": 10,
+  "oracle_tests": 250,
+  "output_tokens": 8739,
+  "population_advantage": "UNKNOWN",
+  "prompt_authority_and_isolation": true,
+  "regression_ids": [
+    "tests/test_decorators.py::test_arggetter_bound_method_positional_only",
+    "tests/test_decorators.py::test_decorator_access_bound_method_args[False-class_method]",
+    "tests/test_decorators.py::test_decorator_access_bound_method_args[False-method]",
+    "tests/test_decorators.py::test_decorator_access_bound_method_args[True-class_method]",
+    "tests/test_decorators.py::test_decorator_access_bound_method_args[True-method]"
+  ],
+  "samples": {
+    "conventional-0": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5274
+    },
+    "conventional-1": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5754
+    },
+    "conventional-2": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5409
+    },
+    "removed-0": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5061
+    },
+    "removed-1": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5067
+    },
+    "removed-2": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5379
+    },
+    "retained-0": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5767
+    },
+    "retained-1": {
+      "api_calls": 3,
+      "native_actions": 2,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 10419
+    },
+    "retained-2": {
+      "api_calls": 2,
+      "native_actions": 1,
+      "qualified": true,
+      "terminal": "FINAL_SEALED",
+      "total_tokens": 5705
+    }
+  },
+  "strict_global_nonexposure": "UNKNOWN",
+  "unique_response_ids": 19
+}
