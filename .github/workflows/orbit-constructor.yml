@@ -1,4 +1,5 @@
 name: Closed-orbit constructor acquisition gate
+# Pre-inference setup correction: explicitly writable nonroot receipt directory.
 on:
   push:
     branches: [research/p6-sequential-transfer-20261128]

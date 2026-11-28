@@ -52,7 +52,7 @@ def native(which, inputs, source=None):
     root = DATA/'sources'/which
     if (root/'src/ftfy').is_dir(): root = root/'src'
     with tempfile.TemporaryDirectory(prefix='constructor-native-') as d:
-        temp = Path(d); (temp/'out').mkdir(mode=0o777); temp.chmod(0o755)
+        temp = Path(d); (temp/'out').mkdir(); (temp/'out').chmod(0o777); temp.chmod(0o755)
         payload = {'inputs': inputs, 'source': source, 'options': {'normalization': 'NFC'}}
         dump(temp/'request.json', payload)
         cmd = ['docker', 'run', '--rm', '--network', 'none', '--read-only',
