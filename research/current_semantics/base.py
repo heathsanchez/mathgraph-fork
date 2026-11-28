@@ -39,7 +39,7 @@ def native(root, payload, skill=None, *, suite=None):
         temp = Path(d); temp.chmod(0o777)
         request = temp / 'request.json'; dump(request, payload)
         cmd = ['docker', 'run', '--rm', '--network', 'none', '--cap-drop', 'ALL',
-               '--security-opt', 'no-new-privileges', '--pids-limit', '128', '--memory', '1800m',
+               '--security-opt', 'no-new-privileges', '--pids-limit', '128', '--memory', '5g',
                '--cpus', '2', '--read-only', '--user', '65534:65534',
                '--tmpfs', '/tmp:rw,nosuid,nodev,size=512m', '-v', str(Path(root).resolve()) + ':/work:ro',
                '-v', str((DATA / 'sources' / 'pointer').resolve()) + ':/pointer:ro',

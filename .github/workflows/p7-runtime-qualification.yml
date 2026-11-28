@@ -1,0 +1,55 @@
+name: P7 complete native qualification - no new inference
+on:
+  push:
+    branches: [research/p6-sequential-transfer-20261128]
+    paths: [.github/workflows/p7-runtime-qualification.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p7-current-source-evidence
+          path: incoming
+          run-id: 46110032011
+          github-token: ${{ github.token }}
+      - name: Verify and restore exact frozen evidence
+        run: |
+          python - <<'PY'
+          import hashlib,json,zipfile,shutil,tempfile
+          from pathlib import Path
+          archive=Path('incoming/evidence.zip')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='f0a0e4c538168daa7aa24054d7ad71b697a3c265698a9f878c0d8197534cd546'
+          with tempfile.TemporaryDirectory() as d:
+              root=Path(d)
+              with zipfile.ZipFile(archive) as z:
+                  assert not z.testzip()
+                  z.extractall(root)
+              manifest=json.loads((root/'MANIFEST.json').read_text())
+              assert all(hashlib.sha256((root/p).read_bytes()).hexdigest()==h for p,h in manifest.items())
+              original=root/'current_semantics'
+              target=Path('research/current_semantics')
+              assert (target/'PROTOCOL.md').read_bytes()==(original/'PROTOCOL.md').read_bytes()
+              for name in ['data','work']:
+                  shutil.copytree(original/name,target/name)
+          PY
+      - name: Requalify checker, observations and full project suites
+        run: python research/current_semantics/qualify_runtime.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p7-complete-native-qualification
+          path: research/current_semantics/runtime_qualification
+          if-no-files-found: error
+          retention-days: 90

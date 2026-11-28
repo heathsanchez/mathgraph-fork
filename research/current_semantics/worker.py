@@ -92,7 +92,13 @@ def main():
                                  'status': 'UNKNOWN_EXCEPTION', 'error_type': type(exc).__name__})
         request['target_runtime_file'] = str(target_file)
         request['target_runtime_sha256'] = hashlib.sha256(target_file.read_bytes()).hexdigest()
-    print(json.dumps({'task': task, 'rows': rows,
+    runtime_files = {}
+    for name, module in list(sys.modules.items()):
+        if name == 'jsonschema' or name.startswith('jsonschema.') or name == 'jsonpointer':
+            path = getattr(module, '__file__', None)
+            if path and path.endswith('.py'):
+                runtime_files[path] = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    print(json.dumps({'task': task, 'rows': rows, 'control_runtime_files': runtime_files,
                       'target_runtime_file': request.get('target_runtime_file'),
                       'target_runtime_sha256': request.get('target_runtime_sha256')}, sort_keys=True, allow_nan=False))
 
