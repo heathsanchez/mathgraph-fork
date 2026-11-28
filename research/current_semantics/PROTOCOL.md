@@ -20,7 +20,7 @@ the fresh standard corpus. Record archives, critical Git blobs, runtime package
 files, source-tree identities and governing contract URLs.
 
 The investigator selects JSON equality as the common standards boundary before
-outcomes: RFC 6902 section 4.6 and JSON Schema Draft 7 core section 4.2.2. Boolean
+outcomes: RFC 6902 section 4.6 and JSON Schema Draft 7 core section 4.2.3. Boolean
 and number are distinct JSON types; numeric 1 and 1.0 compare by numeric value;
 arrays compare positionally and objects by members. Finite ordinary JSON-decoded
 Python values only. No NaN, infinity, duplicate-key parser policy or custom types.
@@ -104,3 +104,10 @@ reproducibility, comparative learning evidence and research novelty separately,
 using primary prior work. Current repairs can establish useful assurance work;
 neither code generation nor a removable dependency alone establishes a new
 discovery algorithm, recursive self-improvement or sustained economic advantage.
+
+Apparatus correction before observation/inference: first run 46109695205 stopped
+at the official suite's moved directory. Accept exactly one of tests/draft7 and
+validation/tests/draft7; record that layout and preserve acquisition progress.
+Correct the equality citation from 4.2.2 to 4.2.3 without changing the supplied
+semantic rules, literal cases, target set or outcome criteria. No target/native
+audit or model call occurred in the failed setup.

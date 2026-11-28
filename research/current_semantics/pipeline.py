@@ -14,7 +14,7 @@ from base import HERE, DATA, WORK, source, dump, load, digest, stable, build, na
 MODELS = ('gpt-6.2-sol', 'gpt-6.1-sol', 'gpt-5.6-sol')
 PATHS = {'patch': ('jsonpatch.py',), 'fast': ('fastjsonschema/draft04.py', 'fastjsonschema/draft06.py',
                                          'fastjsonschema/draft07.py', 'fastjsonschema/generator.py')}
-CONTRACT = ('Use JSON equality from RFC 6902 section 4.6 and JSON Schema Draft 7 core section 4.2.2. '
+CONTRACT = ('Use JSON equality from RFC 6902 section 4.6 and JSON Schema Draft 7 core section 4.2.3. '
             'Boolean and number are distinct JSON types. Numeric representations compare by numeric value '
             '(1 equals 1.0). Arrays compare elementwise in order. Objects compare keys and recursively '
             'corresponding values, independently of member order. Null only equals null; strings compare '

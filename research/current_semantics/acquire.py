@@ -44,6 +44,8 @@ def main():
                 root, ash = source.safe_archive('json-schema-org/JSON-Schema-Test-Suite', link['sha'], Path(d) / 'archive')
                 shutil.copytree(root, sub)
             pins[key]['submodule'] = {'sha': link['sha'], 'archive_sha256': ash}
+        dump(DATA / 'acquisition_progress.json', {'pins': pins, 'completed_source': key,
+                                                 'elapsed_seconds': time.monotonic() - started})
     # Independently specified literal expectations. Derived wrappers retain the
     # same equality under the declared recursive JSON rules; they are correlated.
     literals = [(True, 1, False), (False, 0, False), (1, 1.0, True), (0, -0.0, True),
@@ -63,7 +65,11 @@ def main():
                     pairs.append({'id': f'literal-{i:02d}-{int(reverse)}-{depth}-{kind}', 'left': x, 'right': y, 'equal': expected})
     external, excluded = [], []
     for keyword in ('const', 'enum', 'uniqueItems'):
-        path = DATA / 'sources/official/tests/draft7' / (keyword + '.json')
+        suite_root = DATA / 'sources/official'
+        alternatives = [suite_root / 'tests/draft7', suite_root / 'validation/tests/draft7']
+        matches = [p for p in alternatives if (p / (keyword + '.json')).is_file()]
+        if len(matches) != 1: raise ValueError('missing or ambiguous official suite layout')
+        path = matches[0] / (keyword + '.json')
         for i, group in enumerate(json.loads(path.read_text())):
             schema = group['schema']
             if not isinstance(schema, dict) or set(schema) - {keyword, '$schema'}:

@@ -1,4 +1,5 @@
 name: P7 current-source research and acquired semantic checker
+# Setup correction: official validation-suite layout; no outcomes or inference before correction.
 'on':
   push:
     branches:
