@@ -1,6 +1,7 @@
 import unittest
 from base import skill_scope, apply_edits
 from worker import observe_equivalent
+from acquire import compatible
 
 
 class Boundaries(unittest.TestCase):
@@ -39,6 +40,13 @@ class Boundaries(unittest.TestCase):
         self.assertEqual(original, [1, 2])
         self.assertEqual(observe_equivalent(lambda a, b: a == b, [1], [1]), (True, None))
         self.assertEqual(observe_equivalent(lambda a, b: 1, 1, 1), (None, 'NON_BOOLEAN_RESULT'))
+
+    def test_current_official_dialect_compatibility(self):
+        for expr, v, expected in [(None,7,True),('6',7,True),('2019',7,False),('<=2019',7,True),
+                                  ('=3,7,<=2020',3,True),('=3,7,<=2020',4,False),
+                                  ('=3,7,<=2020',7,True),('=3,7,<=2020',2021,False),
+                                  ('<=3,7',4,False),('<=3,7',7,True)]:
+            self.assertEqual(compatible(expr,v),expected)
 
 
 if __name__ == '__main__': unittest.main()

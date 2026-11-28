@@ -29,6 +29,8 @@ Freeze literal independently specified positive/negative pairs and deterministic
 array/object embeddings before target execution. The embeddings are correlated
 tests, not independent defects. In addition use official const/enum/uniqueItems
 cases whose schemas contain only these supported keywords and the schema marker.
+For the consolidated current official suite, honor its declared compatibility
+metadata for draft-07 using the author's documented matching algorithm.
 Unsupported cases are retained as excluded. All expected answers are frozen;
 no expected result may be fitted to a target or generated checker.
 
@@ -106,8 +108,11 @@ neither code generation nor a removable dependency alone establishes a new
 discovery algorithm, recursive self-improvement or sustained economic advantage.
 
 Apparatus correction before observation/inference: first run 46109695205 stopped
-at the official suite's moved directory. Accept exactly one of tests/draft7 and
-validation/tests/draft7; record that layout and preserve acquisition progress.
+at the official suite's moved directory. Accept exactly one of tests/draft7,
+validation/tests/draft7 and the consolidated validation/tests. Record that layout
+and preserve acquisition progress. Second setup 46109815416 also stopped before
+observation/inference; current author documentation then established the
+consolidated object format and dialect compatibility rule.
 Correct the equality citation from 4.2.2 to 4.2.3 without changing the supplied
 semantic rules, literal cases, target set or outcome criteria. No target/native
 audit or model call occurred in the failed setup.

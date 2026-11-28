@@ -15,6 +15,19 @@ REPOS = {'patch': ('stefankoegl/python-json-patch', 'master'),
          'official': ('json-schema-org/JSON-Schema-Test-Suite', 'main')}
 
 
+def compatible(expression, version=7):
+    """The official current suite's documented ordered compatibility algorithm."""
+    if expression is None: return True
+    result = True
+    for item in expression.split(','):
+        item = item.strip()
+        op = '<=' if item.startswith('<=') else '=' if item.startswith('=') else ''
+        release = int(item[len(op):])
+        result = version <= release if op == '<=' else version == release if op == '=' else version >= release
+        if version <= release: break
+    return result
+
+
 def main():
     started = time.monotonic(); (DATA / 'sources').mkdir(parents=True, exist_ok=True)
     pins = {}
@@ -66,16 +79,24 @@ def main():
     external, excluded = [], []
     for keyword in ('const', 'enum', 'uniqueItems'):
         suite_root = DATA / 'sources/official'
-        alternatives = [suite_root / 'tests/draft7', suite_root / 'validation/tests/draft7']
+        alternatives = [suite_root / 'tests/draft7', suite_root / 'validation/tests/draft7', suite_root / 'validation/tests']
         matches = [p for p in alternatives if (p / (keyword + '.json')).is_file()]
         if len(matches) != 1: raise ValueError('missing or ambiguous official suite layout')
         path = matches[0] / (keyword + '.json')
-        for i, group in enumerate(json.loads(path.read_text())):
+        body = json.loads(path.read_text())
+        groups = body if isinstance(body, list) else body['tests']
+        for i, group in enumerate(groups):
             schema = group['schema']
+            if not compatible(group.get('compatibility')):
+                excluded.append({'file': str(path.relative_to(DATA)), 'group': i, 'reason': 'author dialect compatibility excludes draft7'})
+                continue
             if not isinstance(schema, dict) or set(schema) - {keyword, '$schema'}:
                 excluded.append({'file': str(path.relative_to(DATA)), 'group': i, 'reason': 'schema outside checker scope'})
                 continue
             for j, t in enumerate(group['tests']):
+                if not compatible(t.get('compatibility')):
+                    excluded.append({'file': str(path.relative_to(DATA)), 'group': i, 'test': j, 'reason': 'author dialect compatibility excludes draft7'})
+                    continue
                 def finite(value):
                     if isinstance(value, float): return math.isfinite(value)
                     if isinstance(value, list): return all(finite(v) for v in value)
