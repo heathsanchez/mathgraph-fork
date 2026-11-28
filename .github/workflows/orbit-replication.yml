@@ -1,0 +1,51 @@
+name: Constructor observation effect replication
+on:
+  push:
+    branches: [research/p6-sequential-transfer-20261128]
+    paths: [.github/workflows/orbit-replication.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: orbit-replication-20261128
+  cancel-in-progress: false
+jobs:
+  native-replication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test common acceptance and isolation
+        run: python -m unittest discover -s research/orbit_constructor -p test_boundaries.py -v
+      - uses: actions/download-artifact@v4
+        with:
+          name: orbit-constructor-native-evidence
+          run-id: 46114426422
+          github-token: ${{ github.token }}
+          path: research/orbit_constructor/download
+      - name: Freeze controls and native ordinary observations
+        run: python research/orbit_constructor/replicate.py prepare
+      - name: Install model transport
+        run: python -m pip install 'openai==2.9.0'
+      - name: Eighteen independent counterbalanced acquisitions
+        run: python research/orbit_constructor/replicate.py learn
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Common native qualification and predeclared comparisons
+        run: python research/orbit_constructor/replicate.py qualify
+      - name: Preserve all outcomes
+        if: always()
+        run: python research/orbit_constructor/replicate.py bundle
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: orbit-replication-native-evidence
+          path: research/orbit_constructor/evidence.zip
+          if-no-files-found: error
+          retention-days: 90
