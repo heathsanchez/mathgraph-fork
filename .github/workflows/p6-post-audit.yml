@@ -1,0 +1,41 @@
+name: P6 post-outcome native audit - no inference
+on:
+  push:
+    branches: [research/p6-sequential-transfer-20261128]
+    paths: [.github/workflows/p6-post-audit.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: p6-frozen-data
+          path: research/sequential_transfer/data
+          run-id: 46106707860
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: p6-all-records
+          path: research/sequential_transfer/work
+          run-id: 46106707860
+          github-token: ${{ github.token }}
+      - name: Full author suite and observer controls
+        run: python research/sequential_transfer/post_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p6-post-audit
+          path: research/sequential_transfer/post_audit
+          if-no-files-found: error
+          retention-days: 90
